@@ -21,3 +21,15 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#
+*._legacy*
+_legacy*
+
+*._backup*
+_backup*
+
+*._temp*
+_temp*
+
+.vscode
