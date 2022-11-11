@@ -1,3 +1,10 @@
+import CssBaseline from '@mui/material/CssBaseline';
+
 export function App() {
-	return <div></div>;
+	return (
+		<>
+			<CssBaseline />
+			<div />
+		</>
+	);
 }
