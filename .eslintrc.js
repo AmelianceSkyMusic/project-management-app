@@ -21,8 +21,9 @@ module.exports = {
 	plugins: [
 		'react',
 		'@typescript-eslint',
+		'simple-import-sort',
 	],
-	settings: { 'import/resolver': { typescript: {} } },
+	settings: { 'import/resolver': { typescript: true } },
 	rules: {
 		indent: [2, 'tab'],
 		'react/jsx-indent': [2, 'tab', { checkAttributes: false, indentLogicalExpressions: true }],
@@ -32,10 +33,10 @@ module.exports = {
 		quotes: [2, 'single'],
 		semi: [2, 'always'],
 		'no-plusplus': [2, { allowForLoopAfterthoughts: true }],
-		'import/prefer-default-export': 'off',
 		'react/jsx-filename-extension': [2, {
 			extensions: ['.js', 'jsx', '.ts', '.tsx'],
 		}],
+		'import/prefer-default-export': 'off',
 		'import/extensions': [
 			2,
 			'ignorePackages', {
@@ -61,5 +62,15 @@ module.exports = {
 			{ selector: 'enum', format: ['PascalCase'], custom: { regex: '^E[A-Z]', match: true } },
 			{ selector: 'typeLike', format: ['PascalCase'], custom: { regex: '^T[A-Z]', match: true } },
 		],
+
+		'simple-import-sort/imports': ['error', {
+			groups: [
+				['^react'],
+				['^antd'],
+				['^@?\\w'],
+				['@/(.*)'],
+				['^[./]'],
+			],
+		}],
 	},
 };
