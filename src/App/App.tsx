@@ -1,10 +1,10 @@
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemedComponentWrapper } from './styles/themeMode/ThemedComponentWrapper';
+import { ThemeIconToggle } from './styles/themeMode/ThemeIconToggle';
 
 export function App() {
 	return (
-		<>
-			<CssBaseline />
-			<div />
-		</>
+		<ThemedComponentWrapper>
+			<ThemeIconToggle />
+		</ThemedComponentWrapper>
 	);
 }
