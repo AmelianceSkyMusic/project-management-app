@@ -8,6 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { themedComponents } from '../themedComponents';
+import { typography } from '../typography';
 
 export const ColorModeContext = createContext({ toggleColorMode: () => { /**/ } });
 
@@ -30,6 +31,7 @@ export function ThemedComponentWrapper({ children }: IThemedComponentProps) {
 	const theme = useMemo(() => createTheme({
 		palette: { mode }, // change theme
 		...themedComponents, // set custom themed components
+		...typography,
 	}), [mode]);
 
 	return (
