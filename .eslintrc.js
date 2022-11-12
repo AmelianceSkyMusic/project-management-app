@@ -63,7 +63,7 @@ module.exports = {
 			{ selector: 'typeLike', format: ['PascalCase'], custom: { regex: '^T[A-Z]', match: true } },
 		],
 
-		'simple-import-sort/imports': ['error', {
+		'simple-import-sort/imports': [2, {
 			groups: [
 				['^react'],
 				['^antd'],
@@ -72,5 +72,7 @@ module.exports = {
 				['^[./]'],
 			],
 		}],
+
+		'react/no-unknown-property': [2, { ignore: ['css'] }],
 	},
 };
