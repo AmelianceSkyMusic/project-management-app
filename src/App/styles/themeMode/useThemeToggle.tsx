@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 
-import { ColorModeContext } from './ThemedComponent';
+import { ColorModeContext } from './ThemedComponentWrapper';
 
 export function useThemeToggle() {
 	const theme = useTheme();

@@ -15,7 +15,7 @@ interface IThemedComponentProps {
 	children: React.ReactElement;
  }
 
-export function ThemedComponent({ children }: IThemedComponentProps) {
+export function ThemedComponentWrapper({ children }: IThemedComponentProps) {
 	const [mode, setMode] = useState<'light' | 'dark'>(() => {
 		if (localStorage.getItem('projectManagementApp')) {
 			const pma = localStorage.getItem('projectManagementApp') as string;
