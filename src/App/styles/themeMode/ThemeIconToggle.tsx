@@ -1,4 +1,4 @@
-import { ReactComponent as DarkModel } from '@material-symbols/svg-400/rounded/dark_mode.svg';
+import { ReactComponent as DarkMode } from '@material-symbols/svg-400/rounded/dark_mode.svg';
 import { ReactComponent as LightMode } from '@material-symbols/svg-400/rounded/light_mode.svg';
 import { Box, IconButton, SvgIcon } from '@mui/material';
 
@@ -22,8 +22,8 @@ export function ThemeIconToggle() {
 				borderRadius: '50%',
 			}}
 		>
-			<IconButton color="primary" onClick={toggleColorMode}>
-				<SvgIcon viewBox="0 0 48 48">{themeMode === 'dark' ? <DarkModel /> : <LightMode /> }</SvgIcon>
+			<IconButton sx={{ color: 'primary.contrastText' }} onClick={toggleColorMode}>
+				<SvgIcon>{themeMode === 'dark' ? <DarkMode /> : <LightMode />}</SvgIcon>
 			</IconButton>
 		</Box>
 	);

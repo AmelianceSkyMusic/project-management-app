@@ -7,6 +7,9 @@ export const MuiSvgIcon = {
 					height: '24px',
 				},
 			},
+			defaultProps: {
+				viewBox: '0 0 48 48',
+			},
 		},
 	},
 };
