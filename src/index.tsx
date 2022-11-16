@@ -7,6 +7,7 @@ import '@fontsource/montserrat/300.css';
 import '@fontsource/montserrat/400.css';
 import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/700.css';
+import '@fontsource/playfair-display/900.css';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
