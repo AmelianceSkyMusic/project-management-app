@@ -11,7 +11,10 @@ export function Layout() {
 	return (
 		<>
 			<Header />
-			<Box component="main">
+			<Box
+				component="main"
+				sx={{ overflow: 'hidden' }}
+			>
 				<Container
 					maxWidth={false}
 					sx={{
