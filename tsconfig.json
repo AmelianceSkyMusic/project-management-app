@@ -34,5 +34,6 @@
 		"./src/**/*.test.ts",
 		"./src/**/*.spec.tsx",
 		"./src/**/*.test.tsx"
-	]
+	],
+	"extends": "./tsconfig.paths.json"
 }

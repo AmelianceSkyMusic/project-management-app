@@ -23,7 +23,26 @@ module.exports = {
 		'@typescript-eslint',
 		'simple-import-sort',
 	],
-	settings: { 'import/resolver': { typescript: true } },
+	settings: {
+		'import/resolver': {
+			typescript: true,
+			alias: {
+				map: [
+					['~', './src'],
+					['~app', './src/App'],
+					['~assets', './src/assets'],
+					['~api', './src/App/api'],
+					['~components', './src/App/components'],
+					['~hooks', './src/App/hooks'],
+					['~pages', './src/App/pages'],
+					['~store', './src/App/store'],
+					['~styles', './src/App/styles'],
+					['~types', './src/App/types'],
+				],
+				extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+			},
+		},
+	},
 	rules: {
 		indent: [2, 'tab'],
 		'react/jsx-indent': [2, 'tab', { checkAttributes: false, indentLogicalExpressions: true }],
@@ -74,5 +93,6 @@ module.exports = {
 		}],
 
 		'react/no-unknown-property': [2, { ignore: ['css'] }],
+
 	},
 };

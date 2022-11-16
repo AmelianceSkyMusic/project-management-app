@@ -21,10 +21,10 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"start": "craco start",
+		"build": "craco build",
+		"test": "craco test",
+		"eject": "craco eject"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -45,6 +45,7 @@
 		]
 	},
 	"devDependencies": {
+		"@craco/craco": "^7.0.0",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^14.4.3",
@@ -57,6 +58,7 @@
 		"eslint": "^8.27.0",
 		"eslint-config-airbnb": "^19.0.4",
 		"eslint-config-airbnb-typescript": "^17.0.0",
+		"eslint-import-resolver-alias": "^1.1.2",
 		"eslint-import-resolver-typescript": "^3.5.2",
 		"eslint-plugin-import": "^2.25.3",
 		"eslint-plugin-jsx-a11y": "^6.5.1",
