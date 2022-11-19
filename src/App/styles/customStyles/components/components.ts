@@ -1,5 +1,5 @@
 import { MuiSvgIcon } from './MuiSvgIcon';
 
-export const themedComponents = {
+export const components = {
 	...MuiSvgIcon,
 };

@@ -6,9 +6,10 @@ import React, {
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import lodashMerge from 'lodash/merge';
 
-import { themedComponents } from '../themedComponents';
-import { typography } from '../typography';
+import { getCustomPalette } from '../customPalette/getCustomPalette';
+import { customStyles } from '../customStyles';
 
 export const ColorModeContext = createContext({ toggleColorMode: () => { /**/ } });
 
@@ -28,11 +29,10 @@ export function ThemedComponentWrapper({ children }: IThemedComponentProps) {
 	const colorMode = useMemo(() => ({
 		toggleColorMode: () => { setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light')); },
 	}), []);
-	const theme = useMemo(() => createTheme({
-		palette: { mode }, // change theme
-		...themedComponents, // set custom themed components
-		...typography,
-	}), [mode]);
+	const theme = useMemo(() => createTheme(lodashMerge(
+		customStyles, // Custom styles object
+		getCustomPalette(mode), // Should be last! Change theme mode
+	)), [mode]);
 
 	return (
 		<ColorModeContext.Provider value={colorMode}>
