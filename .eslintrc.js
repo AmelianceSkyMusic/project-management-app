@@ -28,8 +28,6 @@ module.exports = {
 			typescript: true,
 			alias: {
 				map: [
-					['~', './src'],
-					['~app', './src/App'],
 					['~assets', './src/assets'],
 					['~api', './src/App/api'],
 					['~components', './src/App/components'],
@@ -38,6 +36,8 @@ module.exports = {
 					['~store', './src/App/store'],
 					['~styles', './src/App/styles'],
 					['~types', './src/App/types'],
+					['~app', './src/App'],
+					['~', './src'],
 				],
 				extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
 			},

@@ -4,8 +4,6 @@ const path = require('path');
 module.exports = {
 	webpack: {
 		alias: {
-			'~': path.resolve(__dirname, 'src'),
-			'~app': path.resolve(__dirname, 'src/App'),
 			'~assets': path.resolve(__dirname, 'src/assets'),
 			'~api': path.resolve(__dirname, 'src/App/api'),
 			'~components': path.resolve(__dirname, 'src/App/components'),
@@ -14,6 +12,8 @@ module.exports = {
 			'~store': path.resolve(__dirname, 'src/App/store'),
 			'~styles': path.resolve(__dirname, 'src/App/styles'),
 			'~types': path.resolve(__dirname, 'src/App/types'),
+			'~app': path.resolve(__dirname, 'src/App'),
+			'~': path.resolve(__dirname, 'src'),
 		},
 	},
 };

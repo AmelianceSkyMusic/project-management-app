@@ -2,16 +2,16 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./src/*"],
-			"~app/*": ["./src/App/*"],
 			"~assets/*": ["./src/assets/*"],
 			"~api/*": ["./src/App/api/*"],
-			"~components/*": ["./src/App/component"],
+			"~components/*": ["./src/App/components/*"],
 			"~hooks/*": ["./src/App/hooks/*"],
 			"~pages/*": ["./src/App/pages/*"],
 			"~store/*": ["./src/App/store/*"],
 			"~styles/*": ["./src/App/styles/*"],
 			"~types/*": ["./src/App/types/*"],
+			"~app/*": ["./src/App/*"],
+			"~/*": ["./src/*"],
 		}
 	}
 }
