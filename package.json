@@ -8,6 +8,7 @@
 		"@fontsource/montserrat": "^4.5.13",
 		"@fontsource/playfair-display": "^4.5.12",
 		"@material-symbols/svg-400": "^0.2.15",
+		"@mui/icons-material": "^5.10.14",
 		"@mui/material": "^5.10.14",
 		"@reduxjs/toolkit": "^1.9.0",
 		"@types/lodash": "^4.14.189",
