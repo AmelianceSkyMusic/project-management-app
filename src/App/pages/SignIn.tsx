@@ -1,25 +1,50 @@
+import { FocusEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
-	Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography,
+	Avatar, Box, Button, Container,	CssBaseline, Grid, Link, TextField, Typography,
 } from '@mui/material';
 
 export function SignIn() {
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
+
+	const emailHandler = (e: FocusEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		const reg =			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (!reg.test(String(value).toLowerCase())) {
+			setEmailError('Invalid E-mail');
+		} else {
+			setEmailError('');
+		}
+	};
+
+	const passwordHandler = (e: FocusEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		if (value.length < 8) {
+			setPasswordError('Password must be longer than 8 characters');
+			if (!value) {
+				setPasswordError('Password cannot be empty');
+			}
+		} else {
+			setPasswordError('');
+		}
+	};
+
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
+		if (!passwordError && !emailError) {
+			const data = new FormData(event.currentTarget);
+			console.log({
+				email: data.get('email'),
+				password: data.get('password'),
+			});
+		}
 	};
 
 	return (
-		<Container
-			component="main"
-			maxWidth="xs"
-		>
+		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<Box
 				sx={{
@@ -29,19 +54,27 @@ export function SignIn() {
 					alignItems: 'center',
 				}}
 			>
-				<Avatar sx={{
-					m: 1, bgcolor: 'secondary.main', fontSize: 40, viewBox: '0 0 24 24',
-				}}
+				<Avatar
+					sx={{
+						m: 1,
+						bgcolor: 'secondary.main',
+						fontSize: 40,
+						viewBox: '0 0 24 24',
+					}}
 				>
-					<LockOutlinedIcon
-						inheritViewBox
-					/>
+					<LockOutlinedIcon inheritViewBox />
 				</Avatar>
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+				<Box
+					component="form"
+					onSubmit={handleSubmit}
+					noValidate
+					sx={{ mt: 1 }}
+				>
 					<TextField
+						error={!!emailError}
 						margin="normal"
 						required
 						fullWidth
@@ -49,9 +82,12 @@ export function SignIn() {
 						label="Email Address"
 						name="email"
 						autoComplete="email"
+						helperText={emailError}
+						onBlur={emailHandler}
 						autoFocus
 					/>
 					<TextField
+						error={!!passwordError}
 						margin="normal"
 						required
 						fullWidth
@@ -60,6 +96,8 @@ export function SignIn() {
 						type="password"
 						id="password"
 						autoComplete="current-password"
+						helperText={passwordError}
+						onBlur={passwordHandler}
 					/>
 					<Button
 						type="submit"
