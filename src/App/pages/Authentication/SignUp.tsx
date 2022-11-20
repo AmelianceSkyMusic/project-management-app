@@ -6,7 +6,7 @@ import {
 	Avatar, Box, Button, Container,	CssBaseline, Grid, Link, TextField, Typography,
 } from '@mui/material';
 
-export function SignIn() {
+export function SignUp() {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
 

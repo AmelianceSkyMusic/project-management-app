@@ -1,11 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from './components/Layout';
+import { LogIn } from './pages/Authentication/LogIn';
+import { SignUp } from './pages/Authentication/SignUp';
 import { Board } from './pages/Board';
-import { LogIn } from './pages/LogIn';
 import { Main } from './pages/Main';
 import { NotFound } from './pages/NotFound';
-import { SignIn } from './pages/SignIn';
 import { ThemedComponentWrapper } from './styles/themeMode/ThemedComponentWrapper';
 
 export function App() {
@@ -16,7 +16,7 @@ export function App() {
 					<Route index element={<Main />} />
 					<Route path="board" element={<Board />} />
 					<Route path="login" element={<LogIn />} />
-					<Route path="signin" element={<SignIn />} />
+					<Route path="signup" element={<SignUp />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>
 			</Routes>
