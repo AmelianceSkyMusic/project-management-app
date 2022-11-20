@@ -50,9 +50,9 @@ export function Header() {
 						}}
 						underline="hover"
 						component={NavLink}
-						to="signin"
+						to="signup"
 					>
-						Sign In
+						SignUp
 					</Link>
 					{pathname !== '/'
 						? (

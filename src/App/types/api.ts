@@ -4,8 +4,16 @@ export interface IUser {
 	password: string;
 }
 
-export interface IUserSignInResponse {
+export interface IUserSignUpResponse {
 	token?: string;
 	statusCode?: string;
 	message?: string;
+}
+
+export interface IUserLogInResponse {
+	_id: string;
+	name: string;
+	login: string;
+	statusCode: number;
+	message: string;
 }
