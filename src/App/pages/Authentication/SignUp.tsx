@@ -81,10 +81,11 @@ export function SignUp() {
 						margin="normal"
 						required
 						fullWidth
-						autoComplete="name"
 						id="name"
 						label="Name"
 						name="name"
+						autoComplete="name"
+						autoFocus
 					/>
 					<TextField
 						error={!!emailError}
@@ -97,7 +98,6 @@ export function SignUp() {
 						autoComplete="email"
 						helperText={emailError}
 						onBlur={emailHandler}
-						autoFocus
 					/>
 					<TextField
 						error={!!passwordError}
