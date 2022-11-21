@@ -1,5 +1,6 @@
-import { MuiSvgIcon } from './MuiSvgIcon';
+import lodashMerge from 'lodash/merge';
+import { MuiTextField } from './MuiTextField';
 
-export const components = {
-	...MuiSvgIcon,
-};
+export const components = lodashMerge(
+	MuiTextField,
+);
