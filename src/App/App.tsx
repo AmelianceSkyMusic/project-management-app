@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { Layout } from './components/Layout';
-import { Board } from './pages/Board';
-import { LogIn } from './pages/LogIn';
-import { Main } from './pages/Main';
-import { NotFound } from './pages/NotFound';
+import { Layout } from '~components/Layout';
+import { Board } from '~pages/Board';
+import { LogIn } from '~pages/LogIn';
+import { Main } from '~pages/Main';
+import { NotFound } from '~pages/NotFound';
 import { SignUp } from '~pages/SignUp';
-import { ThemedComponentWrapper } from './styles/themeMode/ThemedComponentWrapper';
+import { ThemedComponentWrapper } from '~styles/themeMode/ThemedComponentWrapper';
 
 export function App() {
 	return (
