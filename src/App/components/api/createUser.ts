@@ -5,13 +5,14 @@ import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 export const createUser = async (
-	obj: IUser,
+	body: IUser,
 // eslint-disable-next-line consistent-return
 ): Promise<(number | IUserSignUpResponse)[] | undefined> => {
 	try {
+		console.log('obj', body);
 		const { data, status } = await HTTP.post<IUserSignUpResponse>(
-			'/auth/signin',
-			obj,
+			'/auth/signup',
+			body,
 		);
 		return [data, status];
 	} catch (error) {

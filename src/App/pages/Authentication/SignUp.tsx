@@ -6,6 +6,9 @@ import {
 	Avatar, Box, Button, Container,	CssBaseline, Grid, Link, TextField, Typography,
 } from '@mui/material';
 
+import { createUser } from '../../components/api/createUser';
+import { IUser } from '../../types/api';
+
 export function SignUp() {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
@@ -36,10 +39,13 @@ export function SignUp() {
 		event.preventDefault();
 		if (!passwordError && !emailError) {
 			const data = new FormData(event.currentTarget);
-			console.log({
-				email: data.get('email'),
-				password: data.get('password'),
-			});
+			const newUser: IUser = {
+				name: data.get('name') as string,
+				login: data.get('email') as string,
+				password: data.get('password') as string,
+			};
+			createUser(newUser);
+			console.log(newUser);
 		}
 	};
 
@@ -70,9 +76,17 @@ export function SignUp() {
 				<Box
 					component="form"
 					onSubmit={handleSubmit}
-					noValidate
 					sx={{ mt: 1 }}
 				>
+					<TextField
+						margin="normal"
+						required
+						fullWidth
+						autoComplete="name"
+						id="name"
+						label="Name"
+						name="name"
+					/>
 					<TextField
 						error={!!emailError}
 						margin="normal"
@@ -91,9 +105,9 @@ export function SignUp() {
 						margin="normal"
 						required
 						fullWidth
+						type="password"
 						name="password"
 						label="Password"
-						type="password"
 						id="password"
 						autoComplete="current-password"
 						helperText={passwordError}
@@ -105,12 +119,12 @@ export function SignUp() {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Sign In
+						Sign Up
 					</Button>
 					<Grid container>
 						<Grid item>
-							<Link variant="body2" component={NavLink} to="signup">
-								Don&apos;t have an account? Sign Up
+							<Link variant="body2" component={NavLink} to="login">
+								Have an account? Log In
 							</Link>
 						</Grid>
 					</Grid>
