@@ -2,88 +2,102 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import { ReactComponent as Dashboard } from '@material-symbols/svg-400/rounded/dashboard.svg';
 import { ReactComponent as Home } from '@material-symbols/svg-400/rounded/home.svg';
+import { ReactComponent as Menu } from '@material-symbols/svg-400/rounded/menu.svg';
 import {
-	AppBar, Box, IconButton, Link, SvgIcon, Toolbar,
+	AppBar, Box, IconButton, Link, Toolbar, Typography,
 } from '@mui/material';
 
-import { Logo } from '../Logo';
+import { AppLogo } from '~components/svg/AppLogo';
+import { Symbol } from '~components/Symbol';
 
 export function Header() {
 	const { pathname } = useLocation();
 	return (
-		<AppBar position="relative">
+		<AppBar position={pathname === '/board' ? 'sticky' : 'relative'} sx={{ background: 'transparent', boxShadow: 'none' }}>
 			<Toolbar sx={{ gap: 3 }}>
 				<Box
 					component={NavLink}
 					end
 					to="/"
-					sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 2 }}
+					sx={{ flexGrow: 1, display: { ss: 'flex', md: 'flex' }, gap: 2 }}
 				>
-					<Logo />
+					<AppLogo />
 				</Box>
-				<Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
-					<Link
-						sx={{
-							my: 2,
-							color: 'white',
-							display: 'flex',
-							justifyContent: 'center',
-							'&.active': {
-								fontWeight: 700,
-							},
-						}}
-						underline="hover"
-						component={NavLink}
-						to="login"
-					>
-						Log In
-					</Link>
-					<Link
-						sx={{
-							my: 2,
-							color: 'white',
-							display: 'flex',
-							justifyContent: 'center',
-							'&.active': {
-								fontWeight: 700,
-							},
-						}}
-						underline="hover"
-						component={NavLink}
-						to="signin"
-					>
-						Sign In
-					</Link>
+				<Box sx={{ display: { ss: 'none', md: 'flex' }, gap: 2 }}>
+					{pathname !== '/login' && (
+						<Link
+							sx={{
+								my: 2,
+								display: 'flex',
+								justifyContent: 'center',
+								'&.active': {
+									fontWeight: 700,
+								},
+							}}
+							underline="hover"
+							component={NavLink}
+							to="/login"
+						>
+							Увійти
+						</Link>
+					)}
+					{pathname !== '/signup' && (
+						<Link
+							sx={{
+								my: 2,
+								display: 'flex',
+								justifyContent: 'center',
+								'&.active': {
+									fontWeight: 700,
+								},
+							}}
+							underline="hover"
+							component={NavLink}
+							to="/signup"
+						>
+							Створити аккаунт
+						</Link>
+					)}
+				</Box>
+				<Box sx={{ display: 'flex' }}>
 					{pathname !== '/'
 						? (
 							<IconButton
 								component={NavLink}
 								end
 								to="/"
-								color="inherit"
 								sx={{
-									height: '40px', width: '40px', my: 'auto',
+									height: '40px',
+									width: '40px',
+									my: 'auto',
 								}}
 							>
-								<SvgIcon>
-									<SvgIcon><Home /></SvgIcon>
-								</SvgIcon>
+								<Symbol><Home /></Symbol>
 							</IconButton>
 						)
 						: (
 							<IconButton
 								component={NavLink}
-								to="board"
-								color="inherit"
+								to="/board"
 								sx={{
-									height: '40px', width: '40px', my: 'auto',
+									height: '40px',
+									width: '40px',
+									my: 'auto',
 								}}
 							>
-								<SvgIcon>
-									<SvgIcon><Dashboard /></SvgIcon>
-								</SvgIcon>
+								<Symbol><Dashboard /></Symbol>
 							</IconButton>
 						)}
+					<IconButton
+						sx={{
+							display: { ss: 'flex', md: 'none' }, height: '40px', width: '40px', my: 'auto',
+						}}
+					>
+						<Symbol><Menu /></Symbol>
+					</IconButton>
+					<IconButton sx={{ height: '40px', width: '40px', my: 'auto' }}>
+						<Typography variant="body1" sx={{ fontWeight: 'regular' }}>UA</Typography>
+					</IconButton>
 				</Box>
 			</Toolbar>
 		</AppBar>

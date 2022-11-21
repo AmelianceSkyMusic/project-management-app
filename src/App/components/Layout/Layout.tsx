@@ -2,7 +2,8 @@ import { Outlet } from 'react-router-dom';
 
 import { Box, Container } from '@mui/material';
 
-import { ThemeIconToggle } from '../ThemeIconToggle';
+import { ThemeIconToggle } from '~components/ThemeIconToggle';
+
 import { Footer } from './Footer';
 import { Header } from './Header';
 
@@ -13,12 +14,14 @@ export function Layout() {
 			<Header />
 			<Box
 				component="main"
-				sx={{ overflow: 'hidden' }}
+				sx={{
+					overflow: 'hidden',
+				}}
 			>
 				<Container
 					maxWidth={false}
 					sx={{
-						maxWidth: '1320px', display: 'flex', flexDirection: 'column', gap: 16, pb: 16,
+						maxWidth: '1320px', display: 'flex', flexDirection: 'column', gap: 12,
 					}}
 				>
 					<Outlet />
