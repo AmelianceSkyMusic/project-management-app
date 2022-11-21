@@ -70,7 +70,7 @@ export function SignUp() {
 					<LockOutlinedIcon inheritViewBox />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Sign Up
 				</Typography>
 				<Box
 					component="form"
@@ -122,7 +122,7 @@ export function SignUp() {
 					</Button>
 					<Grid container>
 						<Grid item>
-							<Link variant="body2" component={NavLink} to="../git login">
+							<Link variant="body2" component={NavLink} to="../login">
 								Have an account? Log In
 							</Link>
 						</Grid>
