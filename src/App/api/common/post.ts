@@ -16,5 +16,4 @@ export const postCommon = async (body: IUser, endpoint: string) => {
 		errorHandler(error as AxiosError);
 		return null;
 	}
-
 };
