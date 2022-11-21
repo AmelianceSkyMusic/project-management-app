@@ -1,4 +1,5 @@
 export const lightPalette = {
-	background: {
+	primary: {
+		main: '#000000',
 	},
 };
