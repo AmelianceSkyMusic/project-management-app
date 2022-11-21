@@ -1,17 +1,20 @@
 import { NavLink, useLocation } from 'react-router-dom';
 
-import { ReactComponent as Dashboard } from '@material-symbols/svg-400/rounded/dashboard.svg';
-import { ReactComponent as Home } from '@material-symbols/svg-400/rounded/home.svg';
-import { ReactComponent as Menu } from '@material-symbols/svg-400/rounded/menu.svg';
+import { ReactComponent as DashboardIcon } from '@material-symbols/svg-400/rounded/dashboard.svg';
+import { ReactComponent as HomeIcon } from '@material-symbols/svg-400/rounded/home.svg';
 import {
-	AppBar, Box, IconButton, Link, Toolbar, Typography,
+	AppBar, Box, IconButton, Link, Toolbar,
 } from '@mui/material';
 
 import { AppLogo } from '~components/svg/AppLogo';
 import { Symbol } from '~components/Symbol';
 
+import { HeaderLanguage } from './HeaderLanguage';
+import { HeaderMenu } from './HeaderMenu';
+
 export function Header() {
 	const { pathname } = useLocation();
+
 	return (
 		<AppBar position={pathname === '/board' ? 'sticky' : 'relative'} sx={{ background: 'transparent', boxShadow: 'none' }}>
 			<Toolbar sx={{ gap: 3 }}>
@@ -72,7 +75,7 @@ export function Header() {
 									my: 'auto',
 								}}
 							>
-								<Symbol><Home /></Symbol>
+								<Symbol><HomeIcon /></Symbol>
 							</IconButton>
 						)
 						: (
@@ -85,21 +88,14 @@ export function Header() {
 									my: 'auto',
 								}}
 							>
-								<Symbol><Dashboard /></Symbol>
+								<Symbol><DashboardIcon /></Symbol>
 							</IconButton>
 						)}
-					<IconButton
-						sx={{
-							display: { ss: 'flex', md: 'none' }, height: '40px', width: '40px', my: 'auto',
-						}}
-					>
-						<Symbol><Menu /></Symbol>
-					</IconButton>
-					<IconButton sx={{ height: '40px', width: '40px', my: 'auto' }}>
-						<Typography variant="body1" sx={{ fontWeight: 'regular' }}>UA</Typography>
-					</IconButton>
+					{pathname !== '/login' && pathname !== '/signup' && <HeaderMenu />}
+					<HeaderLanguage />
 				</Box>
 			</Toolbar>
+
 		</AppBar>
 	);
 }
