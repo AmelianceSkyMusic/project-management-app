@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 import { FocusEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -5,6 +6,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
 	Avatar, Box, Button, Container,	CssBaseline, Grid, Link, TextField, Typography,
 } from '@mui/material';
+
+import { IUser } from '~/App/types/api';
+import { loginUser } from '../../components/api/loginUser';
 
 export function LogIn() {
 	const [emailError, setEmailError] = useState('');
@@ -32,14 +36,16 @@ export function LogIn() {
 		}
 	};
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		if (!passwordError && !emailError) {
 			const data = new FormData(event.currentTarget);
-			console.log({
-				email: data.get('email'),
-				password: data.get('password'),
-			});
+			const newUser: IUser = {
+				login: data.get('email') as string,
+				password: data.get('password') as string,
+			};
+			const result = await loginUser(newUser);
+			localStorage.setItem('user', JSON.stringify(result));
 		}
 	};
 
@@ -65,7 +71,7 @@ export function LogIn() {
 					<LockOutlinedIcon inheritViewBox />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Log In
 				</Typography>
 				<Box
 					component="form"
@@ -109,7 +115,7 @@ export function LogIn() {
 					</Button>
 					<Grid container>
 						<Grid item>
-							<Link variant="body2" component={NavLink} to="signup">
+							<Link variant="body2" component={NavLink} to="../signup">
 								Don&apos;t have an account? Sign Up
 							</Link>
 						</Grid>

@@ -45,7 +45,6 @@ export function SignUp() {
 				password: data.get('password') as string,
 			};
 			createUser(newUser);
-			console.log(newUser);
 		}
 	};
 
@@ -123,7 +122,7 @@ export function SignUp() {
 					</Button>
 					<Grid container>
 						<Grid item>
-							<Link variant="body2" component={NavLink} to="login">
+							<Link variant="body2" component={NavLink} to="../git login">
 								Have an account? Log In
 							</Link>
 						</Grid>

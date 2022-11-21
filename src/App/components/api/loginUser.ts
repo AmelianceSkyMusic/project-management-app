@@ -6,8 +6,7 @@ import HTTP from './http-common';
 
 export const loginUser = async (
 	obj: IUser,
-// eslint-disable-next-line consistent-return
-): Promise<(number | IUserLogInResponse)[] | undefined> => {
+) => {
 	try {
 		const { data, status } = await HTTP.post<IUserLogInResponse>(
 			'/auth/signin',
@@ -16,5 +15,6 @@ export const loginUser = async (
 		return [data, status];
 	} catch (error) {
 		errorHandler(error as AxiosError);
+		return null;
 	}
 };
