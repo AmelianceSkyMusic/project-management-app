@@ -3,12 +3,12 @@ import { AxiosError } from 'axios';
 
 import {
 	IBadRequest,
-	IBoard, IUser, IUserLogInResponse, IUserSignUpResponse,
+	IBoard, IColumnParams, IUser, IUserLogInResponse, IUserSignUpResponse,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type Body = | IUser | IBoard
+type Body = | IUser | IBoard | IColumnParams
 type ReturnData = | IUserSignUpResponse | IUserLogInResponse | IBadRequest
 
 export const postCommon = async (body: Body, endpoint: string) => {
