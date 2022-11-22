@@ -5,7 +5,7 @@ import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-type ReturnData = | IUser[] | IUser | IUserSignUpResponse | IBoard[]
+type ReturnData = | IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard
 
 export const getCommon = async (endpoint1 = '', endpoint2 = '') => {
 	try {
