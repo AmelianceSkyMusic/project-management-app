@@ -48,13 +48,13 @@ export interface IColumnOrder {
 	order: number;
 }
 
-export interface ITasksInColumn {
-	_id: string;
+export interface ITask {
+	_id?: string;
 	title: string;
-   order: string;
-   boardId: string;
-   columnId: string;
+   order: number;
+   boardId?: string;
+   columnId?: string;
    description: string;
-   userId: string;
+   userId: number;
    users: string[];
 }

@@ -1,14 +1,14 @@
 import { AxiosError } from 'axios';
 
 import {
-	IBoard, IColumn, ITasksInColumn, IUser, IUserSignUpResponse,
+	IBoard, IColumn, ITask, IUser, IUserSignUpResponse,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 type ReturnData =
-	| IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard | IColumn | ITasksInColumn[]
+	| IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard | IColumn | ITask[]
 
 export const getCommon = async (endpoint = '') => {
 	try {
