@@ -1,1 +1,8 @@
 export const arrToStr = (arr: string[]) => arr.join(',');
+
+export const queryGenerator = (list: string[], userId: string) => {
+	const result = [];
+	if (list[0]) result.push(`ids${arrToStr(list)}`);
+	if (userId) result.push(`userId=${userId}`);
+	return result.join('&');
+};
