@@ -18,3 +18,8 @@ export interface IUserLogInResponse {
 	statusCode: number;
 	message: string;
 }
+
+export interface IBadRequest {
+	statusCode: string;
+	message: string;
+}
