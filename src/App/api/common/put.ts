@@ -9,7 +9,7 @@ type ReturnData = | IUser | IBadRequest
 
 export const putCommon = async (body: IUser, endpoint1 = '', endpoint2 = '') => {
 	try {
-		const { data, status } = await HTTP.post<ReturnData>(
+		const { data, status } = await HTTP.put<ReturnData>(
 			endpoint1 + endpoint2,
 			body,
 		);
