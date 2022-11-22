@@ -2,29 +2,30 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 
 import {
-	Box, Button,
-	Grid, InputLabel,
-	Link,
-	TextField, Typography,
+	Box,
+	Button, Grid,
+	InputLabel, Link, TextField, Typography,
 } from '@mui/material';
 
 import asm from '~/asmlib/asm-scripts';
 
-interface ILoginInputs {
+interface ISinginInputs {
+	name: string;
 	email: string;
 	password: string;
 }
 
-export function LogIn() {
+export function SignUp() {
 
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<ILoginInputs>({
+	} = useForm<ISinginInputs>({
 		mode: 'onSubmit',
 		defaultValues: {
+			name: '',
 			email: '',
 			password: '',
 		},
@@ -33,6 +34,11 @@ export function LogIn() {
 	const isValidFixed = asm.isObjectEmpty(errors);//* fix isValid default has false
 
 	const registers = {
+		name: register('name', {
+			required: 'Поле таке пусте! Введіть більше символів!',
+			minLength: { value: 1, message: 'Мінімальна довжина поля 1 символ!' },
+			pattern: { value: /^[A-Za-z]+$/i, message: 'Будь ласка, використовуйте тільки латинські літери!' },
+		}),
 		email: register('email', {
 			required: 'Поле таке пусте! Введіть більше символів!',
 			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: 'Невірно введена адреса електронної пошти!' },
@@ -44,8 +50,8 @@ export function LogIn() {
 		}),
 	};
 
-	const onSubmit: SubmitHandler<ILoginInputs> = ({ email, password }: ILoginInputs) => {
-		console.log(email, password);
+	const onSubmit: SubmitHandler<ISinginInputs> = ({ name, email, password }: ISinginInputs) => {
+		console.log(name, email, password);
 		reset();
 	};
 
@@ -69,31 +75,37 @@ export function LogIn() {
 					display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'center',
 				}}
 			>
-				<Typography variant="h3">Вхід</Typography>
-
-				<Box
-					component="form"
-					onSubmit={handleSubmit(onSubmit)}
-					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-				>
+				<Typography variant="h3">Реєстрація</Typography>
+				<Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="login-email">Адреса електронної пошти:</InputLabel>
+						<InputLabel required htmlFor="singin-name">{'Ім\'я:'}</InputLabel>
+						<TextField
+							{...registers.name}
+							error={!!(errors && errors.name?.message)}
+							helperText={errors.name?.message || ' '}
+							id="singin-name"
+							placeholder="Ім'я"
+						/>
+					</Box>
+
+					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+						<InputLabel required htmlFor="singin-email">Адреса електронної пошти:</InputLabel>
 						<TextField
 							{...registers.email}
 							error={!!(errors && errors.email?.message)}
 							helperText={errors.email?.message || ' '}
-							id="login-email"
+							id="singin-email"
 							placeholder="Адреса електронної пошти"
 						/>
 					</Box>
 
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="login-password">Пароль:</InputLabel>
+						<InputLabel required htmlFor="singin-password">Пароль:</InputLabel>
 						<TextField
 							{...registers.password}
 							error={!!(errors && errors.password?.message)}
 							helperText={errors.password?.message || ' '}
-							id="login-password"
+							id="singin-password"
 							type="password"
 							placeholder="Пароль"
 						/>
@@ -108,25 +120,19 @@ export function LogIn() {
 					}}
 					>
 						<Typography variant="body1" sx={{ order: { ss: 2, sm: 1 } }}>
-							Немає аккаунту?
+							Вже є аккаунт?
 							{' '}
-							<Link component={NavLink} to="/signup">
-								Створити аккаунт
+							<Link component={NavLink} to="/login">
+								Увійти
 							</Link>
 						</Typography>
-						<Button
-							type="submit"
-							variant="contained"
-							disabled={!isValidFixed}
-							size="large"
-							sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}
-						>
-							Увійти
+						<Button type="submit" variant="contained" disabled={!isValidFixed} size="large" sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}>
+							Створити аккаунт
 						</Button>
 					</Box>
 				</Box>
-			</Grid>
 
+			</Grid>
 		</Grid>
 	);
 }

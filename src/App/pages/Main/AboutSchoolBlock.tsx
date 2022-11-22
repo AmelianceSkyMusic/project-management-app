@@ -1,11 +1,11 @@
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { RSSLogo } from '../../components/RSSLogo';
+import { RSSLogo } from '~components/svg/RSSLogo';
 
 export function AboutSchoolBlock() {
 	return (
-		<Grid container spacing={{ sm: 3, xs: 2 }}>
+		<Grid container component="section" spacing={{ ss: 2, lg: 3 }}>
 			<Grid xs={12}>
 				<RSSLogo />
 			</Grid>

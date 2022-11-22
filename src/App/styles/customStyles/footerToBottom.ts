@@ -13,8 +13,9 @@ export const footerToBottom = {
 					display: 'flex',
 					flexDirection: 'column',
 				},
-				footer: {
-					marginTop: 'auto',
+				main: {
+					display: 'flex',
+					flex: 1,
 				},
 			},
 		},

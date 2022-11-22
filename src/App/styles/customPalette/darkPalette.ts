@@ -1,4 +1,5 @@
 export const darkPalette = {
-	background: {
+	primary: {
+		main: '#FFFFFF',
 	},
 };

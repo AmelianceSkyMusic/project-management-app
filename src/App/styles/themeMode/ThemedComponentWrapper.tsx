@@ -8,6 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import lodashMerge from 'lodash/merge';
 
+import { setBackground } from '../background';
 import { getCustomPalette } from '../customPalette/getCustomPalette';
 import { customStyles } from '../customStyles';
 
@@ -31,6 +32,7 @@ export function ThemedComponentWrapper({ children }: IThemedComponentProps) {
 	}), []);
 	const theme = useMemo(() => createTheme(lodashMerge(
 		customStyles, // Custom styles object
+		setBackground(mode),
 		getCustomPalette(mode), // Should be last! Change theme mode
 	)), [mode]);
 
