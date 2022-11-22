@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AxiosError } from 'axios';
 
-import { IBadRequest, IUser } from '../../types/api';
+import { IBadRequest, IColumnParams, IUser } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+type Body = | IUser | IColumnParams
 type ReturnData = | IUser | IBadRequest
 
-export const putCommon = async (body: IUser, endpoint1 = '', endpoint2 = '') => {
+export const putCommon = async (body: Body, endpoint = '') => {
 	try {
 		const { data, status } = await HTTP.put<ReturnData>(
-			endpoint1 + endpoint2,
+			endpoint,
 			body,
 		);
 		return [data, status];
