@@ -25,7 +25,7 @@ export interface IBadRequest {
 }
 
 export interface IBoard {
-   _id: string;
+   _id?: string;
    title: string;
    owner: string;
    users: string[];
