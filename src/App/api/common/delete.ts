@@ -7,9 +7,9 @@ import HTTP from './http-common';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 type ReturnData = | IUser | IBoard
 
-export const deleteCommon = async (endpoint1 = '', endpoint2 = '') => {
+export const deleteCommon = async (endpoint = '') => {
 	try {
-		const { data, status } = await HTTP.delete<ReturnData>(endpoint1 + endpoint2);
+		const { data, status } = await HTTP.delete<ReturnData>(endpoint);
 		return [data, status];
 
 	} catch (error) {
