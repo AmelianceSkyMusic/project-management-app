@@ -23,3 +23,10 @@ export interface IBadRequest {
 	statusCode: string;
 	message: string;
 }
+
+export interface IBoard {
+   _id: string;
+   title: string;
+   owner: string;
+   users: string[];
+}

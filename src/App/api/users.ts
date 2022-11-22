@@ -1,5 +1,5 @@
-/* eslint-disable simple-import-sort/imports */
 import { IUser } from '~/App/types/api';
+
 import { deleteCommon } from './common/delete';
 import { getCommon } from './common/get';
 import { putCommon } from './common/put';
