@@ -1,11 +1,13 @@
 import { AxiosError } from 'axios';
 
-import { IBoard, IUser, IUserSignUpResponse } from '../../types/api';
+import {
+	IBoard, IColumn, IUser, IUserSignUpResponse,
+} from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-type ReturnData = | IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard
+type ReturnData = | IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard | IColumn
 
 export const getCommon = async (endpoint1 = '', endpoint2 = '') => {
 	try {
