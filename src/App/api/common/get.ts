@@ -9,9 +9,9 @@ import HTTP from './http-common';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 type ReturnData = | IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard | IColumn
 
-export const getCommon = async (endpoint1 = '', endpoint2 = '') => {
+export const getCommon = async (endpoint = '') => {
 	try {
-		const { data, status } = await HTTP.get<ReturnData>(endpoint1 + endpoint2);
+		const { data, status } = await HTTP.get<ReturnData>(endpoint);
 		return [data, status];
 
 	} catch (error) {
