@@ -42,3 +42,8 @@ export interface IColumnParams {
 	title: string;
 	order: number;
 }
+
+export interface IColumnOrder {
+	_id: string;
+	order: number;
+}
