@@ -47,3 +47,14 @@ export interface IColumnOrder {
 	_id: string;
 	order: number;
 }
+
+export interface ITasksInColumn {
+	_id: string;
+	title: string;
+   order: string;
+   boardId: string;
+   columnId: string;
+   description: string;
+   userId: string;
+   users: string[];
+}
