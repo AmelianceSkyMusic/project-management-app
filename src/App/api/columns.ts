@@ -1,4 +1,4 @@
-import { IColumnOrder, IColumnParams } from '../types/api';
+import { IColumn, IColumnOrder, IColumnParams } from '../types/api';
 import { deleteCommon } from './common/delete';
 import { getCommon } from './common/get';
 import { queryGenerator } from './common/helpers';
@@ -12,4 +12,5 @@ export const getColumnById = (boardId: string, columnId: string) => getCommon(`/
 export const updateColumnById = (body: IColumnParams, boardId: string, columnId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}`);
 export const deleteColumnById = (boardId: string, columnId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}`);
 export const getColumnsByIdsListOrUserId = (columnIdList = [''], userId = '') => getCommon(`columnsSet?${queryGenerator(columnIdList, userId)}`);
-export const updateSetOfColumns = (listOfNewParams: IColumnOrder) => patchCommon(listOfNewParams, '/columnSet');
+export const updateSetOfColumns = (body: IColumnOrder[]) => patchCommon(body, '/columnSet');
+export const createSetOfColumns = (body: IColumn) => postCommon(body, '/columnSet');
