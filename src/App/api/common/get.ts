@@ -8,7 +8,7 @@ import HTTP from './http-common';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 type ReturnData =
-	| IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard | IColumn | ITask[]
+	| IUser[] | IUser | IUserSignUpResponse | IBoard[] | IBoard | IColumn | ITask[] | ITask
 
 export const getCommon = async (endpoint = '') => {
 	try {
