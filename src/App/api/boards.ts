@@ -8,4 +8,5 @@ export const getAllBoards = () => getCommon('/boards');
 export const createBoard = (body: IBoard) => postCommon(body, '/boards');
 export const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`);
 export const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`);
-export const getBoardByIdList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`);
+export const getBoardsByIdList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`);
+export const getBoardsByUserId = (userId: string[]) => getCommon(`/boardsSet/${(userId)}`);
