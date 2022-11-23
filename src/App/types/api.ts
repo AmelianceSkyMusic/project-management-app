@@ -67,3 +67,8 @@ export interface IPointsList {
    boardId: string;
    done: boolean;
 }
+
+export interface IPointsStatus {
+	_id: string;
+   done: boolean;
+}
