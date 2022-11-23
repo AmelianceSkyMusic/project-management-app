@@ -1,6 +1,8 @@
 import { AxiosError } from 'axios';
 
-import { IBoard, IPoint, ITask, IUser } from '../../types/api';
+import {
+	IBoard, IPoint, ITask, IUser,
+} from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
