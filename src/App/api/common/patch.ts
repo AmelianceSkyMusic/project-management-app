@@ -7,8 +7,8 @@ import {
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type Body = | IColumnOrder[] | IPointsStatus[]
-type ReturnData = | IColumn[] | IBadRequest | ITask[] | IPointsList[]
+type Body = | IColumnOrder[] | IPointsStatus[] | IPointsStatus
+type ReturnData = | IColumn[] | IBadRequest | ITask[] | IPointsList[] | IColumn
 
 export const patchCommon = async (body: Body, endpoint: string) => {
 	try {
