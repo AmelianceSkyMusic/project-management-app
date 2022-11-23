@@ -2,13 +2,13 @@
 import { AxiosError } from 'axios';
 
 import {
-	IBadRequest, IColumn, IColumnOrder, IPointsStatus, ITask,
+	IBadRequest, IColumn, IColumnOrder, IPointsList, IPointsStatus, ITask,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 type Body = | IColumnOrder[] | IPointsStatus[]
-type ReturnData = | IColumn[] | IBadRequest | ITask[]
+type ReturnData = | IColumn[] | IBadRequest | ITask[] | IPointsList[]
 
 export const patchCommon = async (body: Body, endpoint: string) => {
 	try {
