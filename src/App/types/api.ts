@@ -47,7 +47,6 @@ export interface IColumnOrder {
 	_id: string;
 	order: number;
 	columnId?: string;
-
 }
 
 export interface ITask {
@@ -59,4 +58,12 @@ export interface ITask {
    description: string;
    userId: number;
    users: string[];
+}
+
+export interface IPointsList {
+	_id: string;
+   title: string;
+   taskId: string;
+   boardId: string;
+   done: boolean;
 }
