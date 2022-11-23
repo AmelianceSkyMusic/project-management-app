@@ -13,3 +13,4 @@ export const updateTasksById = (body: ITask, boardId: string, columnId: string, 
 export const deleteTasksById = (boardId: string, columnId: string, taskId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
 export const getTasksByIdsList = (listId: string[], userId: string, search: string) => getCommon(`/tasksSet?${queryGenerator(listId, userId, search)}`);
 export const updateSetOfTasks = (body: IColumnOrder[]) => patchCommon(body, '/tasksSet');
+export const getTasksByBoardId = (boardId: string) => getCommon(`/tasksSet/${boardId}`);
