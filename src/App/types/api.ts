@@ -61,7 +61,7 @@ export interface ITask {
 }
 
 export interface IPointsList {
-	_id: string;
+	_id?: string;
    title: string;
    taskId: string;
    boardId: string;

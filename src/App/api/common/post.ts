@@ -2,14 +2,14 @@
 import { AxiosError } from 'axios';
 
 import {
-	IBadRequest,
-	IBoard, IColumn, IColumnParams, ITask, IUser, IUserLogInResponse, IUserSignUpResponse,
+	IBadRequest, IBoard, IColumn, IColumnParams, IPointsList,
+	ITask, IUser, IUserLogInResponse, IUserSignUpResponse,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type Body = | IUser | IBoard | IColumnParams | IColumn[] | ITask
-type ReturnData = | IUserSignUpResponse | IUserLogInResponse | IBadRequest | IColumn[]
+type Body = | IUser | IBoard | IColumnParams | IColumn[] | ITask | IPointsList
+type ReturnData = | IUserSignUpResponse | IUserLogInResponse | IBadRequest | IColumn[] | IPointsList
 
 export const postCommon = async (body: Body, endpoint: string) => {
 	try {
