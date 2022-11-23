@@ -10,3 +10,4 @@ export const createPoint = (body: IPointsList) => postCommon(body, '/points');
 export const updateSetOfPoints = (body: IPointsStatus[]) => patchCommon(body, '/points');
 export const getPointsByTaskId = (taskId: string) => getCommon(`/points/${taskId}`);
 export const updatePoint = (body: IPointsStatus) => patchCommon(body, '/points');
+export const deletePointById = (pointId: string) => deleteCommon(`/points/${pointId}`);
