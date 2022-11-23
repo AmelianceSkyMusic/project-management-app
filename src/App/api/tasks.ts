@@ -1,7 +1,8 @@
-import { ITask } from '../types/api';
+import { IColumnOrder, ITask } from '../types/api';
 import { deleteCommon } from './common/delete';
 import { getCommon } from './common/get';
 import { queryGenerator } from './common/helpers';
+import { patchCommon } from './common/patch';
 import { postCommon } from './common/post';
 import { putCommon } from './common/put';
 
@@ -11,3 +12,4 @@ export const getTasksById = (boardId: string, columnId: string, taskId: string) 
 export const updateTasksById = (body: ITask, boardId: string, columnId: string, taskId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
 export const deleteTasksById = (boardId: string, columnId: string, taskId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
 export const getTasksByIdsList = (listId: string[], userId: string, search: string) => getCommon(`/tasksSet?${queryGenerator(listId, userId, search)}`);
+export const updateSetOfTasks = (body: IColumnOrder[]) => patchCommon(body, '/tasksSet');

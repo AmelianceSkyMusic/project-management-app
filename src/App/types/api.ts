@@ -46,6 +46,8 @@ export interface IColumnParams {
 export interface IColumnOrder {
 	_id: string;
 	order: number;
+	columnId?: string;
+
 }
 
 export interface ITask {
