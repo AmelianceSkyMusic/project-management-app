@@ -1,11 +1,11 @@
 import { AxiosError } from 'axios';
 
-import { IBoard, IUser } from '../../types/api';
+import { IBoard, ITask, IUser } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-type ReturnData = | IUser | IBoard
+type ReturnData = | IUser | IBoard | ITask
 
 export const deleteCommon = async (endpoint = '') => {
 	try {

@@ -11,6 +11,6 @@ export const createColumn = (body: IColumnParams, boardId: string) => postCommon
 export const getColumnById = (boardId: string, columnId: string) => getCommon(`/boards/${boardId}/columns/${columnId}`);
 export const updateColumnById = (body: IColumnParams, boardId: string, columnId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}`);
 export const deleteColumnById = (boardId: string, columnId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}`);
-export const getColumnsByIdsListOrUserId = (columnIdList = [''], userId = '') => getCommon(`columnsSet?${queryGenerator(columnIdList, userId)}`);
+export const getColumnsByIdsListOrUserId = (columnIdList = [''], userId = '') => getCommon(`/columnsSet?${queryGenerator(columnIdList, userId)}`);
 export const updateSetOfColumns = (body: IColumnOrder[]) => patchCommon(body, '/columnSet');
 export const createSetOfColumns = (body: IColumn) => postCommon(body, '/columnSet');
