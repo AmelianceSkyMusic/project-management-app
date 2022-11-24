@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from '~components/Layout';
-import { Board } from '~pages/Board';
+import { Board } from '~pages/Board/Board';
 import { LogIn } from '~pages/LogIn';
 import { Main } from '~pages/Main';
 import { NotFound } from '~pages/NotFound';
