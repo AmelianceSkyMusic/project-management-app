@@ -5,10 +5,12 @@ import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 import { boardList } from '~components/_tempBD/boardList._temp';
+import { boardArr } from '~components/_tempBD/boards._temp';
 import { ItemList } from '~components/ItemList';
 import { PopoverMenu } from '~components/PopoverMenu';
 
 export function BoardPage() {
+	const [taskList, setTaskList] = useState(boardList);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const goBack = () => navigate(-1);
@@ -28,6 +30,7 @@ export function BoardPage() {
 	const handleMenuClose = () => {
 		setAnchorEl(null);
 	};
+	const boardTitle = boardArr[boardArr.findIndex((el) => el.id === id)].title;
 	return (
 		<>
 			<h2>
@@ -36,7 +39,7 @@ export function BoardPage() {
 				</IconButton>
 				Board
 				{' '}
-				{id}
+				{boardTitle}
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
 					more_vert
 				</IconButton>
@@ -51,9 +54,9 @@ export function BoardPage() {
 				/>
 			</h2>
 			<Grid2 container spacing={2}>
-				{boardList.map((item) => (
-					<Grid2 key={item.listId}>
-						<ItemList listTitle={item.listTitle} list={item.list} />
+				{taskList.map((item) => (
+					<Grid2 key={item.id}>
+						<ItemList title={item.title} list={item.list} />
 					</Grid2>
 				))}
 			</Grid2>

@@ -6,17 +6,11 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
 import { PopoverMenu } from '~components/PopoverMenu';
+import { IItemList } from '~types/boardInterfaces';
 
-interface ITasksList {
-	taskId: number;
-	taskTitle: string;
-	taskBody: string;
-}
-interface IItemList {
-	listTitle: string;
-	list: ITasksList[];
-}
-export function ItemList({ listTitle, list }: IItemList) {
+import { Item } from './Item';
+
+export function ItemList({ title, list }: IItemList) {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -49,7 +43,7 @@ export function ItemList({ listTitle, list }: IItemList) {
 						more_vert
 					</IconButton>
 				)}
-				title={listTitle}
+				title={title}
 			/>
 			<PopoverMenu
 				anchorEl={anchorEl}
@@ -65,15 +59,7 @@ export function ItemList({ listTitle, list }: IItemList) {
 			}}
 			>
 				{list.map((item) => (
-					<Card
-						key={item.taskId}
-						sx={{
-							background: 'rgba(255, 255, 255, 0.3)', borderRadius: '32px', border: '1px solid #FFFFFF', padding: '4px 8px',
-						}}
-					>
-						<CardHeader title={item.taskTitle} />
-						<CardContent>{item.taskBody}</CardContent>
-					</Card>
+					<Item key={item.id} id={item.id} title={item.title} description={item.description} />
 				))}
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleAddClick}>
 					add

@@ -7,11 +7,8 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
 import { PopoverMenu } from '~components/PopoverMenu';
+import { IBoardCardProps } from '~types/boardInterfaces';
 
-interface IBoardCardProps {
-  title: string;
-  description: string;
-}
 export function BoardCard({ title, description }: IBoardCardProps) {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
