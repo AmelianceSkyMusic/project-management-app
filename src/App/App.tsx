@@ -1,3 +1,5 @@
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Route, Routes } from 'react-router-dom';
 
 import { Layout } from '~components/Layout';
@@ -11,17 +13,19 @@ import { ThemedComponentWrapper } from '~styles/themeMode/ThemedComponentWrapper
 
 export function App() {
 	return (
-		<ThemedComponentWrapper>
-			<Routes>
-				<Route path="/" element={<Layout />}>
-					<Route index element={<Main />} />
-					<Route path="board" element={<Board />} />
-					<Route path="board/:id" element={<BoardPage />} />
-					<Route path="login" element={<LogIn />} />
-					<Route path="signup" element={<SignUp />} />
-					<Route path="*" element={<NotFound />} />
-				</Route>
-			</Routes>
-		</ThemedComponentWrapper>
+		<DndProvider backend={HTML5Backend}>
+			<ThemedComponentWrapper>
+				<Routes>
+					<Route path="/" element={<Layout />}>
+						<Route index element={<Main />} />
+						<Route path="board" element={<Board />} />
+						<Route path="board/:id" element={<BoardPage />} />
+						<Route path="login" element={<LogIn />} />
+						<Route path="signup" element={<SignUp />} />
+						<Route path="*" element={<NotFound />} />
+					</Route>
+				</Routes>
+			</ThemedComponentWrapper>
+		</DndProvider>
 	);
 }

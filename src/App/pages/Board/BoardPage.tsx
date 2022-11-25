@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
-import { boardList } from '~components/_tempBD/boardList._temp';
+import { boardColumnList } from '~components/_tempBD/boardList._temp';
 import { boardArr } from '~components/_tempBD/boards._temp';
 import { ItemList } from '~components/ItemList';
 import { PopoverMenu } from '~components/PopoverMenu';
 
 export function BoardPage() {
-	const [taskList, setTaskList] = useState(boardList);
+	const [columnList, setColumnList] = useState(boardColumnList);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const goBack = () => navigate(-1);
@@ -54,9 +54,9 @@ export function BoardPage() {
 				/>
 			</h2>
 			<Grid2 container spacing={2}>
-				{taskList.map((item) => (
+				{columnList.map((item) => (
 					<Grid2 key={item.id}>
-						<ItemList title={item.title} list={item.list} />
+						<ItemList title={item.title} id={item.id} />
 					</Grid2>
 				))}
 			</Grid2>
