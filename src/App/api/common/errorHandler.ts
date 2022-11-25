@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 import { AxiosError } from 'axios';
 
-// eslint-disable-next-line consistent-return
-export const errorHandler = (error: AxiosError): number | unknown => {
+export const errorHandler = (error: AxiosError): number | null => {
 	if (error.response) {
 		console.log(error.response.data);
 		console.log(error.response.status);
@@ -10,9 +9,10 @@ export const errorHandler = (error: AxiosError): number | unknown => {
 		return error.response.status;
 	} if (error.request) {
 		console.log(error.request);
-		return error.request;
 	}
 	console.log('Error', error.message);
 
 	console.log(error.config);
+
+	return null;
 };

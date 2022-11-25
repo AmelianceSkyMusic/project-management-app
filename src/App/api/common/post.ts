@@ -3,13 +3,14 @@ import { AxiosError } from 'axios';
 
 import {
 	IBadRequest, IBoard, IColumn, IColumnParams, IPointsList,
-	ITask, IUser, IUserLogInResponse, IUserSignUpResponse,
+	ITask, IUser,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
 type Body = | IUser | IBoard | IColumnParams | IColumn[] | ITask | IPointsList
-type ReturnData = | IUserSignUpResponse | IUserLogInResponse | IBadRequest | IColumn[] | IPointsList
+type ReturnData = | IBadRequest | IColumn[]
+| IPointsList | IUser
 
 export const postCommon = async (body: Body, endpoint: string) => {
 	try {
@@ -17,10 +18,10 @@ export const postCommon = async (body: Body, endpoint: string) => {
 			endpoint,
 			body,
 		);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
-		errorHandler(error as AxiosError);
-		return null;
+		const status = errorHandler(error as AxiosError);
+		return { data: null, status };
 	}
 };

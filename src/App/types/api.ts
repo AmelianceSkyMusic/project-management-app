@@ -1,22 +1,9 @@
 export interface IUser {
+	token?: string;
 	_id?: string;
 	name?: string;
 	login: string;
 	password: string;
-}
-
-export interface IUserSignUpResponse {
-	token?: string;
-	statusCode?: string;
-	message?: string;
-}
-
-export interface IUserLogInResponse {
-	_id: string;
-	name: string;
-	login: string;
-	statusCode: number;
-	message: string;
 }
 
 export interface IBadRequest {
