@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { AxiosError } from 'axios';
 
 import {
@@ -8,13 +7,13 @@ import {
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type Body = | IUser | IBoard | IColumnParams | IColumn[] | ITask | IPointsList
-type ReturnData = | IBadRequest | IColumn[]
+type TBody = | IUser | IBoard | IColumnParams | IColumn[] | ITask | IPointsList
+type TReturnData = | IBadRequest | IColumn[]
 | IPointsList | IUser
 
-export const postCommon = async (body: Body, endpoint: string) => {
+export const postCommon = async (body: TBody, endpoint: string) => {
 	try {
-		const { data, status } = await HTTP.post<ReturnData>(
+		const { data, status } = await HTTP.post<TReturnData>(
 			endpoint,
 			body,
 		);

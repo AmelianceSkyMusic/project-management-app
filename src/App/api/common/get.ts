@@ -6,18 +6,17 @@ import {
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type ReturnData =
+type TReturnData =
 	| IUser[] | IUser | IBoard[] | IBoard | IColumn | ITask[] | ITask
 	| IPointsList[]
 
 export const getCommon = async (endpoint = '') => {
 	try {
-		const { data, status } = await HTTP.get<ReturnData>(endpoint);
+		const { data, status } = await HTTP.get<TReturnData>(endpoint);
 		return [data, status];
 
 	} catch (error) {
-		errorHandler(error as AxiosError);
-		return null;
+		const status = errorHandler(error as AxiosError);
+		return { data: null, status };
 	}
 };
