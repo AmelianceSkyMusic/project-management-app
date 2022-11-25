@@ -67,3 +67,7 @@ export interface IPoint {
 	boardId: string;
 	path: string;
 }
+
+export interface IQueryData {
+	[key: string]: string;
+}
