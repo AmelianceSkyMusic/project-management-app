@@ -14,7 +14,7 @@ export const deleteCommon = async (endpoint = '') => {
 		return [data, status];
 
 	} catch (error) {
-		errorHandler(error as AxiosError);
-		return null;
+		const status = errorHandler(error as AxiosError);
+		return { data: null, status };
 	}
 };

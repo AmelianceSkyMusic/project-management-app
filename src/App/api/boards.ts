@@ -4,9 +4,25 @@ import { getCommon } from './common/get';
 import { arrToStr } from './common/helpers';
 import { postCommon } from './common/post';
 
-export const getAllBoards = () => getCommon('/boards');
-export const createBoard = (body: IBoard) => postCommon(body, '/boards');
-export const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`);
-export const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`);
-export const getBoardsByIdList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`);
-export const getBoardsByUserId = (userId: string[]) => getCommon(`/boardsSet/${(userId)}`);
+type TAllBoards = Promise<{
+   data: IBoard[] ;
+   status: number;
+} | {
+   data: null;
+   status: number | null;
+}>
+
+type TBoard = Promise<{
+   data: IBoard[] ;
+   status: number;
+} | {
+   data: null;
+   status: number | null;
+}>
+
+export const getAllBoards = () => getCommon('/boards') as TAllBoards;
+export const createBoard = (body: IBoard) => postCommon(body, '/boards') as TBoard;
+export const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`) as TBoard;
+export const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`) as TBoard;
+export const getBoardsByIdList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`) as TAllBoards;
+export const getBoardsByUserId = (userId: string[]) => getCommon(`/boardsSet/${(userId)}`) as TAllBoards;
