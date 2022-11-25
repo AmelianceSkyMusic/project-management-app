@@ -6,7 +6,7 @@ import { postCommon } from './common/post';
 import { putCommon } from './common/put';
 
 type TAllBoards = Promise<{
-   data: IBoard[] ;
+   data: IBoard[];
    status: number;
 } | {
    data: null;
@@ -14,7 +14,7 @@ type TAllBoards = Promise<{
 }>
 
 type TBoard = Promise<{
-   data: IBoard[] ;
+   data: IBoard;
    status: number;
 } | {
    data: null;
