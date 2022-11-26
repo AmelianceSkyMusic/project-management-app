@@ -8,12 +8,8 @@ import {
 } from '@mui/material';
 
 import asm from '~/asmlib/asm-scripts';
-
-interface ISinginInputs {
-	name: string;
-	email: string;
-	password: string;
-}
+import { createUser, loginUser } from '~api/auth';
+import { IUser } from '~types/api';
 
 export function SignUp() {
 
@@ -22,11 +18,11 @@ export function SignUp() {
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<ISinginInputs>({
+	} = useForm<IUser>({
 		mode: 'onSubmit',
 		defaultValues: {
 			name: '',
-			email: '',
+			login: '',
 			password: '',
 		},
 	});
@@ -39,7 +35,7 @@ export function SignUp() {
 			minLength: { value: 1, message: 'Мінімальна довжина поля 1 символ!' },
 			pattern: { value: /^[A-Za-z]+$/i, message: 'Будь ласка, використовуйте тільки латинські літери!' },
 		}),
-		email: register('email', {
+		login: register('login', {
 			required: 'Поле таке пусте! Введіть більше символів!',
 			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: 'Невірно введена адреса електронної пошти!' },
 		}),
@@ -50,8 +46,14 @@ export function SignUp() {
 		}),
 	};
 
-	const onSubmit: SubmitHandler<ISinginInputs> = ({ name, email, password }: ISinginInputs) => {
-		console.log(name, email, password);
+	const onSubmit: SubmitHandler<IUser> = async ({ name, login, password }: IUser) => {
+		const response = await createUser({ name, login, password });
+		// eslint-disable-next-line no-underscore-dangle
+		if (response.status === 200) {
+			const responseLogin = await loginUser({ login, password });
+			// eslint-disable-next-line no-underscore-dangle
+			if (response.status === 200) localStorage.setItem('token', `${responseLogin.data?.token}`);
+		}
 		reset();
 	};
 
@@ -89,12 +91,12 @@ export function SignUp() {
 					</Box>
 
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="singin-email">Адреса електронної пошти:</InputLabel>
+						<InputLabel required htmlFor="singin-login">Адреса електронної пошти:</InputLabel>
 						<TextField
-							{...registers.email}
-							error={!!(errors && errors.email?.message)}
-							helperText={errors.email?.message || ' '}
-							id="singin-email"
+							{...registers.login}
+							error={!!(errors && errors.login?.message)}
+							helperText={errors.login?.message || ' '}
+							id="singin-login"
 							placeholder="Адреса електронної пошти"
 						/>
 					</Box>
