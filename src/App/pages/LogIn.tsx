@@ -43,7 +43,6 @@ export function LogIn() {
 
 	const onSubmit: SubmitHandler<IUser> = async ({ login, password }: IUser) => {
 		const response = await loginUser({ login, password });
-		// eslint-disable-next-line no-underscore-dangle
 		if (response.status === 200) localStorage.setItem('token', `${response.data?.token}`);
 		console.log(response);
 

@@ -48,10 +48,8 @@ export function SignUp() {
 
 	const onSubmit: SubmitHandler<IUser> = async ({ name, login, password }: IUser) => {
 		const response = await createUser({ name, login, password });
-		// eslint-disable-next-line no-underscore-dangle
 		if (response.status === 200) {
 			const responseLogin = await loginUser({ login, password });
-			// eslint-disable-next-line no-underscore-dangle
 			if (response.status === 200) localStorage.setItem('token', `${responseLogin.data?.token}`);
 		}
 		reset();
