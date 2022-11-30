@@ -6,11 +6,11 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 
 import { boardColumnList } from '~components/_tempBD/boardList._temp';
 import { boardArr } from '~components/_tempBD/boards._temp';
-import { ItemList } from '~components/ItemList';
 import { PopoverMenu } from '~components/PopoverMenu';
+import { TaskList } from '~components/TasksList';
 
-export function BoardPage() {
-	const [columnList, setColumnList] = useState(boardColumnList);
+export function Columns() {
+	const [columnList] = useState(boardColumnList);
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const goBack = () => navigate(-1);
@@ -54,9 +54,9 @@ export function BoardPage() {
 				/>
 			</h2>
 			<Grid2 container spacing={2}>
-				{columnList.map((item) => (
-					<Grid2 key={item.id}>
-						<ItemList title={item.title} id={item.id} />
+				{columnList.map((task) => (
+					<Grid2 key={task.id}>
+						<TaskList title={task.title} id={task.id} />
 					</Grid2>
 				))}
 			</Grid2>

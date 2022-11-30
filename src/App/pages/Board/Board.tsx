@@ -8,7 +8,7 @@ import { boardArr } from '~components/_tempBD/boards._temp';
 import { BoardCard } from '~pages/Board/BoardCard';
 
 export function Board() {
-	const [boards, setBoards] = useState(boardArr);
+	const [boards] = useState(boardArr);
 	return (
 		<>
 			<h1>Board</h1>

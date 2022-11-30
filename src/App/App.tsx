@@ -2,9 +2,9 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Route, Routes } from 'react-router-dom';
 
+import { Columns } from '~components/Columns';
 import { Layout } from '~components/Layout';
 import { Board } from '~pages/Board/Board';
-import { BoardPage } from '~pages/Board/BoardPage';
 import { LogIn } from '~pages/LogIn';
 import { Main } from '~pages/Main';
 import { NotFound } from '~pages/NotFound';
@@ -19,7 +19,7 @@ export function App() {
 					<Route path="/" element={<Layout />}>
 						<Route index element={<Main />} />
 						<Route path="board" element={<Board />} />
-						<Route path="board/:id" element={<BoardPage />} />
+						<Route path="board/:id" element={<Columns />} />
 						<Route path="login" element={<LogIn />} />
 						<Route path="signup" element={<SignUp />} />
 						<Route path="*" element={<NotFound />} />

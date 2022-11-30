@@ -1,37 +1,37 @@
-import { Dispatch, SetStateAction } from 'react';
+// import { Dispatch, SetStateAction } from 'react';
 
 export interface IBoardCardProps {
 	title: string;
 	description: string;
  }
-export interface IItemList {
+export interface IColumn {
 	title: string;
 	id: string;
 }
-export interface ITasksList {
-	id: string;
+export interface ITask {
+	taskId: string;
 	columnId: string;
 	title: string;
 	description: string;
 }
-export interface ITasksProps extends ITasksList {
+export interface ITaskProps extends ITask {
 	index: number;
-	currentColumnId: string;
-	setItemsList: Dispatch<SetStateAction<ITasksList[]>>;
 	moveCardHandler: (dragIndex: number, hoverIndex: number) => void;
+	changeTaskColumn: (currentId: string, resColumnId: string) => void;
 }
-export interface IDropItem {
+
+export interface IDropTask {
 	index: number;
 	columnId: string;
-	// currentColumnId: string;
+	taskId: string;
 	type: string;
 }
 export interface IDropResult {
-	columnId: string;
+	id: string;
 }
 
-export interface IDragItem {
-	index: number;
+export interface IDragTask {
+	taskId: string;
 }
 
 export interface ICollectedProps {
