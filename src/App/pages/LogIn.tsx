@@ -9,11 +9,8 @@ import {
 } from '@mui/material';
 
 import asm from '~/asmlib/asm-scripts';
-
-interface ILoginInputs {
-	email: string;
-	password: string;
-}
+import { loginUser } from '~api/auth';
+import { IUser } from '~types/api';
 
 export function LogIn() {
 
@@ -22,10 +19,10 @@ export function LogIn() {
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<ILoginInputs>({
+	} = useForm<IUser>({
 		mode: 'onSubmit',
 		defaultValues: {
-			email: '',
+			login: '',
 			password: '',
 		},
 	});
@@ -33,7 +30,7 @@ export function LogIn() {
 	const isValidFixed = asm.isObjectEmpty(errors);//* fix isValid default has false
 
 	const registers = {
-		email: register('email', {
+		login: register('login', {
 			required: 'Поле таке пусте! Введіть більше символів!',
 			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: 'Невірно введена адреса електронної пошти!' },
 		}),
@@ -44,8 +41,11 @@ export function LogIn() {
 		}),
 	};
 
-	const onSubmit: SubmitHandler<ILoginInputs> = ({ email, password }: ILoginInputs) => {
-		console.log(email, password);
+	const onSubmit: SubmitHandler<IUser> = async ({ login, password }: IUser) => {
+		const response = await loginUser({ login, password });
+		if (response.status === 200) localStorage.setItem('token', `${response.data?.token}`);
+		console.log(response);
+
 		reset();
 	};
 
@@ -77,12 +77,12 @@ export function LogIn() {
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="login-email">Адреса електронної пошти:</InputLabel>
+						<InputLabel required htmlFor="login-login">Адреса електронної пошти:</InputLabel>
 						<TextField
-							{...registers.email}
-							error={!!(errors && errors.email?.message)}
-							helperText={errors.email?.message || ' '}
-							id="login-email"
+							{...registers.login}
+							error={!!(errors && errors.login?.message)}
+							helperText={errors.login?.message || ' '}
+							id="login-login"
 							placeholder="Адреса електронної пошти"
 						/>
 					</Box>
