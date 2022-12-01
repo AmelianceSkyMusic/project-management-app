@@ -38,6 +38,7 @@ export function Task({
 				return;
 			}
 			moveCardHandler(dragIndex, hoverIndex);
+			// eslint-disable-next-line no-param-reassign
 			item.index = hoverIndex;
 		},
 	});

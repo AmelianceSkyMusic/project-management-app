@@ -7,12 +7,12 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
 import { PopoverMenu } from '~components/PopoverMenu';
-import { IColumn, ITask } from '~types/boardInterfaces';
+import { ITask, ITaskListProps } from '~types/boardInterfaces';
 
 import { tasksListDB } from './_tempBD/tasksList._temp';
 import { Task } from './Task';
 
-export function TaskList({ title, id }: IColumn) {
+export function TaskList({ title, id }: ITaskListProps) {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [allTasks, setAllTasks] = useState<ITask[]>(tasksListDB);
 	const [columnTasksList, setColumnTasksList] = useState<ITask[]>([

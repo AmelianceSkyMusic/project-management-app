@@ -13,7 +13,7 @@ type TReturnData =
 export const getCommon = async (endpoint = '') => {
 	try {
 		const { data, status } = await HTTP.get<TReturnData>(endpoint);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		const status = errorHandler(error as AxiosError);

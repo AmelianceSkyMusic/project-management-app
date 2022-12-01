@@ -1,15 +1,19 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import { Typography } from '@mui/material';
+import { Link } from '@mui/material';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
 import { PopoverMenu } from '~components/PopoverMenu';
 import { IBoardCardProps } from '~types/boardInterfaces';
 
-export function BoardCard({ title, description }: IBoardCardProps) {
+import { BoardModalWindow } from './BoardModalWindow';
+
+export function BoardCard({ title, id }: IBoardCardProps) {
+	const [isOpen, setIsOpen] = useState(false);
+	const handleClose = () => setIsOpen(false);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -19,7 +23,7 @@ export function BoardCard({ title, description }: IBoardCardProps) {
 		event.preventDefault();
 	};
 	const handleChangeClick = () => {
-		// console.log('Change');
+		setIsOpen(true);
 		setAnchorEl(null);
 	};
 	const handleDeleteClick = () => {
@@ -31,31 +35,43 @@ export function BoardCard({ title, description }: IBoardCardProps) {
 	};
 
 	return (
-		<Card sx={{
-			width: '300px', height: '150px', background: 'transparent', borderRadius: '32px', border: '1px solid black', padding: '4px 8px',
-		}}
-		>
-			<CardHeader
-				action={(
-					<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
-						more_vert
-					</IconButton>
-				)}
-				title={title}
+		<>
+			<BoardModalWindow
+				isOpen={isOpen}
+				handleClose={handleClose}
+				currentTitle={title}
+				currentId={id}
 			/>
-			<PopoverMenu
-				anchorEl={anchorEl}
-				menuItems={[
-					['Change', handleChangeClick],
-					['Delete', handleDeleteClick],
-				]}
-				open={!!anchorEl}
-				onClose={handleMenuClose}
-				onClick={(e) => handlePopoverMenuClick(e)}
-			/>
-			<CardContent sx={{ padding: '8px', height: '100px' }}>
-				<Typography variant="body2">{description}</Typography>
-			</CardContent>
-		</Card>
+			<Link
+				component={NavLink}
+				to={`/board/${id}`}
+				underline="none"
+			>
+				<Card sx={{
+					width: '300px', height: '150px', background: 'transparent', borderRadius: '32px', border: '1px solid black', padding: '4px 8px',
+				}}
+				>
+					<CardHeader
+						action={(
+							<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
+								more_vert
+							</IconButton>
+						)}
+						title={title}
+					/>
+					<PopoverMenu
+						anchorEl={anchorEl}
+						menuItems={[
+							['Change', handleChangeClick],
+							['Delete', handleDeleteClick],
+						]}
+						open={!!anchorEl}
+						onClose={handleMenuClose}
+						onClick={(e) => handlePopoverMenuClick(e)}
+					/>
+
+				</Card>
+			</Link>
+		</>
 	);
 }

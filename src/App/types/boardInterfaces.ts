@@ -2,11 +2,17 @@
 
 export interface IBoardCardProps {
 	title: string;
-	description: string;
- }
-export interface IColumn {
+	id: string | undefined;
+}
+export interface IBoardModalWindowProps {
+	isOpen: boolean;
+	handleClose: () => void;
+	currentTitle?: string;
+	currentId?: string;
+}
+export interface ITaskListProps {
 	title: string;
-	id: string;
+	id: string | undefined;
 }
 export interface ITask {
 	taskId: string;

@@ -15,7 +15,7 @@ export const putCommon = async (body: TBody, endpoint = '') => {
 			endpoint,
 			body,
 		);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		const status = errorHandler(error as AxiosError);

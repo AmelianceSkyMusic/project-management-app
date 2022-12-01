@@ -11,7 +11,7 @@ type TReturnData = | IUser | IBoard | ITask | IPoint
 export const deleteCommon = async (endpoint = '') => {
 	try {
 		const { data, status } = await HTTP.delete<TReturnData>(endpoint);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		const status = errorHandler(error as AxiosError);

@@ -15,7 +15,7 @@ export const patchCommon = async (body: TBody, endpoint: string) => {
 			endpoint,
 			body,
 		);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		const status = errorHandler(error as AxiosError);
