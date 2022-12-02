@@ -2,7 +2,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Route, Routes } from 'react-router-dom';
 
-import { Columns } from '~components/Columns';
+import { Columns } from '~components/Columns/Columns';
 import { Layout } from '~components/Layout';
 import { Board } from '~pages/Board/Board';
 import { LogIn } from '~pages/LogIn';

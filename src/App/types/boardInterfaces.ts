@@ -12,6 +12,15 @@ export interface IBoardModalWindowProps {
 	currentTitle: string;
 	currentId: string;
 }
+export interface IColumnModalWindowProps {
+	isOpen: boolean;
+	handleClose: () => void;
+	currentTitle: string;
+	currentId: string;
+	currentBoardId: string;
+	currentOrder: number;
+
+}
 export interface ITaskListProps {
 	title: string;
 	id: string;

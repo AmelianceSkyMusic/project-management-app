@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
 
-import { Box, LinearProgress } from '@mui/material';
+import { Box, LinearProgress, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
@@ -32,7 +32,7 @@ export function Board() {
 	};
 	return (
 		<>
-			<h1>Boards</h1>
+			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>Boards</Typography>
 			<Button onClick={handleOpen}>Add board</Button>
 			{isLoading && (
 				<Box sx={{ width: '100%' }}>

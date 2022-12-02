@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
-	Box, IconButton, LinearProgress, Typography,
+	Box, Button, IconButton, LinearProgress, Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
@@ -14,12 +14,13 @@ import { TaskList } from '~components/TasksList';
 import { BoardModalWindow } from '~pages/Board/BoardModalWindow';
 import { IColumn } from '~types/api';
 
+import { ColumnsModalWindow } from './ColumnsModal';
+
 export function Columns() {
 	const [columnList, setColumnList] = useState<IColumn[] | null>([]);
 	const [boardTitle, setBoardTitle] = useState<string>('');
 	const [isLoading, setIsLoading] = useState(true);
-	const [isOpen, setIsOpen] = useState(false);
-	const handleClose = () => setIsOpen(false);
+
 	const { id } = useParams<string>();
 	const navigate = useNavigate();
 	const goBack = () => navigate(-1);
@@ -37,7 +38,13 @@ export function Columns() {
 		getApi();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
+	const [isOpen, setIsOpen] = useState(false);
+	const handleOpen = () => setIsOpen(true);
+	const handleClose = () => {
+		setIsOpen(false);
+		setIsLoading(true);
+		getApi();
+	};
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -85,6 +92,8 @@ export function Columns() {
 				open={!!anchorEl}
 				onClose={handleMenuClose}
 			/>
+			<Button onClick={handleOpen}>Add column</Button>
+			<ColumnsModalWindow isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
 			{isLoading && (
 				<Box sx={{ width: '100%' }}>
 					<LinearProgress />

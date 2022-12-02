@@ -1,11 +1,12 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+import {
+	Card, CardContent, CardHeader, IconButton,
+} from '@mui/material';
 import { XYCoord } from 'dnd-core';
 
+import { PopoverMenu } from '~components/PopoverMenu';
 import {
 	ICollectedProps, IDragTask, IDropResult, IDropTask, ITaskProps,
 } from '~types/boardInterfaces';
@@ -61,6 +62,19 @@ export function Task({
 	}));
 
 	drag(drop(ref));
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleChangeClick = () => {
+		setAnchorEl(null);
+	};
+	const handleDeleteClick = async () => {
+		setAnchorEl(null);
+	};
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+	};
 	return (
 		<Card
 			sx={{
@@ -68,7 +82,25 @@ export function Task({
 			}}
 			ref={ref}
 		>
-			<CardHeader title={`${taskId} ${title}`} sx={{ padding: '8px', fontSize: 18 }} disableTypography />
+			<CardHeader
+				title={`${title}`}
+				sx={{ padding: '8px', fontSize: 18 }}
+				disableTypography
+				action={(
+					<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
+						more_vert
+					</IconButton>
+				)}
+			/>
+			<PopoverMenu
+				anchorEl={anchorEl}
+				menuItems={[
+					['Change', handleChangeClick],
+					['Delete', handleDeleteClick],
+				]}
+				open={!!anchorEl}
+				onClose={handleMenuClose}
+			/>
 			<CardContent sx={{ height: '100px', padding: '8px', fontSize: 14 }}>{description}</CardContent>
 		</Card>
 	);
