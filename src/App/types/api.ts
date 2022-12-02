@@ -11,15 +11,17 @@ export interface IBadRequest {
 	message: string;
 }
 
-export interface IBoard {
-   _id?: string;
+export interface IPostBoard {
    title: string;
    owner: string;
    users: string[];
 }
+export interface IBoard extends IPostBoard {
+   _id: string;
+}
 
 export interface IColumn {
-   _id?: string;
+   _id: string;
    title: string;
    order: number;
    boardId: string;

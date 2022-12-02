@@ -2,12 +2,12 @@ import { AxiosError } from 'axios';
 
 import {
 	IBadRequest, IBoard, IColumn, IColumnParams, IPointsList,
-	ITask, IUser,
+	IPostBoard, 	ITask, IUser,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type TBody = | IUser | IBoard | IColumnParams | IColumn[] | ITask | IPointsList
+type TBody = | IUser | IBoard | IPostBoard | IColumnParams | IColumn[] | ITask | IPointsList
 type TReturnData = | IBadRequest | IColumn[]
 | IPointsList | IUser
 

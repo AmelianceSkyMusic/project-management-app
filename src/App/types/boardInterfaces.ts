@@ -1,18 +1,20 @@
-// import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface IBoardCardProps {
 	title: string;
-	id: string | undefined;
+	id: string;
+	setIsLoading: Dispatch<SetStateAction<boolean>>;
+	getBoards: () => void;
 }
 export interface IBoardModalWindowProps {
 	isOpen: boolean;
 	handleClose: () => void;
-	currentTitle?: string;
-	currentId?: string;
+	currentTitle: string;
+	currentId: string;
 }
 export interface ITaskListProps {
 	title: string;
-	id: string | undefined;
+	id: string;
 }
 export interface ITask {
 	taskId: string;

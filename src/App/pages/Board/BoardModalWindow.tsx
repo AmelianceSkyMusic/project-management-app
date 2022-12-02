@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 
 import { createBoard, updateBoardById } from '~api/boards';
-import { IBoard } from '~types/api';
+import { IPostBoard } from '~types/api';
 import { IBoardModalWindowProps } from '~types/boardInterfaces';
 
 const style = {
@@ -29,10 +29,10 @@ export function BoardModalWindow({
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<IBoard>({
+	} = useForm<IPostBoard>({
 		mode: 'onSubmit',
 		defaultValues: {
-			title: '',
+			title: currentTitle === '' ? '' : currentTitle,
 		},
 	});
 	const registers = {
@@ -41,28 +41,28 @@ export function BoardModalWindow({
 			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
 		}),
 	};
-	const onSubmit: SubmitHandler<IBoard> = async ({ title }: IBoard) => {
-		if (currentTitle === 'undefined') {
-			const body: IBoard = {
+	const onSubmit: SubmitHandler<IPostBoard> = async ({ title }: IPostBoard) => {
+		if (currentTitle === '') {
+			const body: IPostBoard = {
+				title,
+				owner: '6387bf68b335c21a49214342', // ---------------------User ID
+				users: [
+					'63872dd4b335c21a49214323', // -------------------------FIX users
+				],
+			};
+			await createBoard(body);
+			handleClose();
+		} else if (currentTitle !== '') {
+			const body: IPostBoard = {
 				title,
 				owner: '6387bf68b335c21a49214342', // ---------------------get User
 				users: [
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			const resp = await createBoard(body);
-			if (resp.status === 200) console.log(resp);
+			await updateBoardById(body, currentId);
+			handleClose();
 		}
-		// else {
-		// 	const body: IBoard = {
-		// 		title: currentTitle,
-		// 		owner: '6387bf68b335c21a49214342', // ---------------------get User
-		// 		users: [
-		// 			'63872dd4b335c21a49214323', // -------------------------FIX users
-		// 		],
-		// 	};
-		// 	await updateBoardById(body, currentId);
-		// }
 		reset();
 	};
 	return (
@@ -85,8 +85,8 @@ export function BoardModalWindow({
 							error={!!(errors && errors.title?.message)}
 							helperText={errors.title?.message || ' '}
 							id="board-title"
-							placeholder="Назва дошки"
-							defaultValue={currentTitle}
+							placeholder={currentTitle === '' ? 'Назва дошки' : currentTitle}
+							defaultValue={currentTitle === '' ? '' : currentTitle}
 						/>
 					</Box>
 					<Button
@@ -94,9 +94,8 @@ export function BoardModalWindow({
 						variant="contained"
 						size="large"
 						sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}
-						onClick={handleClose}
 					>
-						{currentTitle === 'undefined' ? 'Створити' : 'Змінити'}
+						{currentTitle === '' ? 'Створити' : 'Змінити'}
 					</Button>
 				</Box>
 			</Box>

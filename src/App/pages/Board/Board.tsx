@@ -15,7 +15,7 @@ export function Board() {
 	const [boards, setBoards] = useState<IBoard[] | null>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const getBoards = async () => {
-		const userId = '6387bf68b335c21a49214342';
+		const userId = '6387bf68b335c21a49214342'; // --------------------------- User Id
 		await getBoardsByUserId([userId]).then((res) => setBoards(res.data));
 		setIsLoading(false);
 	};
@@ -25,7 +25,11 @@ export function Board() {
 	}, []);
 	const [isOpen, setIsOpen] = useState(false);
 	const handleOpen = () => setIsOpen(true);
-	const handleClose = () => setIsOpen(false);
+	const handleClose = () => {
+		setIsOpen(false);
+		setIsLoading(true);
+		getBoards();
+	};
 	return (
 		<>
 			<h1>Boards</h1>
@@ -35,11 +39,17 @@ export function Board() {
 					<LinearProgress />
 				</Box>
 			)}
-			<BoardModalWindow isOpen={isOpen} handleClose={handleClose} />
+			<BoardModalWindow isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" />
 			<Grid2 container spacing={2}>
 				{!!boards && boards.map((board) => (
 					<Grid2 key={board._id}>
-						<BoardCard title={board.title} id={board._id} key={board._id} />
+						<BoardCard
+							title={board.title}
+							id={board._id}
+							key={board._id}
+							setIsLoading={setIsLoading}
+							getBoards={getBoards}
+						/>
 					</Grid2>
 				))}
 			</Grid2>

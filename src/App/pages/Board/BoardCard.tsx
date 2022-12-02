@@ -6,14 +6,21 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
+import { deleteBoardById } from '~api/boards';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { IBoardCardProps } from '~types/boardInterfaces';
 
 import { BoardModalWindow } from './BoardModalWindow';
 
-export function BoardCard({ title, id }: IBoardCardProps) {
+export function BoardCard({
+	title, id, setIsLoading, getBoards,
+}: IBoardCardProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const handleClose = () => setIsOpen(false);
+	const handleClose = () => {
+		setIsOpen(false);
+		setIsLoading(true);
+		getBoards();
+	};
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -26,8 +33,10 @@ export function BoardCard({ title, id }: IBoardCardProps) {
 		setIsOpen(true);
 		setAnchorEl(null);
 	};
-	const handleDeleteClick = () => {
-		// console.log('Delete');
+	const handleDeleteClick = async () => {
+		await deleteBoardById(id);
+		setIsLoading(true);
+		getBoards();
 		setAnchorEl(null);
 	};
 	const handleMenuClose = () => {
