@@ -6,7 +6,7 @@ import {
 
 import { createColumn, updateColumnById } from '~api/columns';
 import { IColumnParams } from '~types/api';
-import { IColumnModalWindowProps } from '~types/boardInterfaces';
+import { IColumnModalProps } from '~types/boardInterfaces';
 
 const style = {
 	position: 'absolute',
@@ -21,9 +21,9 @@ const style = {
 	p: 4,
 };
 
-export function ColumnsModalWindow({
+export function ColumnsModal({
 	isOpen, handleClose, currentTitle, currentId, currentBoardId, currentOrder,
-}: IColumnModalWindowProps) {
+}: IColumnModalProps) {
 	const {
 		register,
 		handleSubmit,
@@ -69,12 +69,12 @@ export function ColumnsModalWindow({
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="board-title">Назва колонки:</InputLabel>
+						<InputLabel required htmlFor="column-title">Назва колонки:</InputLabel>
 						<TextField
 							{...registers.title}
 							error={!!(errors && errors.title?.message)}
 							helperText={errors.title?.message || ' '}
-							id="board-title"
+							id="column-title"
 							placeholder={currentTitle === '' ? 'Назва колонки' : currentTitle}
 							defaultValue={currentTitle === '' ? '' : currentTitle}
 						/>

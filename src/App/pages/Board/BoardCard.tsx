@@ -10,7 +10,7 @@ import { deleteBoardById } from '~api/boards';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { IBoardCardProps } from '~types/boardInterfaces';
 
-import { BoardModalWindow } from './BoardModalWindow';
+import { BoardModal } from './BoardModal';
 
 export function BoardCard({
 	title, id, setIsLoading, getBoards,
@@ -45,7 +45,7 @@ export function BoardCard({
 
 	return (
 		<>
-			<BoardModalWindow
+			<BoardModal
 				isOpen={isOpen}
 				handleClose={handleClose}
 				currentTitle={title}

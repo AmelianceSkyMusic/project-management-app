@@ -11,12 +11,12 @@ export interface IBadRequest {
 	message: string;
 }
 
-export interface IPostBoard {
+export interface IBoardParams {
    title: string;
    owner: string;
    users: string[];
 }
-export interface IBoard extends IPostBoard {
+export interface IBoard extends IBoardParams {
    _id: string;
 }
 
@@ -39,16 +39,25 @@ export interface IColumnOrder {
 }
 
 export interface ITask {
-	_id?: string;
+	_id: string;
 	title: string;
    order: number;
-   boardId?: string;
-   columnId?: string;
+   boardId: string;
+   columnId: string;
    description: string;
-   userId: number;
+   userId: string;
    users: string[];
 }
-
+export interface ITaskParams {
+	title: string;
+   order: number;
+	description: string;
+	userId: string;
+   users: string[];
+}
+export interface ITaskParamsUpdate extends ITaskParams {
+	columnId: string;
+}
 export interface IPointsList {
 	_id?: string;
    title: string;

@@ -5,8 +5,8 @@ import {
 } from '@mui/material';
 
 import { createBoard, updateBoardById } from '~api/boards';
-import { IPostBoard } from '~types/api';
-import { IBoardModalWindowProps } from '~types/boardInterfaces';
+import { IBoardParams } from '~types/api';
+import { IBoardModalProps } from '~types/boardInterfaces';
 
 const style = {
 	position: 'absolute',
@@ -21,15 +21,15 @@ const style = {
 	p: 4,
 };
 
-export function BoardModalWindow({
+export function BoardModal({
 	isOpen, handleClose, currentTitle, currentId,
-}: IBoardModalWindowProps) {
+}: IBoardModalProps) {
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<IPostBoard>({
+	} = useForm<IBoardParams>({
 		mode: 'onSubmit',
 		defaultValues: {
 			title: currentTitle === '' ? '' : currentTitle,
@@ -41,9 +41,9 @@ export function BoardModalWindow({
 			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
 		}),
 	};
-	const onSubmit: SubmitHandler<IPostBoard> = async ({ title }: IPostBoard) => {
+	const onSubmit: SubmitHandler<IBoardParams> = async ({ title }: IBoardParams) => {
 		if (currentTitle === '') {
-			const body: IPostBoard = {
+			const body: IBoardParams = {
 				title,
 				owner: '6387bf68b335c21a49214342', // ---------------------User ID
 				users: [
@@ -53,7 +53,7 @@ export function BoardModalWindow({
 			await createBoard(body);
 			handleClose();
 		} else if (currentTitle !== '') {
-			const body: IPostBoard = {
+			const body: IBoardParams = {
 				title,
 				owner: '6387bf68b335c21a49214342', // ---------------------get User
 				users: [

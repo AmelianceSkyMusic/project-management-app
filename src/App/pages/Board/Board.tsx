@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
 
-import { Box, LinearProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
@@ -9,7 +9,7 @@ import { getBoardsByUserId } from '~api/boards';
 import { BoardCard } from '~pages/Board/BoardCard';
 import { IBoard } from '~types/api';
 
-import { BoardModalWindow } from './BoardModalWindow';
+import { BoardModal } from './BoardModal';
 
 export function Board() {
 	const [boards, setBoards] = useState<IBoard[] | null>([]);
@@ -32,14 +32,22 @@ export function Board() {
 	};
 	return (
 		<>
-			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>Boards</Typography>
-			<Button onClick={handleOpen}>Add board</Button>
 			{isLoading && (
-				<Box sx={{ width: '100%' }}>
-					<LinearProgress />
+				<Box sx={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					display: 'flex',
+					background: 'transparent',
+				}}
+				>
+					<CircularProgress size={100} thickness={4} />
 				</Box>
 			)}
-			<BoardModalWindow isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" />
+			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>Boards</Typography>
+			<Button onClick={handleOpen}>Add board</Button>
+
+			<BoardModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" />
 			<Grid2 container spacing={2}>
 				{!!boards && boards.map((board) => (
 					<Grid2 key={board._id}>

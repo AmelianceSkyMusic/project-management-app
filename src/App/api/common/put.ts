@@ -1,12 +1,12 @@
 import { AxiosError } from 'axios';
 
 import {
-	IBadRequest, IBoard, IColumnParams, IPostBoard, IUser,
+	IBadRequest, IBoard, IBoardParams, IColumnParams, IUser,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type TBody = | IUser | IColumnParams | IBoard | IPostBoard
+type TBody = | IUser | IColumnParams | IBoard | IBoardParams
 type TReturnData = | IUser | IBadRequest
 
 export const putCommon = async (body: TBody, endpoint = '') => {

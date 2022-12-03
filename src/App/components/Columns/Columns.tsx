@@ -3,18 +3,18 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
-	Box, Button, IconButton, LinearProgress, Typography,
+	Box, Button, CircularProgress, IconButton, Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 import { deleteBoardById, getBoardById } from '~api/boards';
 import { getColumnsInBoard } from '~api/columns';
 import { PopoverMenu } from '~components/PopoverMenu';
-import { TaskList } from '~components/TasksList';
-import { BoardModalWindow } from '~pages/Board/BoardModalWindow';
+import { TaskList } from '~components/Tasks/TasksList';
+import { BoardModal } from '~pages/Board/BoardModal';
 import { IColumn } from '~types/api';
 
-import { ColumnsModalWindow } from './ColumnsModal';
+import { ColumnsModal } from './ColumnsModal';
 
 export function Columns() {
 	const [columnList, setColumnList] = useState<IColumn[] | null>([]);
@@ -25,7 +25,7 @@ export function Columns() {
 	const navigate = useNavigate();
 	const goBack = () => navigate(-1);
 
-	const getApi = async () => {
+	const getColumns = async () => {
 		if (id) {
 			await getBoardById(id).then((resp) => {
 				if (resp.data) setBoardTitle(resp.data.title);
@@ -35,7 +35,7 @@ export function Columns() {
 		setIsLoading(false);
 	};
 	useEffect(() => {
-		getApi();
+		getColumns();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +43,7 @@ export function Columns() {
 	const handleClose = () => {
 		setIsOpen(false);
 		setIsLoading(true);
-		getApi();
+		getColumns();
 	};
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -66,7 +66,19 @@ export function Columns() {
 
 	return (
 		<>
-			<BoardModalWindow
+			{isLoading && (
+				<Box sx={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					display: 'flex',
+					background: 'transparent',
+				}}
+				>
+					<CircularProgress size={100} thickness={4} />
+				</Box>
+			)}
+			<BoardModal
 				isOpen={isOpen}
 				handleClose={handleClose}
 				currentTitle={boardTitle}
@@ -93,16 +105,17 @@ export function Columns() {
 				onClose={handleMenuClose}
 			/>
 			<Button onClick={handleOpen}>Add column</Button>
-			<ColumnsModalWindow isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
-			{isLoading && (
-				<Box sx={{ width: '100%' }}>
-					<LinearProgress />
-				</Box>
-			)}
+			<ColumnsModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
 			<Grid2 container spacing={2}>
 				{!!columnList && columnList.map((task) => (
 					<Grid2 key={task._id}>
-						<TaskList title={task.title} id={task._id} />
+						<TaskList
+							title={task.title}
+							_id={task._id}
+							boardId={task.boardId}
+							order={task.order}
+							getColumns={getColumns}
+						/>
 					</Grid2>
 				))}
 			</Grid2>
