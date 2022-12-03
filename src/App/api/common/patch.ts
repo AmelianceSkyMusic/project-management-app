@@ -1,12 +1,12 @@
 import { AxiosError } from 'axios';
 
 import {
-	IBadRequest, IColumn, IColumnOrder, IPointsList, IPointsStatus, ITask,
+	IBadRequest, IColumn, IColumnOrder, IPointsList, IPointsStatus, ITask, ITasksOrder,
 } from '../../types/api';
 import { errorHandler } from './errorHandler';
 import HTTP from './http-common';
 
-type TBody = | IColumnOrder[] | IPointsStatus[] | IPointsStatus
+type TBody = | IColumnOrder[] | IPointsStatus[] | IPointsStatus | ITasksOrder[]
 type TReturnData = | IColumn[] | IBadRequest | ITask[] | IPointsList[] | IColumn
 
 export const patchCommon = async (body: TBody, endpoint: string) => {

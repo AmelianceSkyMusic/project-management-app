@@ -9,10 +9,10 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 
 import { deleteColumnById } from '~api/columns';
-import { getTasksInColumn } from '~api/tasks';
+import {	getTasksInColumn, updateSetOfTasks } from '~api/tasks';
 import { ColumnsModal } from '~components/Columns/ColumnsModal';
 import { PopoverMenu } from '~components/PopoverMenu';
-import { ITask } from '~types/api';
+import { ITask, ITasksOrder } from '~types/api';
 import { ITaskListProps } from '~types/boardInterfaces';
 
 import { TaskCard } from './TaskCard';
@@ -23,10 +23,13 @@ export function TaskList({
 }: ITaskListProps) {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [tasks, setTasks] = useState<ITask[] | null>([]);
+
 	const [isLoading, setIsLoading] = useState(true);
 	const getTasks = async () => {
 		if (_id) {
-			await getTasksInColumn(boardId, _id).then((resp) => setTasks(resp.data));
+			await getTasksInColumn(boardId, _id).then((resp) => {
+				if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
+			});
 		}
 		setIsLoading(false);
 	};
@@ -37,11 +40,13 @@ export function TaskList({
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
+		setIsLoading(true);
 		getColumns();
 	};
 	const [isTaskOpen, setIsTaskOpen] = useState(false);
 	const handleTaskClose = () => {
 		setIsTaskOpen(false);
+		setIsLoading(true);
 		getTasks();
 	};
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,7 +58,9 @@ export function TaskList({
 		setAnchorEl(null);
 	};
 	const handleDeleteClick = async () => {
+		setIsLoading(true);
 		await deleteColumnById(boardId, _id);
+		getColumns();
 		setAnchorEl(null);
 	};
 	const handleMenuClose = () => {
@@ -63,46 +70,36 @@ export function TaskList({
 		setIsTaskOpen(true);
 		setAnchorEl(null);
 	};
-	// const [, drop] = useDrop({
-	// 	accept: 'task',
-	// 	drop: () => ({ id }),
-	// 	collect: (monitor) => ({
-	// 		isOver: monitor.isOver(),
-	// 		canDrop: monitor.canDrop(),
-	// 	}),
-	// });
-	const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
-	// 	const dragTask = columnTasksList[dragIndex];
-	// 	if (dragTask) {
-	// 		setColumnTasksList((prevState) => {
-	// 			const copiedStateArray = [...prevState];
-	// 			const prevTask = copiedStateArray.splice(hoverIndex, 1, dragTask);
-	// 			copiedStateArray.splice(dragIndex, 1, prevTask[0]);
-	// 			console.log('move', copiedStateArray);
-	// 			return copiedStateArray;
-	// 		});
-	// 	}
+	const [, drop] = useDrop({
+		accept: 'task',
+		drop: () => ({ _id }),
+		collect: (monitor) => ({
+			isOver: monitor.isOver(),
+			canDrop: monitor.canDrop(),
+		}),
+	});
+
+	const updateTasks = async (list: ITasksOrder[]) => {
+		await updateSetOfTasks(list);
+		getTasks();
 	};
-	const changeTaskColumn = (currentId: string, resColumnId: string) => {
-	// 	setAllTasks((prevState) => {
-	// 		const copiedStateArray = [...prevState].map((e) => ({
-	// 			...e,
-	// 			columnId: (e.taskId === currentId) ? resColumnId : e.columnId,
-	// 		}));
-	// 		console.log('change', copiedStateArray);
-	// 		return copiedStateArray;
-	// 	});
-	// 	setColumnTasksList((prevState) => {
-	// 		const copiedStateArray = [...prevState];
-	// 		const item = allTasks.find((e) => e.taskId === currentId);
-	// 		if (item?.columnId === resColumnId) {
-	// 			copiedStateArray.splice(copiedStateArray.indexOf(item), 1);
-	// 		}
-	// 		console.log('change copiedStateArray', copiedStateArray);
-	// 		return copiedStateArray;
-	// 	});
-		// setColumnTasksList([...allTasks.filter((task) => task.columnId === id)]);
+
+	const moveCardHandler = async (dragIndex: number, hoverIndex: number) => {
+		if (tasks) {
+			const dragTask = tasks[dragIndex];
+			if (dragTask) {
+				const copyTasks = [...tasks];
+				const prevTask = copyTasks.splice(hoverIndex, 1, dragTask);
+				copyTasks.splice(dragIndex, 1, prevTask[0]);
+				const changedList: ITasksOrder[] = copyTasks
+					.map((task, index) => ({ ...task, order: index }))
+					.map((task) => ({ _id: task._id, order: task.order, columnId: task.columnId }));
+				updateTasks(changedList);
+				setIsLoading(true);
+			}
+		}
 	};
+
 	return (
 		<>
 			{isLoading && (
@@ -139,7 +136,7 @@ export function TaskList({
 				sx={{
 					width: '300px', background: 'transparent', borderRadius: '32px', border: '1px solid black', padding: '4px 8px',
 				}}
-				/* ref={drop} */
+				ref={drop}
 			>
 				<CardHeader
 					action={(
@@ -174,11 +171,11 @@ export function TaskList({
 							order={task.order}
 							userId={task.userId}
 							users={task.users}
-							// setTasksList={setTasksList}
 							index={index}
 							moveCardHandler={moveCardHandler}
-							changeTaskColumn={changeTaskColumn}
 							getTasks={getTasks}
+							getColumns={getColumns}
+							setIsLoading={setIsLoading}
 						/>
 					))}
 					<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleAddClick}>

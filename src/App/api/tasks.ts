@@ -1,5 +1,6 @@
 import {
-	IColumnOrder, IQueryData, ITask, ITaskParams, ITaskParamsUpdate,
+	IQueryData, ITask, ITaskParams, ITaskParamsUpdate,
+	ITasksOrder,
 } from '../types/api';
 import { deleteCommon } from './common/delete';
 import { getCommon } from './common/get';
@@ -29,5 +30,5 @@ export const getTasksById = (boardId: string, columnId: string, taskId: string) 
 export const updateTaskById = (body: ITaskParamsUpdate, boardId: string, columnId: string, taskId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`) as TTask;
 export const deleteTaskById = (boardId: string, columnId: string, taskId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`) as TTask;
 export const getTasksByIdsList = (queryData: IQueryData) => getCommon(`/tasksSet?${new URLSearchParams(queryData).toString()}`) as TTasks;
-export const updateSetOfTasks = (body: IColumnOrder[]) => patchCommon(body, '/tasksSet') as TTasks;
+export const updateSetOfTasks = (body: ITasksOrder[]) => patchCommon(body, '/tasksSet') as TTasks;
 export const getTasksByBoardId = (boardId: string) => getCommon(`/tasksSet/${boardId}`) as TTasks;

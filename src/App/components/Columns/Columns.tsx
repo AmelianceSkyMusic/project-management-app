@@ -58,6 +58,7 @@ export function Columns() {
 			await deleteBoardById(id);
 		}
 		setIsLoading(true);
+		goBack();
 		setAnchorEl(null);
 	};
 	const handleMenuClose = () => {

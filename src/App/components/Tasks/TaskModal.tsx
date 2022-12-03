@@ -59,8 +59,7 @@ export function TasksModal({
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			const resp = await createTask(body, currentBoardId, currentColumnId);
-			if (resp.status === 200) console.log(resp);
+			await createTask(body, currentBoardId, currentColumnId);
 			handleClose();
 		} else if (currentTitle !== '') {
 			const body: ITaskParamsUpdate = {
@@ -73,8 +72,7 @@ export function TasksModal({
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			const resp = await updateTaskById(body, currentBoardId, currentColumnId, currentId);
-			if (resp.status === 200) console.log(resp);
+			await updateTaskById(body, currentBoardId, currentColumnId, currentId);
 			handleClose();
 		}
 		reset();
