@@ -6,7 +6,7 @@ export function setBackground(mode: PaletteMode) {
 			MuiCssBaseline: {
 				styleOverrides: {
 					'#root': {
-						background: mode === 'light' ? 'linear-gradient(230deg,#a1b7ff,#9ff1ff)' : 'black',
+						background: mode === 'light' ? 'linear-gradient(225.8deg, #FFD39F 11.51%, #FFA1A1 102.05%)' : 'black',
 					},
 				},
 			},
