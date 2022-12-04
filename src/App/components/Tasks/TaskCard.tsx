@@ -27,7 +27,7 @@ export function TaskCard({
 		getTasks();
 	};
 
-	const ref = useRef<HTMLDivElement>(null);
+	const taskRef = useRef<HTMLDivElement>(null);
 	const changeTaskColumn = async (currentId: string, resColumnId: string) => {
 		const body: ITaskParamsUpdate = {
 			title,
@@ -41,13 +41,13 @@ export function TaskCard({
 		};
 		await updateTaskById(body, boardId, resColumnId, currentId);
 		setIsLoading(true);
-		getColumns();
 		getTasks();
+		getColumns();
 	};
-	const [, drop] = useDrop<IDropTask>({
+	const [, dropTask] = useDrop<IDropTask>({
 		accept: 'task',
 		hover(item: IDropTask, monitor: DropTargetMonitor) {
-			if (!ref.current) {
+			if (!taskRef.current) {
 				return;
 			}
 			const dragIndex = item.index;
@@ -55,7 +55,7 @@ export function TaskCard({
 			if (dragIndex === hoverIndex) {
 				return;
 			}
-			const hoverBoundingRect = ref.current?.getBoundingClientRect();
+			const hoverBoundingRect = taskRef.current?.getBoundingClientRect();
 			const hoverMiddleY =	(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const clientOffset = monitor.getClientOffset();
 			const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
@@ -87,7 +87,7 @@ export function TaskCard({
 		}),
 	}));
 
-	drag(drop(ref));
+	drag(dropTask(taskRef));
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -121,7 +121,7 @@ export function TaskCard({
 				sx={{
 					height: '120px', background: 'rgba(255, 255, 255, 0.3)', borderRadius: '32px', border: '1px solid #FFFFFF', padding: '8px', opacity: isDragging ? '0.4' : '1',
 				}}
-				ref={ref}
+				ref={taskRef}
 			>
 				<CardHeader
 					title={`${title}`}

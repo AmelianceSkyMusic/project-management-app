@@ -33,7 +33,9 @@ export interface ITaskModalProps {
 	currentDescription: string;
 }
 export interface ITaskListProps extends IColumn {
+	columnIndex: number;
 	getColumns: () => void;
+	moveColumnsHandler: (dragIndex: number, hoverIndex: number) => void;
 }
 export interface ITaskProps extends ITask {
 	index: number;
@@ -43,11 +45,13 @@ export interface ITaskProps extends ITask {
 	setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface IDropTask {
+export interface IDropColumn {
 	index: number;
-	columnId: string;
 	id: string;
 	type: string;
+}
+export interface IDropTask extends IDropColumn {
+	columnId: string;
 }
 export interface IDropResult {
 	_id: string;

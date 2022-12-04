@@ -1,25 +1,28 @@
 /* eslint-disable no-underscore-dangle */
-import { useEffect, useState } from 'react';
-import { useDrop } from 'react-dnd';
+import { useEffect, useRef, useState } from 'react';
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 
 import { Box, CircularProgress } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
+import { XYCoord } from 'dnd-core';
 
 import { deleteColumnById } from '~api/columns';
 import {	getTasksInColumn, updateSetOfTasks } from '~api/tasks';
 import { ColumnsModal } from '~components/Columns/ColumnsModal';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { ITask, ITasksOrder } from '~types/api';
-import { ITaskListProps } from '~types/boardInterfaces';
+import {
+	ICollectedProps, IDragTask, IDropColumn, IDropResult, ITaskListProps,
+} from '~types/boardInterfaces';
 
 import { TaskCard } from './TaskCard';
 import { TasksModal } from './TaskModal';
 
 export function TaskList({
-	title, _id, boardId, order, getColumns,
+	title, _id, boardId, order, columnIndex, getColumns, moveColumnsHandler,
 }: ITaskListProps) {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [tasks, setTasks] = useState<ITask[] | null>([]);
@@ -70,7 +73,7 @@ export function TaskList({
 		setIsTaskOpen(true);
 		setAnchorEl(null);
 	};
-	const [, drop] = useDrop({
+	const [, dropTask] = useDrop({
 		accept: 'task',
 		drop: () => ({ _id }),
 		collect: (monitor) => ({
@@ -99,7 +102,40 @@ export function TaskList({
 			}
 		}
 	};
-
+	const columnRef = useRef<HTMLDivElement>(null);
+	const [, drop] = useDrop<IDropColumn>({
+		accept: 'column',
+		hover(item: IDropColumn, monitor: DropTargetMonitor) {
+			if (!columnRef.current) {
+				return;
+			}
+			const dragIndex = item.index;
+			const hoverIndex = columnIndex;
+			if (dragIndex === hoverIndex) {
+				return;
+			}
+			const hoverBoundingRect = columnRef.current?.getBoundingClientRect();
+			const hoverMiddleY =	(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+			const clientOffset = monitor.getClientOffset();
+			const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+			if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+				return;
+			}
+			if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+				return;
+			}
+			moveColumnsHandler(dragIndex, hoverIndex);
+			// eslint-disable-next-line no-param-reassign
+			item.index = hoverIndex;
+		},
+	});
+	const [{ isDragging }, drag] = useDrag<IDragTask, IDropResult, ICollectedProps>(() => ({
+		type: 'column',
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+	}));
+	drag(drop(columnRef));
 	return (
 		<>
 			{isLoading && (
@@ -134,9 +170,9 @@ export function TaskList({
 			/>
 			<Card
 				sx={{
-					width: '300px', background: 'transparent', borderRadius: '32px', border: '1px solid black', padding: '4px 8px',
+					width: '300px', background: 'transparent', borderRadius: '32px', border: '1px solid black', padding: '4px 8px', opacity: isDragging ? '0.4' : '1',
 				}}
-				ref={drop}
+				ref={columnRef}
 			>
 				<CardHeader
 					action={(
@@ -159,6 +195,7 @@ export function TaskList({
 					sx={{
 						padding: '8px', display: 'flex', flexFlow: 'column nowrap', gap: '8px',
 					}}
+					ref={dropTask}
 				>
 					{!!tasks && tasks.map((task, index) => (
 						<TaskCard

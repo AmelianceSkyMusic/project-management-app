@@ -1,18 +1,18 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
+import { useDrop } from 'react-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
 	Box, Button, CircularProgress, IconButton, Typography,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2';
 
 import { deleteBoardById, getBoardById } from '~api/boards';
-import { getColumnsInBoard } from '~api/columns';
+import { getColumnsInBoard, updateSetOfColumns } from '~api/columns';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { TaskList } from '~components/Tasks/TasksList';
 import { BoardModal } from '~pages/Board/BoardModal';
-import { IColumn } from '~types/api';
+import { IColumn, IColumnOrder } from '~types/api';
 
 import { ColumnsModal } from './ColumnsModal';
 
@@ -30,7 +30,9 @@ export function Columns() {
 			await getBoardById(id).then((resp) => {
 				if (resp.data) setBoardTitle(resp.data.title);
 			});
-			await getColumnsInBoard(id).then((res) => setColumnList(res.data));
+			await getColumnsInBoard(id).then((res) => {
+				if (res.data) setColumnList(res.data.sort((a, b) => a.order - b.order));
+			});
 		}
 		setIsLoading(false);
 	};
@@ -64,7 +66,34 @@ export function Columns() {
 	const handleMenuClose = () => {
 		setAnchorEl(null);
 	};
+	const [, drop] = useDrop({
+		accept: 'column',
+		collect: (monitor) => ({
+			isOver: monitor.isOver(),
+		}),
+	});
 
+	const updateColumns = async (list: IColumnOrder[]) => {
+		const resp = await updateSetOfColumns(list);
+		console.log(resp);
+		getColumns();
+	};
+
+	const moveColumnsHandler = async (dragIndex: number, hoverIndex: number) => {
+		if (columnList) {
+			const dragTask = columnList[dragIndex];
+			if (dragTask) {
+				const copyTasks = [...columnList];
+				const prevTask = copyTasks.splice(hoverIndex, 1, dragTask);
+				copyTasks.splice(dragIndex, 1, prevTask[0]);
+				const changedList: IColumnOrder[] = copyTasks
+					.map((task, index) => ({ ...task, order: index }))
+					.map((task) => ({ _id: task._id, order: task.order }));
+				updateColumns(changedList);
+				setIsLoading(true);
+			}
+		}
+	};
 	return (
 		<>
 			{isLoading && (
@@ -107,19 +136,25 @@ export function Columns() {
 			/>
 			<Button onClick={handleOpen}>Add column</Button>
 			<ColumnsModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
-			<Grid2 container spacing={2}>
-				{!!columnList && columnList.map((task) => (
-					<Grid2 key={task._id}>
-						<TaskList
-							title={task.title}
-							_id={task._id}
-							boardId={task.boardId}
-							order={task.order}
-							getColumns={getColumns}
-						/>
-					</Grid2>
+			<Box
+				sx={{
+					padding: '8px', display: 'flex', flexFlow: 'row nowrap', gap: '16px', justifyContent: 'flex-start', alignItems: 'flex-start',
+				}}
+				ref={drop}
+			>
+				{!!columnList && columnList.map((task, index) => (
+					<TaskList
+						key={task._id}
+						title={task.title}
+						_id={task._id}
+						boardId={task.boardId}
+						order={task.order}
+						getColumns={getColumns}
+						moveColumnsHandler={moveColumnsHandler}
+						columnIndex={index}
+					/>
 				))}
-			</Grid2>
+			</Box>
 		</>
 	);
 }
