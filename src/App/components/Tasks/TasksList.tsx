@@ -15,8 +15,9 @@ import { ColumnsModal } from '~components/Columns/ColumnsModal';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { ITask, ITasksOrder } from '~types/api';
 import {
-	ICollectedProps, IDragTask, IDropColumn, IDropResult, ITaskListProps,
-} from '~types/boardInterfaces';
+	ICollectedProps, IDragTask, IDropColumn, IDropResult,
+} from '~types/DnD';
+import { ITaskListProps } from '~types/tasks';
 
 import { TaskCard } from './TaskCard';
 import { TasksModal } from './TaskModal';

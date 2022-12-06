@@ -11,8 +11,9 @@ import { deleteTaskById, updateTaskById } from '~api/tasks';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { ITaskParamsUpdate } from '~types/api';
 import {
-	ICollectedProps, IDragTask, IDropResult, IDropTask, ITaskProps,
-} from '~types/boardInterfaces';
+	ICollectedProps, IDragTask, IDropResult, IDropTask,
+} from '~types/DnD';
+import { ITaskProps } from '~types/tasks';
 
 import { TasksModal } from './TaskModal';
 

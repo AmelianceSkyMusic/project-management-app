@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { deleteBoardById } from '~api/boards';
 import { PopoverMenu } from '~components/PopoverMenu';
-import { IBoardCardProps } from '~types/boardInterfaces';
+import { IBoardCardProps } from '~types/board';
 
 import { BoardModal } from './BoardModal';
 

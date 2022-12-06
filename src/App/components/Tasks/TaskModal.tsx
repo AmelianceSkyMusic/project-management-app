@@ -6,7 +6,7 @@ import {
 
 import { createTask, updateTaskById } from '~api/tasks';
 import { ITaskParams, ITaskParamsUpdate } from '~types/api';
-import { ITaskModalProps } from '~types/boardInterfaces';
+import { ITaskModalProps } from '~types/tasks';
 
 const style = {
 	position: 'absolute',

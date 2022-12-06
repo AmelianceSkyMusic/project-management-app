@@ -6,7 +6,7 @@ import {
 
 import { createBoard, updateBoardById } from '~api/boards';
 import { IBoardParams } from '~types/api';
-import { IBoardModalProps } from '~types/boardInterfaces';
+import { IBoardModalProps } from '~types/board';
 
 const style = {
 	position: 'absolute',

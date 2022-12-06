@@ -6,7 +6,7 @@ import {
 
 import { createColumn, updateColumnById } from '~api/columns';
 import { IColumnParams } from '~types/api';
-import { IColumnModalProps } from '~types/boardInterfaces';
+import { IColumnModalProps } from '~types/column';
 
 const style = {
 	position: 'absolute',
