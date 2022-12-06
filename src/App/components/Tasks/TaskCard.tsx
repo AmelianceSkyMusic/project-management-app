@@ -18,13 +18,13 @@ import { TasksModal } from './TaskModal';
 
 export function TaskCard({
 	_id, title, description, order, boardId,
-	columnId, index, moveCardHandler, getTasks, getColumns, setIsLoading,
+	columnId, index, moveCardHandler, getTasks, setIsLoading,
 }: ITaskProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
 		setIsLoading(true);
-		getTasks();
+		getTasks(columnId);
 	};
 
 	const taskRef = useRef<HTMLDivElement>(null);
@@ -41,8 +41,8 @@ export function TaskCard({
 		};
 		await updateTaskById(body, boardId, resColumnId, currentId);
 		setIsLoading(true);
-		getTasks();
-		getColumns();
+		getTasks(columnId);
+		getTasks(resColumnId);
 	};
 	const [, dropTask] = useDrop<IDropTask>({
 		accept: 'task',
@@ -100,7 +100,7 @@ export function TaskCard({
 		await deleteTaskById(boardId, columnId, _id);
 		setAnchorEl(null);
 		setIsLoading(true);
-		getTasks();
+		getTasks(columnId);
 	};
 	const handleMenuClose = () => {
 		setAnchorEl(null);

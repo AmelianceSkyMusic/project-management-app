@@ -74,8 +74,7 @@ export function Columns() {
 	});
 
 	const updateColumns = async (list: IColumnOrder[]) => {
-		const resp = await updateSetOfColumns(list);
-		console.log(resp);
+		await updateSetOfColumns(list);
 		getColumns();
 	};
 
@@ -138,7 +137,7 @@ export function Columns() {
 			<ColumnsModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
 			<Box
 				sx={{
-					padding: '8px', display: 'flex', flexFlow: 'row nowrap', gap: '16px', justifyContent: 'flex-start', alignItems: 'flex-start',
+					padding: '8px', display: 'flex', flexFlow: 'row nowrap', gap: '16px', justifyContent: 'flex-start', alignItems: 'flex-start', overflowX: 'auto', overflowY: 'hidden', height: '100%',
 				}}
 				ref={drop}
 			>

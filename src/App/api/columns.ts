@@ -29,5 +29,5 @@ export const getColumnById = (boardId: string, columnId: string) => getCommon(`/
 export const updateColumnById = (body: IColumnParams, boardId: string, columnId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}`) as TColumn;
 export const deleteColumnById = (boardId: string, columnId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}`) as TColumn;
 export const getColumnsByIdsListOrUserId = (queryData: IQueryData) => getCommon(`/columnsSet?${new URLSearchParams(queryData).toString()}`) as TAllColumns;
-export const updateSetOfColumns = (body: IColumnOrder[]) => patchCommon(body, '/columnSet') as TAllColumns;
-export const createSetOfColumns = (body: IColumn) => postCommon(body, '/columnSet') as TAllColumns;
+export const updateSetOfColumns = (body: IColumnOrder[]) => patchCommon(body, '/columnsSet') as TAllColumns;
+export const createSetOfColumns = (body: IColumn) => postCommon(body, '/columnsSet') as TAllColumns;

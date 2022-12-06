@@ -40,8 +40,7 @@ export interface ITaskListProps extends IColumn {
 export interface ITaskProps extends ITask {
 	index: number;
 	moveCardHandler: (dragIndex: number, hoverIndex: number) => void;
-	getTasks: () => void;
-	getColumns: () => void;
+	getTasks: (id: string) => void;
 	setIsLoading: Dispatch<SetStateAction<boolean>>;
 }
 

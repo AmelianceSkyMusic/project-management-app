@@ -28,16 +28,14 @@ export function TaskList({
 	const [tasks, setTasks] = useState<ITask[] | null>([]);
 
 	const [isLoading, setIsLoading] = useState(true);
-	const getTasks = async () => {
-		if (_id) {
-			await getTasksInColumn(boardId, _id).then((resp) => {
-				if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
-			});
-		}
+	const getTasks = async (id: string) => {
+		await getTasksInColumn(boardId, id).then((resp) => {
+			if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
+		});
 		setIsLoading(false);
 	};
 	useEffect(() => {
-		getTasks();
+		getTasks(_id);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +48,7 @@ export function TaskList({
 	const handleTaskClose = () => {
 		setIsTaskOpen(false);
 		setIsLoading(true);
-		getTasks();
+		getTasks(_id);
 	};
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -84,7 +82,7 @@ export function TaskList({
 
 	const updateTasks = async (list: ITasksOrder[]) => {
 		await updateSetOfTasks(list);
-		getTasks();
+		getTasks(_id);
 	};
 
 	const moveCardHandler = async (dragIndex: number, hoverIndex: number) => {
@@ -193,7 +191,7 @@ export function TaskList({
 				/>
 				<CardContent
 					sx={{
-						padding: '8px', display: 'flex', flexFlow: 'column nowrap', gap: '8px',
+						padding: '8px', display: 'flex', flexFlow: 'column nowrap', gap: '8px', overflowY: 'auto',
 					}}
 					ref={dropTask}
 				>
@@ -211,7 +209,6 @@ export function TaskList({
 							index={index}
 							moveCardHandler={moveCardHandler}
 							getTasks={getTasks}
-							getColumns={getColumns}
 							setIsLoading={setIsLoading}
 						/>
 					))}
