@@ -9,17 +9,23 @@ import {
 } from '@mui/material';
 
 import asm from '~/asmlib/asm-scripts';
-import { loginUser } from '~api/auth';
-import { IUser } from '~types/api';
+import { signIn } from '~store/auth/actions/signIn';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { ISignInUser } from '~types/api/auth/signIn';
 
-export function LogIn() {
+export function SignIn() {
+	const { isLoading, error, auth } = useTypedSelector((state) => state.authReducer);
+	console.log('auth:', auth);
+
+	const dispatch = useTypedDispatch();
 
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<IUser>({
+	} = useForm<ISignInUser>({
 		mode: 'onSubmit',
 		defaultValues: {
 			login: '',
@@ -41,11 +47,8 @@ export function LogIn() {
 		}),
 	};
 
-	const onSubmit: SubmitHandler<IUser> = async ({ login, password }: IUser) => {
-		const response = await loginUser({ login, password });
-		if (response.status === 200) localStorage.setItem('token', `${response.data?.token}`);
-		console.log(response);
-
+	const onSubmit: SubmitHandler<ISignInUser> = async ({ login, password }: ISignInUser) => {
+		dispatch(signIn({ login, password }));
 		reset();
 	};
 
