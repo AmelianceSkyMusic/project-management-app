@@ -95,5 +95,12 @@ module.exports = {
 
 		'react/no-unknown-property': [2, { ignore: ['css'] }],
 		'react/jsx-props-no-spreading': 'off',
+
+		'no-param-reassign': ['error', {
+			props: true,
+			ignorePropertyModificationsFor: [
+				'state',
+			],
+		}],
 	},
 };

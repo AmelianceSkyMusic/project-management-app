@@ -8,17 +8,21 @@ import {
 } from '@mui/material';
 
 import asm from '~/asmlib/asm-scripts';
-import { createUser, loginUser } from '~api/auth';
-import { IUser } from '~types/api';
+import { signUp } from '~store/auth/actions/signUp';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { ISingUpUser } from '~types/api/auth/singUp';
 
 export function SignUp() {
+	const { isLoading, error, auth } = useTypedSelector((state) => state.authReducer);
+	const dispatch = useTypedDispatch();
 
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<IUser>({
+	} = useForm<ISingUpUser>({
 		mode: 'onSubmit',
 		defaultValues: {
 			name: '',
@@ -46,12 +50,8 @@ export function SignUp() {
 		}),
 	};
 
-	const onSubmit: SubmitHandler<IUser> = async ({ name, login, password }: IUser) => {
-		const response = await createUser({ name, login, password });
-		if (response.status === 200) {
-			const responseLogin = await loginUser({ login, password });
-			if (response.status === 200) localStorage.setItem('token', `${responseLogin.data?.token}`);
-		}
+	const onSubmit: SubmitHandler<ISingUpUser> = async ({ name, login, password }: ISingUpUser) => {
+		dispatch(signUp({ name, login, password }));
 		reset();
 	};
 
@@ -122,7 +122,7 @@ export function SignUp() {
 						<Typography variant="body1" sx={{ order: { ss: 2, sm: 1 } }}>
 							Вже є аккаунт?
 							{' '}
-							<Link component={NavLink} to="/login">
+							<Link component={NavLink} to="/signin">
 								Увійти
 							</Link>
 						</Typography>

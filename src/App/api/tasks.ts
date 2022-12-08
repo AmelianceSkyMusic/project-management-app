@@ -1,31 +1,28 @@
-import { IColumnOrder, IQueryData, ITask } from '../types/api';
-import { deleteCommon } from './common/delete';
-import { getCommon } from './common/get';
-import { patchCommon } from './common/patch';
-import { postCommon } from './common/post';
-import { putCommon } from './common/put';
+import { TGetTasksByIdsListUserIdSearchRequests } from '~types/api/tasks/getTasksByIdsListUserIdSearchRequests';
 
-type TTasks = Promise<{
-   data: ITask[] ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+import { IColumnOrder, ITask } from '../types/api';
+import { deleteCommon } from './common/deleteCommon';
+import { getCommon } from './common/getCommon';
+import { patchCommon } from './common/patchCommon';
+import { postCommon } from './common/postCommon';
+import { putCommon } from './common/putCommon';
 
-type TTask = Promise<{
-   data: ITask ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+const getTasksInColumn = (boardId: string, columnId: string) => getCommon(`/boards/${boardId}/columns/${columnId}/tasks`);
+const createTask = (body: ITask, boardId: string, columnId: string) => postCommon(body, `/boards/${boardId}/columns/${columnId}/tasks`);
+const getTaskById = (boardId: string, columnId: string, taskId: string) => getCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
+const updateTaskById = (body: ITask, boardId: string, columnId: string, taskId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
+const deleteTaskById = (boardId: string, columnId: string, taskId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`);
+const getTasksByIdsListUserIdSearchRequests = (queryData: TGetTasksByIdsListUserIdSearchRequests) => getCommon(`/tasksSet?${queryData.toString()}`); // !
+const updateSetOfTasks = (body: IColumnOrder[]) => patchCommon(body, '/tasksSet');
+const getTasksByBoardId = (boardId: string) => getCommon(`/tasksSet/${boardId}`);
 
-export const getTasksInColumn = (boardId: string, columnId: string) => getCommon(`/boards/${boardId}/columns/${columnId}/tasks`) as TTasks;
-export const createTask = (body: ITask, boardId: string, columnId: string) => postCommon(body, `/boards/${boardId}/columns/${columnId}/tasks`) as TTask;
-export const getTasksById = (boardId: string, columnId: string, taskId: string) => getCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`) as TTasks;
-export const updateTaskById = (body: ITask, boardId: string, columnId: string, taskId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}/tasks/${taskId}`) as TTask;
-export const deleteTaskById = (boardId: string, columnId: string, taskId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}/tasks/${taskId}`) as TTask;
-export const getTasksByIdsList = (queryData: IQueryData) => getCommon(`/tasksSet?${new URLSearchParams(queryData).toString()}`) as TTasks;
-export const updateSetOfTasks = (body: IColumnOrder[]) => patchCommon(body, '/tasksSet') as TTasks;
-export const getTasksByBoardId = (boardId: string) => getCommon(`/tasksSet/${boardId}`) as TTasks;
+export const tasks = {
+	getTasksInColumn,
+	createTask,
+	getTaskById,
+	updateTaskById,
+	deleteTaskById,
+	getTasksByIdsListUserIdSearchRequests,
+	updateSetOfTasks,
+	getTasksByBoardId,
+};
