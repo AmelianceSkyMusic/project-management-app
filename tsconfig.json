@@ -1,0 +1,41 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"noFallthroughCasesInSwitch": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "@emotion/react"
+	},
+	"include": [
+		"src"
+	],
+  "exclude": [
+		"node_modules",
+		"**/_legacy*/*",
+		"*._legacy*",
+		"**/_backup*/*",
+		"*._backup*",
+		"**/_temp*/*",
+		"*._temp*",
+		"src/**/*.spec.ts",
+		"src/**/*.test.ts",
+		"src/**/*.spec.tsx",
+		"src/**/*.test.tsx"
+	],
+	"extends": "./tsconfig.paths.json"
+}
