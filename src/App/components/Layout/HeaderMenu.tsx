@@ -15,8 +15,8 @@ export function HeaderMenu() {
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
-	const handleMenuLoginClick = () => {
-		navigate('/login');
+	const handleMenuSigninClick = () => {
+		navigate('/singin');
 		setAnchorEl(null);
 	};
 	const handleMenuSignupClick = () => {
@@ -40,7 +40,7 @@ export function HeaderMenu() {
 			<PopoverMenu
 				anchorEl={anchorEl}
 				menuItems={[
-					['Увійти', handleMenuLoginClick],
+					['Увійти', handleMenuSigninClick],
 					['Створити аккаунт', handleMenuSignupClick],
 				]}
 				open={!!anchorEl}
