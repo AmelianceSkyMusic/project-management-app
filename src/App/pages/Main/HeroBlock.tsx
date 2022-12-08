@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
+
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import heroImg from '~assets/images/hero.png';
 
 export function HeroBlock() {
+	const { t } = useTranslation();
 	return (
 		<Grid
 			component="section"
@@ -32,17 +35,13 @@ export function HeroBlock() {
 						},
 					}}
 				>
-					Project
-					<br />
-					Management
-					<br />
-					App
+					{t('mainTitle')}
 				</Typography>
 				<Typography
 					variant="h5"
 					component="p"
 				>
-					Супер топовий додаток. Кращий від будь яких трелло і т. д. і т. п.
+					{t('heroText')}
 				</Typography>
 			</Grid>
 			<Grid

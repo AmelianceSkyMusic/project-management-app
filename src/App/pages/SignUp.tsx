@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 import {
@@ -12,7 +13,7 @@ import { createUser, loginUser } from '~api/auth';
 import { IUser } from '~types/api';
 
 export function SignUp() {
-
+	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
@@ -31,18 +32,18 @@ export function SignUp() {
 
 	const registers = {
 		name: register('name', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			minLength: { value: 1, message: 'Мінімальна довжина поля 1 символ!' },
-			pattern: { value: /^[A-Za-z]+$/i, message: 'Будь ласка, використовуйте тільки латинські літери!' },
+			required: t('required') || '',
+			minLength: { value: 2, message: t('nameMinLength') },
+			pattern: { value: /^[A-Za-z]+$/i, message: t('namePattern') },
 		}),
 		login: register('login', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: 'Невірно введена адреса електронної пошти!' },
+			required: t('required') || '',
+			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: t('emailPattern') },
 		}),
 		password: register('password', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			pattern: { value: /^[0-9]+$/i, message: 'Будь ласка, використовуйте тільки цифри!' },
-			minLength: { value: 12, message: 'Мінімальна довжина пароля 12 символів' },
+			required: t('required') || '',
+			pattern: { value: /^[0-9]+$/i, message: t('passwordPattern') },
+			minLength: { value: 12, message: t('passwordMinLength') },
 		}),
 	};
 
@@ -75,39 +76,45 @@ export function SignUp() {
 					display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'center',
 				}}
 			>
-				<Typography variant="h3">Реєстрація</Typography>
+				<Typography variant="h3">{t('registration')}</Typography>
 				<Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="singin-name">{'Ім\'я:'}</InputLabel>
+						<InputLabel required htmlFor="signin-name">{t('name')}</InputLabel>
 						<TextField
 							{...registers.name}
 							error={!!(errors && errors.name?.message)}
 							helperText={errors.name?.message || ' '}
-							id="singin-name"
-							placeholder="Ім'я"
+							id="signin-name"
+							placeholder={t('name') || 'name'}
 						/>
 					</Box>
 
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="singin-login">Адреса електронної пошти:</InputLabel>
+						<InputLabel required htmlFor="signin-login">
+							{t('email')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.login}
 							error={!!(errors && errors.login?.message)}
 							helperText={errors.login?.message || ' '}
-							id="singin-login"
-							placeholder="Адреса електронної пошти"
+							id="signin-login"
+							placeholder={t('email') || 'email'}
 						/>
 					</Box>
 
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="singin-password">Пароль:</InputLabel>
+						<InputLabel required htmlFor="signin-password">
+							{t('password')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.password}
 							error={!!(errors && errors.password?.message)}
 							helperText={errors.password?.message || ' '}
-							id="singin-password"
+							id="signin-password"
 							type="password"
-							placeholder="Пароль"
+							placeholder={t('password') || 'password'}
 						/>
 					</Box>
 
@@ -120,14 +127,14 @@ export function SignUp() {
 					}}
 					>
 						<Typography variant="body1" sx={{ order: { ss: 2, sm: 1 } }}>
-							Вже є аккаунт?
+							{t('signupQuestion')}
 							{' '}
 							<Link component={NavLink} to="/login">
-								Увійти
+								{t('login')}
 							</Link>
 						</Typography>
 						<Button type="submit" variant="contained" disabled={!isValidFixed} size="large" sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}>
-							Створити аккаунт
+							{t('signupAdd')}
 						</Button>
 					</Box>
 				</Box>

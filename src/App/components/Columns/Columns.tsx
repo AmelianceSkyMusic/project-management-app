@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
@@ -17,6 +18,7 @@ import { IColumn, IColumnOrder } from '~types/api';
 import { ColumnsModal } from './ColumnsModal';
 
 export function Columns() {
+	const { t } = useTranslation();
 	const [columnList, setColumnList] = useState<IColumn[] | null>([]);
 	const [boardTitle, setBoardTitle] = useState<string>('');
 	const [isLoading, setIsLoading] = useState(true);
@@ -117,7 +119,7 @@ export function Columns() {
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={goBack}>
 					arrow_back
 				</IconButton>
-				Board
+				{t('board')}
 				{' '}
 				{boardTitle}
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
@@ -127,13 +129,13 @@ export function Columns() {
 			<PopoverMenu
 				anchorEl={anchorEl}
 				menuItems={[
-					['Change', handleChangeClick],
-					['Delete', handleDeleteClick],
+					[t('change'), handleChangeClick],
+					[t('delete'), handleDeleteClick],
 				]}
 				open={!!anchorEl}
 				onClose={handleMenuClose}
 			/>
-			<Button onClick={handleOpen}>Add column</Button>
+			<Button onClick={handleOpen}>{t('columnAdd')}</Button>
 			<ColumnsModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
 			<Box
 				sx={{

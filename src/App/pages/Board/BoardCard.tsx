@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 import { Link } from '@mui/material';
@@ -15,6 +16,7 @@ import { BoardModal } from './BoardModal';
 export function BoardCard({
 	title, id, setIsLoading, getBoards,
 }: IBoardCardProps) {
+	const { t } = useTranslation();
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
@@ -71,8 +73,8 @@ export function BoardCard({
 					<PopoverMenu
 						anchorEl={anchorEl}
 						menuItems={[
-							['Change', handleChangeClick],
-							['Delete', handleDeleteClick],
+							[t('change'), handleChangeClick],
+							[t('delete'), handleDeleteClick],
 						]}
 						open={!!anchorEl}
 						onClose={handleMenuClose}

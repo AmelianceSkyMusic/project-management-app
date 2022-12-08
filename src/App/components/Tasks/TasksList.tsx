@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
+import { useTranslation } from 'react-i18next';
 
 import { Box, CircularProgress } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -25,6 +26,8 @@ import { TasksModal } from './TaskModal';
 export function TaskList({
 	title, _id, boardId, order, columnIndex, getColumns, moveColumnsHandler,
 }: ITaskListProps) {
+	const { t } = useTranslation();
+
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [tasks, setTasks] = useState<ITask[] | null>([]);
 
@@ -184,8 +187,8 @@ export function TaskList({
 				<PopoverMenu
 					anchorEl={anchorEl}
 					menuItems={[
-						['Change', handleChangeClick],
-						['Delete', handleDeleteClick],
+						[t('change'), handleChangeClick],
+						[t('delete'), handleDeleteClick],
 					]}
 					open={!!anchorEl}
 					onClose={handleMenuClose}

@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -12,6 +13,7 @@ import { IBoard } from '~types/api';
 import { BoardModal } from './BoardModal';
 
 export function Board() {
+	const { t } = useTranslation();
 	const [boards, setBoards] = useState<IBoard[] | null>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const getBoards = async () => {
@@ -44,8 +46,8 @@ export function Board() {
 					<CircularProgress size={100} thickness={4} />
 				</Box>
 			)}
-			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>Boards</Typography>
-			<Button onClick={handleOpen}>Add board</Button>
+			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>{t('boards')}</Typography>
+			<Button onClick={handleOpen}>{t('boardAdd')}</Button>
 
 			<BoardModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" />
 			<Grid2 container spacing={2}>

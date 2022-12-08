@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
 	Box, Button, InputLabel, Modal, TextField,
@@ -25,6 +26,7 @@ export function TasksModal({
 	isOpen, handleClose, currentTitle,
 	currentId, currentBoardId, currentOrder, currentDescription, currentColumnId,
 }: ITaskModalProps) {
+	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
@@ -39,12 +41,12 @@ export function TasksModal({
 	});
 	const registers = {
 		title: register('title', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
+			required: t('required') || '',
+			minLength: { value: 3, message: t('titleMinLength') },
 		}),
 		description: register('description', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			minLength: { value: 20, message: 'Мінімальна довжина 20 символів' },
+			required: t('required') || '',
+			minLength: { value: 10, message: t('descriptionMinLength') },
 		}),
 	};
 	const onSubmit: SubmitHandler<ITaskParams> = async ({ title, description }: ITaskParams) => {
@@ -91,24 +93,30 @@ export function TasksModal({
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="task-title">Назва таску:</InputLabel>
+						<InputLabel required htmlFor="task-title">
+							{t('taskName')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.title}
 							error={!!(errors && errors.title?.message)}
 							helperText={errors.title?.message || ' '}
 							id="task-title"
-							placeholder={currentTitle === '' ? 'Назва таску' : currentTitle}
+							placeholder={currentTitle === '' ? (t('taskName') || '') : currentTitle}
 							defaultValue={currentTitle === '' ? '' : currentTitle}
 						/>
 					</Box>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="board-description">Опис таску:</InputLabel>
+						<InputLabel required htmlFor="board-description">
+							{t('taskDescription')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.description}
 							error={!!(errors && errors.description?.message)}
 							helperText={errors.description?.message || ' '}
 							id="board-description"
-							placeholder={currentDescription === '' ? 'Опис таску' : currentDescription}
+							placeholder={currentDescription === '' ? (t('taskDescription') || '') : currentDescription}
 							defaultValue={currentDescription === '' ? '' : currentDescription}
 						/>
 					</Box>
@@ -118,7 +126,7 @@ export function TasksModal({
 						size="large"
 						sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}
 					>
-						{currentTitle === '' ? 'Створити' : 'Змінити'}
+						{currentTitle === '' ? t('create') : t('change')}
 					</Button>
 				</Box>
 			</Box>

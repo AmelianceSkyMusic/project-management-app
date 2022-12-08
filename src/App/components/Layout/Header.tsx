@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import { ReactComponent as DashboardIcon } from '@material-symbols/svg-400/rounded/dashboard.svg';
@@ -13,6 +14,7 @@ import { HeaderLanguage } from './HeaderLanguage';
 import { HeaderMenu } from './HeaderMenu';
 
 export function Header() {
+	const { t } = useTranslation();
 	const { pathname } = useLocation();
 
 	return (
@@ -41,7 +43,7 @@ export function Header() {
 							component={NavLink}
 							to="/login"
 						>
-							Увійти
+							{t('login')}
 						</Link>
 					)}
 					{pathname !== '/signup' && (
@@ -58,7 +60,7 @@ export function Header() {
 							component={NavLink}
 							to="/signup"
 						>
-							Створити аккаунт
+							{t('signup')}
 						</Link>
 					)}
 				</Box>

@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
 	Box, Button, InputLabel, Modal, TextField,
@@ -24,6 +25,7 @@ const style = {
 export function ColumnsModal({
 	isOpen, handleClose, currentTitle, currentId, currentBoardId, currentOrder,
 }: IColumnModalProps) {
+	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
@@ -37,8 +39,8 @@ export function ColumnsModal({
 	});
 	const registers = {
 		title: register('title', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
+			required: t('required') || '',
+			minLength: { value: 3, message: t('titleMinLength') },
 		}),
 	};
 	const onSubmit: SubmitHandler<IColumnParams> = async ({ title }: IColumnParams) => {
@@ -69,13 +71,16 @@ export function ColumnsModal({
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="column-title">Назва колонки:</InputLabel>
+						<InputLabel required htmlFor="column-title">
+							{t('columnName')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.title}
 							error={!!(errors && errors.title?.message)}
 							helperText={errors.title?.message || ' '}
 							id="column-title"
-							placeholder={currentTitle === '' ? 'Назва колонки' : currentTitle}
+							placeholder={currentTitle === '' ? (t('columnName') || '') : currentTitle}
 							defaultValue={currentTitle === '' ? '' : currentTitle}
 						/>
 					</Box>
@@ -85,7 +90,7 @@ export function ColumnsModal({
 						size="large"
 						sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}
 					>
-						{currentTitle === '' ? 'Створити' : 'Змінити'}
+						{currentTitle === '' ? t('create') : t('change')}
 					</Button>
 				</Box>
 			</Box>

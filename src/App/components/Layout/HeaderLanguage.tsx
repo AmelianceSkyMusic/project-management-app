@@ -1,21 +1,22 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { IconButton, Typography } from '@mui/material';
 
 import { PopoverMenu } from '~components/PopoverMenu';
 
 export function HeaderLanguage() {
-
+	const { i18n, t } = useTranslation();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
 	const handleUaClick = () => {
-		console.log('ua');
+		i18n.changeLanguage('ua');
 		setAnchorEl(null);
 	};
 	const handleEnClick = () => {
-		console.log('en');
+		i18n.changeLanguage('en');
 		setAnchorEl(null);
 	};
 	const handleMenuClose = () => {
@@ -28,7 +29,7 @@ export function HeaderLanguage() {
 				onClick={handleMenuClick}
 				sx={{ height: '40px', width: '40px', my: 'auto' }}
 			>
-				<Typography variant="body1" sx={{ fontWeight: 'regular' }}>UA</Typography>
+				<Typography variant="body1" sx={{ fontWeight: 'regular' }}>{t('lang')}</Typography>
 			</IconButton>
 			<PopoverMenu
 				anchorEl={anchorEl}

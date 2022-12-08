@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
 	Box, Button, InputLabel, Modal, TextField,
@@ -24,6 +25,7 @@ const style = {
 export function BoardModal({
 	isOpen, handleClose, currentTitle, currentId,
 }: IBoardModalProps) {
+	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
@@ -37,8 +39,8 @@ export function BoardModal({
 	});
 	const registers = {
 		title: register('title', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
+			required: t('required') || '',
+			minLength: { value: 3, message: t('titleMinLength') },
 		}),
 	};
 	const onSubmit: SubmitHandler<IBoardParams> = async ({ title }: IBoardParams) => {
@@ -79,13 +81,16 @@ export function BoardModal({
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="board-title">Назва дошки:</InputLabel>
+						<InputLabel required htmlFor="board-title">
+							{t('boardName')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.title}
 							error={!!(errors && errors.title?.message)}
 							helperText={errors.title?.message || ' '}
 							id="board-title"
-							placeholder={currentTitle === '' ? 'Назва дошки' : currentTitle}
+							placeholder={currentTitle === '' ? (t('boardName') || '') : currentTitle}
 							defaultValue={currentTitle === '' ? '' : currentTitle}
 						/>
 					</Box>
@@ -95,7 +100,7 @@ export function BoardModal({
 						size="large"
 						sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}
 					>
-						{currentTitle === '' ? 'Створити' : 'Змінити'}
+						{currentTitle === '' ? t('create') : t('change')}
 					</Button>
 				</Box>
 			</Box>
