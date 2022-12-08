@@ -1,30 +1,24 @@
 import { IBoard } from '../types/api';
-import { deleteCommon } from './common/delete';
-import { getCommon } from './common/get';
-import { arrToStr } from './common/helpers';
-import { postCommon } from './common/post';
-import { putCommon } from './common/put';
+import { deleteCommon } from './common/deleteCommon';
+import { getCommon } from './common/getCommon';
+import { postCommon } from './common/postCommon';
+import { putCommon } from './common/putCommon';
+import { arrToStr } from './helpers/arrToStr';
 
-type TAllBoards = Promise<{
-   data: IBoard[];
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+const getAllBoards = () => getCommon('/boards');
+const createBoard = (body: IBoard) => postCommon(body, '/boards');
+const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`);
+const updateBoardById = (body: IBoard, boardId: string) => putCommon(body, `/boards/${boardId}`);
+const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`);
+const getBoardsByIdsList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`);
+const getBoardsByUserId = (userId: string) => getCommon(`/boardsSet/${(userId)}`);
 
-type TBoard = Promise<{
-   data: IBoard;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
-
-export const getAllBoards = () => getCommon('/boards') as TAllBoards;
-export const createBoard = (body: IBoard) => postCommon(body, '/boards') as TBoard;
-export const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`) as TBoard;
-export const updateBoardById = (body: IBoard, boardId: string) => putCommon(body, `/boards/${boardId}`) as TBoard;
-export const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`) as TBoard;
-export const getBoardsByIdList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`) as TAllBoards;
-export const getBoardsByUserId = (userId: string[]) => getCommon(`/boardsSet/${(userId)}`) as TAllBoards;
+export const boards = {
+	getAllBoards,
+	createBoard,
+	getBoardById,
+	updateBoardById,
+	deleteBoardById,
+	getBoardsByIdsList,
+	getBoardsByUserId,
+};
