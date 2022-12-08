@@ -1,28 +1,24 @@
-import { IPointsList, IPointsStatus, IQueryData } from '../types/api';
-import { deleteCommon } from './common/delete';
-import { getCommon } from './common/get';
-import { patchCommon } from './common/patch';
-import { postCommon } from './common/post';
+import { TGetPointsByIdsListOrUserId } from '~types/api/points/getPointsByIdsListOrUserId';
+import { IUpdatePoint } from '~types/api/points/updatePoint';
 
-type TAllPoints = Promise<{
-   data: IPointsList[] ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+import { IPointsList, IPointsStatus } from '../types/api';
+import { deleteCommon } from './common/deleteCommon';
+import { getCommon } from './common/getCommon';
+import { patchCommon } from './common/patchCommon';
+import { postCommon } from './common/postCommon';
 
-type TPoint = Promise<{
-   data: IPointsList ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+export const getPointsByIdsListOrUserId = (queryData: TGetPointsByIdsListOrUserId) => getCommon(`/points?${queryData.toString()}`); // !
+export const createPoint = (body: IPointsList) => postCommon(body, '/points');
+export const updateSetOfPoints = (body: IPointsStatus[]) => patchCommon(body, '/points');
+export const getPointsByTaskId = (taskId: string) => getCommon(`/points/${taskId}`);
+export const updatePoint = (params: IUpdatePoint) => patchCommon(params.body, `/points/${params.pointId}`); // !
+export const deletePointById = (pointId: string) => deleteCommon(`/points/${pointId}`);
 
-export const getPointsByIdsListOrUserId = (queryData: IQueryData) => getCommon(`/points?${new URLSearchParams(queryData).toString()}`) as TAllPoints;
-export const createPoint = (body: IPointsList) => postCommon(body, '/points') as TPoint;
-export const updateSetOfPoints = (body: IPointsStatus[]) => patchCommon(body, '/points') as TAllPoints;
-export const getPointsByTaskId = (taskId: string) => getCommon(`/points/${taskId}`)as TAllPoints;
-export const updatePoint = (body: IPointsStatus) => patchCommon(body, '/points') as TPoint;
-export const deletePointById = (pointId: string) => deleteCommon(`/points/${pointId}`) as TPoint;
+export const points = {
+	getPointsByIdsListOrUserId,
+	createPoint,
+	updateSetOfPoints,
+	getPointsByTaskId,
+	updatePoint,
+	deletePointById,
+};

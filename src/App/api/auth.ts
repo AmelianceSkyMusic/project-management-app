@@ -2,15 +2,12 @@ import {
 	IUser,
 } from '~/App/types/api';
 
-import { postCommon } from './common/post';
+import { postCommon } from './common/postCommon';
 
-type TUser = Promise<{
-   data: IUser ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+export const signIn = (body: IUser) => postCommon(body, '/auth/signin');
+export const signUp = (body: IUser) => postCommon(body, '/auth/signup');
 
-export const createUser = (body: IUser) => postCommon(body, '/auth/signup') as TUser;
-export const loginUser = (body: IUser) => postCommon(body, '/auth/signin') as TUser;
+export const auth = {
+	signIn,
+	signUp,
+};

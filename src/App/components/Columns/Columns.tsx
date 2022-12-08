@@ -7,34 +7,37 @@ import {
 	Box, Button, CircularProgress, IconButton, Typography,
 } from '@mui/material';
 
-import { deleteBoardById, getBoardById } from '~api/boards';
-import { getColumnsInBoard, updateSetOfColumns } from '~api/columns';
 import { PopoverMenu } from '~components/PopoverMenu';
 import { TaskList } from '~components/Tasks/TasksList';
 import { BoardModal } from '~pages/Board/BoardModal';
+import { deleteBoardById } from '~store/boards/actions/deleteBoardById';
+import { getBoardById } from '~store/boards/actions/getBoardById';
+import { getColumnsInBoard } from '~store/columns/actions/getColumnsInBoard';
+import { updateSetOfColumns } from '~store/columns/actions/updateSetOfColumns';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { IColumn, IColumnOrder } from '~types/api';
 
 import { ColumnsModal } from './ColumnsModal';
 
 export function Columns() {
-	const [columnList, setColumnList] = useState<IColumn[] | null>([]);
+	const dispatch = useTypedDispatch();
+	const { isLoading, error, columns } = useTypedSelector((state) => state.columnsReducer);
+	const { boards } = useTypedSelector((state) => state.boardsReducer);
+	// const [columnList, setColumnList] = useState<IColumn[] | null>([]);
 	const [boardTitle, setBoardTitle] = useState<string>('');
-	const [isLoading, setIsLoading] = useState(true);
+	// const [isLoadin, setIsLoading] = useState(true);
 
 	const { id } = useParams<string>();
 	const navigate = useNavigate();
 	const goBack = () => navigate(-1);
 
-	const getColumns = async () => {
+	const getColumns = () => {
 		if (id) {
-			await getBoardById(id).then((resp) => {
-				if (resp.data) setBoardTitle(resp.data.title);
-			});
-			await getColumnsInBoard(id).then((res) => {
-				if (res.data) setColumnList(res.data.sort((a, b) => a.order - b.order));
-			});
+			dispatch(getBoardById(id));
+			dispatch(getColumnsInBoard(id));
 		}
-		setIsLoading(false);
+		// setIsLoading(false);
 	};
 	useEffect(() => {
 		getColumns();
@@ -44,7 +47,7 @@ export function Columns() {
 	const handleOpen = () => setIsOpen(true);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
+		// setIsLoading(true);
 		getColumns();
 	};
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -57,9 +60,9 @@ export function Columns() {
 	};
 	const handleDeleteClick = async () => {
 		if (id) {
-			await deleteBoardById(id);
+			dispatch(deleteBoardById(id));
 		}
-		setIsLoading(true);
+		// setIsLoading(true);
 		goBack();
 		setAnchorEl(null);
 	};
@@ -73,25 +76,25 @@ export function Columns() {
 		}),
 	});
 
-	const updateColumns = async (list: IColumnOrder[]) => {
-		await updateSetOfColumns(list);
+	const updateColumns = (list: IColumnOrder[]) => {
+		dispatch(updateSetOfColumns(list));
 		getColumns();
 	};
 
-	const moveColumnsHandler = async (dragIndex: number, hoverIndex: number) => {
-		if (columnList) {
-			const dragTask = columnList[dragIndex];
-			if (dragTask) {
-				const copyTasks = [...columnList];
-				const prevTask = copyTasks.splice(hoverIndex, 1, dragTask);
-				copyTasks.splice(dragIndex, 1, prevTask[0]);
-				const changedList: IColumnOrder[] = copyTasks
-					.map((task, index) => ({ ...task, order: index }))
-					.map((task) => ({ _id: task._id, order: task.order }));
-				updateColumns(changedList);
-				setIsLoading(true);
-			}
+	const moveColumnsHandler = (dragIndex: number, hoverIndex: number) => {
+		// if (columnList) {
+		const dragTask = columns.foundedColumns[dragIndex];
+		if (dragTask) {
+			const copyTasks = [...columns.foundedColumns];
+			const prevTask = copyTasks.splice(hoverIndex, 1, dragTask);
+			copyTasks.splice(dragIndex, 1, prevTask[0]);
+			const changedList: IColumnOrder[] = copyTasks
+				.map((task, index) => ({ ...task, order: index }))
+				.map((task) => ({ _id: task._id, order: task.order }));
+			updateColumns(changedList);
+			// setIsLoading(true);
 		}
+		// }
 	};
 	return (
 		<>
@@ -110,7 +113,7 @@ export function Columns() {
 			<BoardModal
 				isOpen={isOpen}
 				handleClose={handleClose}
-				currentTitle={boardTitle}
+				currentTitle={boards.foundedBoard.title}
 				currentId={id || ''}
 			/>
 			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>
@@ -119,7 +122,7 @@ export function Columns() {
 				</IconButton>
 				Board
 				{' '}
-				{boardTitle}
+				{boards.foundedBoard.title}
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
 					more_vert
 				</IconButton>
@@ -134,14 +137,14 @@ export function Columns() {
 				onClose={handleMenuClose}
 			/>
 			<Button onClick={handleOpen}>Add column</Button>
-			<ColumnsModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columnList?.length || 0} />
+			<ColumnsModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" currentBoardId={id || ''} currentOrder={columns.foundedColumns?.length || 0} />
 			<Box
 				sx={{
 					padding: '8px', display: 'flex', flexFlow: 'row nowrap', gap: '16px', justifyContent: 'flex-start', alignItems: 'flex-start', overflowX: 'auto', overflowY: 'hidden', height: '100%',
 				}}
 				ref={drop}
 			>
-				{!!columnList && columnList.map((task, index) => (
+				{columns.foundedColumns.map((task, index) => (
 					<TaskList
 						key={task._id}
 						title={task.title}

@@ -5,19 +5,24 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
-import { getBoardsByUserId } from '~api/boards';
+// import { getBoardsByUserId } from '~api/boards';
 import { BoardCard } from '~pages/Board/BoardCard';
+import { getBoardsByUserId } from '~store/boards/actions/getBoardsByUserId';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { IBoard } from '~types/api';
 
 import { BoardModal } from './BoardModal';
 
 export function Board() {
-	const [boards, setBoards] = useState<IBoard[] | null>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const getBoards = async () => {
+	const dispatch = useTypedDispatch();
+	const { isLoading, error, boards } = useTypedSelector((state) => state.boardsReducer);
+	// const [boards, setBoards] = useState<IBoard[] | null>([]);
+	const [isLoadin, setIsLoading] = useState(true);
+	const getBoards = () => {
 		const userId = '6387bf68b335c21a49214342'; // --------------------------- User Id
-		await getBoardsByUserId([userId]).then((res) => setBoards(res.data));
-		setIsLoading(false);
+		dispatch(getBoardsByUserId(userId));
+		// setIsLoading(false);
 	};
 	useEffect(() => {
 		getBoards();
@@ -27,7 +32,7 @@ export function Board() {
 	const handleOpen = () => setIsOpen(true);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
+		// setIsLoading(true);
 		getBoards();
 	};
 	return (
@@ -49,7 +54,7 @@ export function Board() {
 
 			<BoardModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" />
 			<Grid2 container spacing={2}>
-				{!!boards && boards.map((board) => (
+				{boards.foundedBoards.map((board) => (
 					<Grid2 key={board._id}>
 						<BoardCard
 							title={board.title}

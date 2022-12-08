@@ -4,8 +4,10 @@ import {
 	Box, Button, InputLabel, Modal, TextField,
 } from '@mui/material';
 
-import { createBoard, updateBoardById } from '~api/boards';
-import { IBoardParams } from '~types/api';
+import { createBoard } from '~store/boards/actions/createBoard';
+import { updateBoardById } from '~store/boards/actions/updateBoardById';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { ICreateBoard } from '~types/api/boards/createBoard';
 import { IBoardModalProps } from '~types/board';
 
 const style = {
@@ -24,12 +26,13 @@ const style = {
 export function BoardModal({
 	isOpen, handleClose, currentTitle, currentId,
 }: IBoardModalProps) {
+	const dispatch = useTypedDispatch();
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<IBoardParams>({
+	} = useForm<ICreateBoard>({
 		mode: 'onSubmit',
 		defaultValues: {
 			title: currentTitle === '' ? '' : currentTitle,
@@ -41,26 +44,26 @@ export function BoardModal({
 			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
 		}),
 	};
-	const onSubmit: SubmitHandler<IBoardParams> = async ({ title }: IBoardParams) => {
+	const onSubmit: SubmitHandler<ICreateBoard> = ({ title }: ICreateBoard) => {
 		if (currentTitle === '') {
-			const body: IBoardParams = {
+			const body: ICreateBoard = {
 				title,
 				owner: '6387bf68b335c21a49214342', // ---------------------User ID
 				users: [
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			await createBoard(body);
+			dispatch(createBoard(body));
 			handleClose();
 		} else if (currentTitle !== '') {
-			const body: IBoardParams = {
+			const body: ICreateBoard = {
 				title,
 				owner: '6387bf68b335c21a49214342', // ---------------------get User
 				users: [
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			await updateBoardById(body, currentId);
+			dispatch(updateBoardById({ body, boardId: currentId }));
 			handleClose();
 		}
 		reset();

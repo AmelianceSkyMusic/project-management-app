@@ -26,14 +26,16 @@
 	],
   "exclude": [
 		"node_modules",
-		"_legacy*",
+		"**/_legacy*/*",
 		"*._legacy*",
-		"_backup*",
+		"**/_backup*/*",
 		"*._backup*",
-		"./src/**/*.spec.ts",
-		"./src/**/*.test.ts",
-		"./src/**/*.spec.tsx",
-		"./src/**/*.test.tsx"
+		"**/_temp*/*",
+		"*._temp*",
+		"src/**/*.spec.ts",
+		"src/**/*.test.ts",
+		"src/**/*.spec.tsx",
+		"src/**/*.test.tsx"
 	],
 	"extends": "./tsconfig.paths.json"
 }
