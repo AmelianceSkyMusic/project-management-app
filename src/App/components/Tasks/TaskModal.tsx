@@ -4,7 +4,9 @@ import {
 	Box, Button, InputLabel, Modal, TextField,
 } from '@mui/material';
 
-import { createTask, updateTaskById } from '~api/tasks';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { createTask } from '~store/tasks/actions/createTask';
+import { updateTaskById } from '~store/tasks/actions/updateTaskById';
 import { ITaskParams, ITaskParamsUpdate } from '~types/api';
 import { ITaskModalProps } from '~types/tasks';
 
@@ -25,6 +27,7 @@ export function TasksModal({
 	isOpen, handleClose, currentTitle,
 	currentId, currentBoardId, currentOrder, currentDescription, currentColumnId,
 }: ITaskModalProps) {
+	const dispatch = useTypedDispatch();
 	const {
 		register,
 		handleSubmit,
@@ -47,7 +50,7 @@ export function TasksModal({
 			minLength: { value: 20, message: 'Мінімальна довжина 20 символів' },
 		}),
 	};
-	const onSubmit: SubmitHandler<ITaskParams> = async ({ title, description }: ITaskParams) => {
+	const onSubmit: SubmitHandler<ITaskParams> = ({ title, description }: ITaskParams) => {
 
 		if (currentTitle === '') {
 			const body: ITaskParams = {
@@ -59,7 +62,7 @@ export function TasksModal({
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			await createTask(body, currentBoardId, currentColumnId);
+			dispatch(createTask({ body, boardId: currentBoardId, columnId: currentColumnId }));
 			handleClose();
 		} else if (currentTitle !== '') {
 			const body: ITaskParamsUpdate = {
@@ -72,7 +75,9 @@ export function TasksModal({
 					'63872dd4b335c21a49214323', // -------------------------FIX users
 				],
 			};
-			await updateTaskById(body, currentBoardId, currentColumnId, currentId);
+			dispatch(updateTaskById({
+				body, boardId: currentBoardId, columnId: currentColumnId, taskId: currentId,
+			}));
 			handleClose();
 		}
 		reset();

@@ -9,11 +9,14 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import { XYCoord } from 'dnd-core';
 
-import { deleteColumnById } from '~api/columns';
-import {	getTasksInColumn, updateSetOfTasks } from '~api/tasks';
 import { ColumnsModal } from '~components/Columns/ColumnsModal';
 import { PopoverMenu } from '~components/PopoverMenu';
-import { ITask, ITasksOrder } from '~types/api';
+import { deleteColumnById } from '~store/columns/actions/deleteColumnById';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { getTasksInColumn } from '~store/tasks/actions/getTasksInColumn';
+import { updateSetOfTasks } from '~store/tasks/actions/updateSetOfTasks';
+import { ITasksOrder } from '~types/api';
 import {
 	ICollectedProps, IDragTask, IDropColumn, IDropResult,
 } from '~types/DnD';
@@ -25,15 +28,15 @@ import { TasksModal } from './TaskModal';
 export function TaskList({
 	title, _id, boardId, order, columnIndex, getColumns, moveColumnsHandler,
 }: ITaskListProps) {
+	const dispatch = useTypedDispatch();
+	const { isLoading, error, tasks } = useTypedSelector((state) => state.tasksReducer);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const [tasks, setTasks] = useState<ITask[] | null>([]);
 
-	const [isLoading, setIsLoading] = useState(true);
-	const getTasks = async (id: string) => {
-		await getTasksInColumn(boardId, id).then((resp) => {
-			if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
-		});
-		setIsLoading(false);
+	const getTasks = (columnId: string) => {
+		dispatch(getTasksInColumn({ boardId, columnId }));
+		// .then((resp) => {
+		// 	if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
+		// });
 	};
 	useEffect(() => {
 		getTasks(_id);
@@ -42,13 +45,11 @@ export function TaskList({
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
 		getColumns();
 	};
 	const [isTaskOpen, setIsTaskOpen] = useState(false);
 	const handleTaskClose = () => {
 		setIsTaskOpen(false);
-		setIsLoading(true);
 		getTasks(_id);
 	};
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,8 +61,7 @@ export function TaskList({
 		setAnchorEl(null);
 	};
 	const handleDeleteClick = async () => {
-		setIsLoading(true);
-		await deleteColumnById(boardId, _id);
+		dispatch(deleteColumnById({ boardId, columnId: _id }));
 		getColumns();
 		setAnchorEl(null);
 	};
@@ -82,22 +82,21 @@ export function TaskList({
 	});
 
 	const updateTasks = async (list: ITasksOrder[]) => {
-		await updateSetOfTasks(list);
+		dispatch(updateSetOfTasks(list));
 		getTasks(_id);
 	};
 
-	const moveCardHandler = async (dragIndex: number, hoverIndex: number) => {
-		if (tasks) {
-			const dragTask = tasks[dragIndex];
+	const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
+		if (tasks.all) {
+			const dragTask = tasks.all[dragIndex];
 			if (dragTask) {
-				const copyTasks = [...tasks];
+				const copyTasks = [...tasks.all];
 				const prevTask = copyTasks.splice(hoverIndex, 1, dragTask);
 				copyTasks.splice(dragIndex, 1, prevTask[0]);
 				const changedList: ITasksOrder[] = copyTasks
 					.map((task, index) => ({ ...task, order: index }))
 					.map((task) => ({ _id: task._id, order: task.order, columnId: task.columnId }));
 				updateTasks(changedList);
-				setIsLoading(true);
 			}
 		}
 	};
@@ -163,7 +162,7 @@ export function TaskList({
 				currentTitle=""
 				currentId=""
 				currentBoardId={boardId}
-				currentOrder={tasks?.length || 0}
+				currentOrder={tasks.all?.length || 0}
 				currentDescription=""
 				currentColumnId={_id}
 			/>
@@ -196,7 +195,7 @@ export function TaskList({
 					}}
 					ref={dropTask}
 				>
-					{!!tasks && tasks.map((task, index) => (
+					{tasks.all.map((task, index) => (
 						<TaskCard
 							key={task._id}
 							_id={task._id}
@@ -210,7 +209,6 @@ export function TaskList({
 							index={index}
 							moveCardHandler={moveCardHandler}
 							getTasks={getTasks}
-							setIsLoading={setIsLoading}
 						/>
 					))}
 					<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleAddClick}>

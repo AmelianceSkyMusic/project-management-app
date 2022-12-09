@@ -7,8 +7,10 @@ import {
 } from '@mui/material';
 import { XYCoord } from 'dnd-core';
 
-import { deleteTaskById, updateTaskById } from '~api/tasks';
 import { PopoverMenu } from '~components/PopoverMenu';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { deleteTaskById } from '~store/tasks/actions/deleteTaskById';
+import { updateTaskById } from '~store/tasks/actions/updateTaskById';
 import { ITaskParamsUpdate } from '~types/api';
 import {
 	ICollectedProps, IDragTask, IDropResult, IDropTask,
@@ -19,17 +21,18 @@ import { TasksModal } from './TaskModal';
 
 export function TaskCard({
 	_id, title, description, order, boardId,
-	columnId, index, moveCardHandler, getTasks, setIsLoading,
+	columnId, index, moveCardHandler, getTasks,
 }: ITaskProps) {
+	const dispatch = useTypedDispatch();
+	// const { isLoading, error, tasks } = useTypedSelector((state) => state.tasksReducer);
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
 		getTasks(columnId);
 	};
 
 	const taskRef = useRef<HTMLDivElement>(null);
-	const changeTaskColumn = async (currentId: string, resColumnId: string) => {
+	const changeTaskColumn = (currentId: string, resColumnId: string) => {
 		const body: ITaskParamsUpdate = {
 			title,
 			order,
@@ -40,8 +43,9 @@ export function TaskCard({
 				'63872dd4b335c21a49214323', // -------------------------FIX users
 			],
 		};
-		await updateTaskById(body, boardId, resColumnId, currentId);
-		setIsLoading(true);
+		dispatch(updateTaskById({
+			body, boardId, columnId: resColumnId, taskId: currentId,
+		}));
 		getTasks(columnId);
 		getTasks(resColumnId);
 	};
@@ -97,10 +101,9 @@ export function TaskCard({
 		setAnchorEl(null);
 		setIsOpen(true);
 	};
-	const handleDeleteClick = async () => {
-		await deleteTaskById(boardId, columnId, _id);
+	const handleDeleteClick = () => {
+		dispatch(deleteTaskById({ boardId, columnId, taskId: _id }));
 		setAnchorEl(null);
-		setIsLoading(true);
 		getTasks(columnId);
 	};
 	const handleMenuClose = () => {

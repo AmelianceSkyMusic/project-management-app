@@ -10,19 +10,16 @@ import { BoardCard } from '~pages/Board/BoardCard';
 import { getBoardsByUserId } from '~store/boards/actions/getBoardsByUserId';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
 import { useTypedSelector } from '~store/hooks/useTypedSelector';
-import { IBoard } from '~types/api';
 
 import { BoardModal } from './BoardModal';
 
 export function Board() {
 	const dispatch = useTypedDispatch();
 	const { isLoading, error, boards } = useTypedSelector((state) => state.boardsReducer);
-	// const [boards, setBoards] = useState<IBoard[] | null>([]);
-	const [isLoadin, setIsLoading] = useState(true);
+
 	const getBoards = () => {
 		const userId = '6387bf68b335c21a49214342'; // --------------------------- User Id
 		dispatch(getBoardsByUserId(userId));
-		// setIsLoading(false);
 	};
 	useEffect(() => {
 		getBoards();
@@ -32,7 +29,6 @@ export function Board() {
 	const handleOpen = () => setIsOpen(true);
 	const handleClose = () => {
 		setIsOpen(false);
-		// setIsLoading(true);
 		getBoards();
 	};
 	return (
@@ -60,7 +56,6 @@ export function Board() {
 							title={board.title}
 							id={board._id}
 							key={board._id}
-							setIsLoading={setIsLoading}
 							getBoards={getBoards}
 						/>
 					</Grid2>

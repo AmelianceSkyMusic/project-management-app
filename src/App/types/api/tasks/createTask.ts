@@ -9,7 +9,7 @@ export interface ICreateTask {
 		title: string;
 		order: number;
 		description: string;
-		userId: number;
+		userId: string;
 		users: string[];
 	};
 }
