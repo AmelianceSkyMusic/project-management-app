@@ -38,20 +38,25 @@ export function TaskList({
 		// 	if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
 		// });
 	};
+
 	useEffect(() => {
 		getTasks(_id);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	const [isOpen, setIsOpen] = useState(false);
+
 	const handleClose = () => {
 		setIsOpen(false);
 		getColumns();
 	};
+
 	const [isTaskOpen, setIsTaskOpen] = useState(false);
 	const handleTaskClose = () => {
 		setIsTaskOpen(false);
 		getTasks(_id);
 	};
+
 	const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		setAnchorEl(event.currentTarget);
@@ -60,18 +65,22 @@ export function TaskList({
 		setIsOpen(true);
 		setAnchorEl(null);
 	};
+
 	const handleDeleteClick = async () => {
 		dispatch(deleteColumnById({ boardId, columnId: _id }));
 		getColumns();
 		setAnchorEl(null);
 	};
+
 	const handleMenuClose = () => {
 		setAnchorEl(null);
 	};
+
 	const handleAddClick = () => {
 		setIsTaskOpen(true);
 		setAnchorEl(null);
 	};
+
 	const [, dropTask] = useDrop({
 		accept: 'task',
 		drop: () => ({ _id }),
@@ -87,10 +96,10 @@ export function TaskList({
 	};
 
 	const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
-		if (tasks.all) {
-			const dragTask = tasks.all[dragIndex];
+		if (tasks.inColumns[_id]) {
+			const dragTask = tasks.inColumns[_id][dragIndex];
 			if (dragTask) {
-				const copyTasks = [...tasks.all];
+				const copyTasks = [...tasks.inColumns[_id]];
 				const prevTask = copyTasks.splice(hoverIndex, 1, dragTask);
 				copyTasks.splice(dragIndex, 1, prevTask[0]);
 				const changedList: ITasksOrder[] = copyTasks
@@ -100,7 +109,9 @@ export function TaskList({
 			}
 		}
 	};
+
 	const columnRef = useRef<HTMLDivElement>(null);
+
 	const [, drop] = useDrop<IDropColumn>({
 		accept: 'column',
 		hover(item: IDropColumn, monitor: DropTargetMonitor) {
@@ -127,13 +138,18 @@ export function TaskList({
 			item.index = hoverIndex;
 		},
 	});
+
 	const [{ isDragging }, drag] = useDrag<IDragTask, IDropResult, ICollectedProps>(() => ({
 		type: 'column',
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),
 		}),
 	}));
+
 	drag(drop(columnRef));
+
+	console.log('tasks.inColumns?:', tasks.inColumns[_id]);
+
 	return (
 		<>
 			{isLoading && (
@@ -162,7 +178,7 @@ export function TaskList({
 				currentTitle=""
 				currentId=""
 				currentBoardId={boardId}
-				currentOrder={tasks.all?.length || 0}
+				currentOrder={tasks.inColumns[_id]?.length || 0}
 				currentDescription=""
 				currentColumnId={_id}
 			/>
@@ -195,7 +211,7 @@ export function TaskList({
 					}}
 					ref={dropTask}
 				>
-					{tasks.all.map((task, index) => (
+					{tasks.inColumns[_id] && tasks.inColumns[_id].map((task, index) => (
 						<TaskCard
 							key={task._id}
 							_id={task._id}
