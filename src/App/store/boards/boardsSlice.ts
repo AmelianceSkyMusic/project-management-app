@@ -17,15 +17,28 @@ import { getBoardsByIdsList } from './actions/getBoardsByIdsList';
 import { getBoardsByUserId } from './actions/getBoardsByUserId';
 import { updateBoardById } from './actions/updateBoardById';
 
-const initBoardSlice = {
+interface IInitBoardSlice {
+	isLoading: boolean;
+	error: string;
+	boards: {
+		all: IBoardResponse[];
+		lastCreated: IBoardResponse;
+		foundedBoard: IBoardResponse;
+		updatedBoard: IBoardResponse;
+		lastDeletedBoard: IBoardResponse;
+		foundedBoards: IBoardResponse[];
+	};
+}
+
+const initBoardSlice: IInitBoardSlice = {
 	isLoading: false,
 	error: '',
 	boards: {
 		all: [] as IBoardResponse[],
-		lastCreated: {},
+		lastCreated: {} as IBoardResponse,
 		foundedBoard: {} as IBoardResponse,
-		updatedBoard: {},
-		lastDeletedBoard: {},
+		updatedBoard: {} as IBoardResponse,
+		lastDeletedBoard: {} as IBoardResponse,
 		foundedBoards: [] as IBoardResponse[],
 	},
 };
@@ -64,7 +77,7 @@ export const boardsSlice = createSlice({
 			.addCase(createBoard.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.lastCreated = {};
+				state.boards.lastCreated = {} as IBoardResponse;
 			})
 			.addCase(
 				createBoard.fulfilled,
@@ -106,7 +119,7 @@ export const boardsSlice = createSlice({
 			.addCase(updateBoardById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.updatedBoard = {};
+				state.boards.updatedBoard = {} as IBoardResponse;
 			})
 			.addCase(
 				updateBoardById.fulfilled,
@@ -127,7 +140,7 @@ export const boardsSlice = createSlice({
 			.addCase(deleteBoardById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.lastDeletedBoard = {};
+				state.boards.lastDeletedBoard = {} as IBoardResponse;
 			})
 			.addCase(
 				deleteBoardById.fulfilled,

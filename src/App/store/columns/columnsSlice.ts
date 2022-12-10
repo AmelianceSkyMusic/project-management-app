@@ -19,15 +19,30 @@ import { getColumnsInBoard } from './actions/getColumnsInBoard';
 import { updateColumnById } from './actions/updateColumnById';
 import { updateSetOfColumns } from './actions/updateSetOfColumns';
 
-const initBoardSlice = {
+interface IInitBoardSlice {
+	isLoading: boolean;
+	error: string;
+	columns: {
+		all: IColumnResponse[];
+		createdColumn: IColumnResponse;
+		foundedColumn: IColumnResponse;
+		updatedColumn: IColumnResponse;
+		deletedColumn: IColumnResponse;
+		foundedColumns: IColumnResponse[];
+		updatedColumns: IColumnResponse[];
+		createdColumns: IColumnResponse[];
+	};
+}
+
+const initBoardSlice: IInitBoardSlice = {
 	isLoading: false,
 	error: '',
 	columns: {
 		all: [] as IColumnResponse[],
-		createdColumn: {},
-		foundedColumn: {},
-		updatedColumn: {},
-		deletedColumn: {},
+		createdColumn: {} as IColumnResponse,
+		foundedColumn: {} as IColumnResponse,
+		updatedColumn: {} as IColumnResponse,
+		deletedColumn: {} as IColumnResponse,
 		foundedColumns: [] as IColumnResponse[],
 		updatedColumns: [] as IColumnResponse[],
 		createdColumns: [] as IColumnResponse[],
@@ -66,7 +81,7 @@ export const columnsSlice = createSlice({
 			.addCase(createColumn.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.columns.createdColumn = {};
+				state.columns.createdColumn = {} as IColumnResponse;
 			})
 			.addCase(
 				createColumn.fulfilled,
@@ -87,7 +102,7 @@ export const columnsSlice = createSlice({
 			.addCase(getColumnById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.columns.foundedColumn = {};
+				state.columns.foundedColumn = {} as IColumnResponse;
 			})
 			.addCase(
 				getColumnById.fulfilled,
@@ -108,7 +123,7 @@ export const columnsSlice = createSlice({
 			.addCase(updateColumnById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.columns.updatedColumn = {};
+				state.columns.updatedColumn = {} as IColumnResponse;
 			})
 			.addCase(
 				updateColumnById.fulfilled,
@@ -129,7 +144,7 @@ export const columnsSlice = createSlice({
 			.addCase(deleteColumnById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.columns.deletedColumn = {};
+				state.columns.deletedColumn = {} as IColumnResponse;
 			})
 			.addCase(
 				deleteColumnById.fulfilled,
