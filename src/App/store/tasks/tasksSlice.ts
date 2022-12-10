@@ -23,7 +23,7 @@ const initBoardSlice = {
 	isLoading: false,
 	error: '',
 	tasks: {
-		all: [] as ITaskResponse[],
+		inColumns: {} as Record<TColumnId, ITaskResponse[]>,
 		createdTask: {},
 		foundedTask: {},
 		updatedTask: {},
@@ -44,13 +44,17 @@ export const tasksSlice = createSlice({
 			.addCase(getTasksInColumn.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.tasks.all = [];
+				state.tasks.inColumns = {} as Record<TColumnId, ITaskResponse[]>;
 			})
 			.addCase(
 				getTasksInColumn.fulfilled,
 				(state, action: PayloadAction<IGetTasksInColumnResponse | IError | unknown>) => {
 					if ((action?.payload as IGetTasksInColumnResponse)?.status === 200) {
-						state.tasks.all = (action?.payload as IGetTasksInColumnResponse).data;
+						const { data } = action?.payload as IGetTasksInColumnResponse;
+						if (data.length > 0) {
+							const { columnId } = data[0];
+							state.tasks.inColumns = { ...state.tasks.inColumns, [columnId]: data };
+						}
 					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
