@@ -19,6 +19,7 @@
 		"react-dnd-html5-backend": "^16.0.1",
 		"react-dom": "^18.2.0",
 		"react-hook-form": "^7.39.4",
+		"react-jwt": "^1.1.7",
 		"react-redux": "^8.0.5",
 		"react-router-dom": "^6.4.3",
 		"react-scripts": "5.0.1",
