@@ -40,9 +40,10 @@ export function Board() {
 					left: '50%',
 					display: 'flex',
 					background: 'transparent',
+					transform: 'translate(-50%, -50%)',
 				}}
 				>
-					<CircularProgress size={100} thickness={4} />
+					<CircularProgress size={48} thickness={4} />
 				</Box>
 			)}
 			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>Boards</Typography>

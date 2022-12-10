@@ -148,8 +148,6 @@ export function TaskList({
 
 	drag(drop(columnRef));
 
-	console.log('tasks.inColumns?:', tasks.inColumns[_id]);
-
 	return (
 		<>
 			{isLoading && (
@@ -159,9 +157,10 @@ export function TaskList({
 					left: '50%',
 					display: 'flex',
 					background: 'transparent',
+					transform: 'translate(-50%, -50%)',
 				}}
 				>
-					<CircularProgress size={100} thickness={4} />
+					<CircularProgress size={48} thickness={4} />
 				</Box>
 			)}
 			<ColumnsModal
