@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 import {
@@ -16,9 +17,9 @@ import { ISignInUser } from '~types/api/auth/signIn';
 
 export function SignIn() {
 	const { error } = useTypedSelector((state) => state.authReducer);
-	// console.log('auth:', auth);
 
 	const dispatch = useTypedDispatch();
+	const { t } = useTranslation();
 
 	const {
 		register,
@@ -37,13 +38,13 @@ export function SignIn() {
 
 	const registers = {
 		login: register('login', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: 'Невірно введена адреса електронної пошти!' },
+			required: t('required') || '',
+			pattern: { value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/i, message: t('emailPattern') },
 		}),
 		password: register('password', {
-			required: 'Поле таке пусте! Введіть більше символів!',
-			pattern: { value: /^[0-9]+$/i, message: 'Будь ласка, використовуйте тільки цифри!' },
-			minLength: { value: 12, message: 'Мінімальна довжина пароля 12 символів' },
+			required: t('required') || '',
+			pattern: { value: /^[0-9]+$/i, message: t('passwordPattern') },
+			minLength: { value: 12, message: t('passwordMinLength') },
 		}),
 	};
 
@@ -72,7 +73,7 @@ export function SignIn() {
 					display: 'flex', flexDirection: 'column', gap: 6, justifyContent: 'center',
 				}}
 			>
-				<Typography variant="h3">Вхід</Typography>
+				<Typography variant="h3">{t('enter')}</Typography>
 
 				<Box
 					component="form"
@@ -80,25 +81,31 @@ export function SignIn() {
 					sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
 				>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="login-login">Адреса електронної пошти:</InputLabel>
+						<InputLabel required htmlFor="login-login">
+							{t('email')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.login}
 							error={!!(errors && errors.login?.message)}
 							helperText={errors.login?.message || ' '}
 							id="login-login"
-							placeholder="Адреса електронної пошти"
+							placeholder={t('email') || 'email'}
 						/>
 					</Box>
 
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-						<InputLabel required htmlFor="login-password">Пароль:</InputLabel>
+						<InputLabel required htmlFor="login-password">
+							{t('password')}
+							:
+						</InputLabel>
 						<TextField
 							{...registers.password}
 							error={!!(errors && errors.password?.message)}
 							helperText={errors.password?.message || ' '}
 							id="login-password"
 							type="password"
-							placeholder="Пароль"
+							placeholder={t('password') || 'password'}
 						/>
 					</Box>
 
@@ -111,10 +118,10 @@ export function SignIn() {
 					}}
 					>
 						<Typography variant="body1" sx={{ order: { ss: 2, sm: 1 } }}>
-							Немає аккаунту?
+							{t('loginQuestion')}
 							{' '}
 							<Link component={NavLink} to="/signup">
-								Створити аккаунт
+								{t('signupAdd')}
 							</Link>
 						</Typography>
 						<Button
@@ -124,7 +131,7 @@ export function SignIn() {
 							size="large"
 							sx={{ width: { ss: '100%', sm: 'auto' }, order: { ss: 1, sm: 2 } }}
 						>
-							Увійти
+							{t('login')}
 						</Button>
 					</Box>
 				</Box>

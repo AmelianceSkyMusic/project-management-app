@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
+import { useTranslation } from 'react-i18next';
 
 import {
 	Card, CardContent, CardHeader, IconButton,
@@ -26,6 +27,8 @@ export function TaskCard({
 }: ITaskProps) {
 	const dispatch = useTypedDispatch();
 	const { auth } = useTypedSelector((state) => state.authReducer);
+
+	const { t } = useTranslation();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
@@ -139,8 +142,8 @@ export function TaskCard({
 				<PopoverMenu
 					anchorEl={anchorEl}
 					menuItems={[
-						['Change', handleChangeClick],
-						['Delete', handleDeleteClick],
+						[t('change'), handleChangeClick],
+						[t('delete'), handleDeleteClick],
 					]}
 					open={!!anchorEl}
 					onClose={handleMenuClose}
