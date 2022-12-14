@@ -1,30 +1,26 @@
-import { IBoard, IBoardParams } from '../types/api';
-import { deleteCommon } from './common/delete';
-import { getCommon } from './common/get';
-import { arrToStr } from './common/helpers';
-import { postCommon } from './common/post';
-import { putCommon } from './common/put';
+import { ICreateBoard } from '~types/api/boards/createBoard';
+import { IUpdateBoardById } from '~types/api/boards/updateBoardById';
 
-type TAllBoards = Promise<{
-   data: IBoard[];
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+import { deleteCommon } from './common/deleteCommon';
+import { getCommon } from './common/getCommon';
+import { postCommon } from './common/postCommon';
+import { putCommon } from './common/putCommon';
+import { arrToStr } from './helpers/arrToStr';
 
-type TBoard = Promise<{
-   data: IBoardParams;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+export const getAllBoards = () => getCommon('/boards');
+export const createBoard = (body: ICreateBoard) => postCommon(body, '/boards');
+export const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`);
+export const updateBoardById = ({ body, boardId }: IUpdateBoardById) => putCommon(body, `/boards/${boardId}`);
+export const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`);
+export const getBoardsByIdsList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`);
+export const getBoardsByUserId = (userId: string) => getCommon(`/boardsSet/${(userId)}`);
 
-export const getAllBoards = () => getCommon('/boards') as TAllBoards;
-export const createBoard = (body: IBoardParams) => postCommon(body, '/boards') as TBoard;
-export const getBoardById = (boardId: string) => getCommon(`/boards/${boardId}`) as TBoard;
-export const updateBoardById = (body: IBoardParams, boardId: string) => putCommon(body, `/boards/${boardId}`) as TBoard;
-export const deleteBoardById = (boardId: string) => deleteCommon(`/boards/${boardId}`) as TBoard;
-export const getBoardsByIdList = (boardId: string[]) => getCommon(`/boardsSet?ids=${arrToStr(boardId)}`) as TAllBoards;
-export const getBoardsByUserId = (userId: string[]) => getCommon(`/boardsSet/${(userId)}`) as TAllBoards;
+export const boards = {
+	getAllBoards,
+	createBoard,
+	getBoardById,
+	updateBoardById,
+	deleteBoardById,
+	getBoardsByIdsList,
+	getBoardsByUserId,
+};

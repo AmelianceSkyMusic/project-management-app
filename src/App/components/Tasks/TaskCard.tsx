@@ -7,8 +7,11 @@ import {
 } from '@mui/material';
 import { XYCoord } from 'dnd-core';
 
-import { deleteTaskById, updateTaskById } from '~api/tasks';
 import { PopoverMenu } from '~components/PopoverMenu';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { deleteTaskById } from '~store/tasks/actions/deleteTaskById';
+import { updateTaskById } from '~store/tasks/actions/updateTaskById';
 import { ITaskParamsUpdate } from '~types/api';
 import {
 	ICollectedProps, IDragTask, IDropResult, IDropTask,
@@ -19,31 +22,32 @@ import { TasksModal } from './TaskModal';
 
 export function TaskCard({
 	_id, title, description, order, boardId,
-	columnId, index, moveCardHandler, getTasks, setIsLoading,
+	columnId, index, moveCardHandler, getTasks, getColumns,
 }: ITaskProps) {
+	const dispatch = useTypedDispatch();
+	const { auth } = useTypedSelector((state) => state.authReducer);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
 		getTasks(columnId);
 	};
 
 	const taskRef = useRef<HTMLDivElement>(null);
-	const changeTaskColumn = async (currentId: string, resColumnId: string) => {
+	const changeTaskColumn = (currentId: string, resColumnId: string) => {
 		const body: ITaskParamsUpdate = {
 			title,
 			order,
 			description,
 			columnId: resColumnId,
-			userId: '6387bf68b335c21a49214342', // ---------------------User ID
+			userId: auth.id,
 			users: [
-				'63872dd4b335c21a49214323', // -------------------------FIX users
+				auth.id,
 			],
 		};
-		await updateTaskById(body, boardId, resColumnId, currentId);
-		setIsLoading(true);
-		getTasks(columnId);
-		getTasks(resColumnId);
+		dispatch(updateTaskById({
+			body, boardId, columnId: resColumnId, taskId: currentId,
+		})).then(() => getColumns());
 	};
 	const [, dropTask] = useDrop<IDropTask>({
 		accept: 'task',
@@ -97,11 +101,9 @@ export function TaskCard({
 		setAnchorEl(null);
 		setIsOpen(true);
 	};
-	const handleDeleteClick = async () => {
-		await deleteTaskById(boardId, columnId, _id);
+	const handleDeleteClick = () => {
+		dispatch(deleteTaskById({ boardId, columnId, taskId: _id })).then(() => getTasks(columnId));
 		setAnchorEl(null);
-		setIsLoading(true);
-		getTasks(columnId);
 	};
 	const handleMenuClose = () => {
 		setAnchorEl(null);

@@ -14,13 +14,12 @@ import { IBoardCardProps } from '~types/board';
 import { BoardModal } from './BoardModal';
 
 export function BoardCard({
-	title, id, setIsLoading, getBoards,
+	title, id, getBoards,
 }: IBoardCardProps) {
 	const { t } = useTranslation();
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
 		getBoards();
 	};
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,7 +36,6 @@ export function BoardCard({
 	};
 	const handleDeleteClick = async () => {
 		await deleteBoardById(id);
-		setIsLoading(true);
 		getBoards();
 		setAnchorEl(null);
 	};

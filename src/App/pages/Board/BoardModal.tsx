@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -5,8 +6,11 @@ import {
 	Box, Button, InputLabel, Modal, TextField,
 } from '@mui/material';
 
-import { createBoard, updateBoardById } from '~api/boards';
-import { IBoardParams } from '~types/api';
+import { createBoard } from '~store/boards/actions/createBoard';
+import { updateBoardById } from '~store/boards/actions/updateBoardById';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { ICreateBoard } from '~types/api/boards/createBoard';
 import { IBoardModalProps } from '~types/board';
 
 const style = {
@@ -25,13 +29,17 @@ const style = {
 export function BoardModal({
 	isOpen, handleClose, currentTitle, currentId,
 }: IBoardModalProps) {
+	const dispatch = useTypedDispatch();
+	const { auth } = useTypedSelector((state) => state.authReducer);
+	const { users } = useTypedSelector((state) => state.usersReducer);
+
 	const { t } = useTranslation();
 	const {
 		register,
 		handleSubmit,
 		reset,
 		formState: { errors },
-	} = useForm<IBoardParams>({
+	} = useForm<ICreateBoard>({
 		mode: 'onSubmit',
 		defaultValues: {
 			title: currentTitle === '' ? '' : currentTitle,
@@ -43,27 +51,27 @@ export function BoardModal({
 			minLength: { value: 3, message: t('titleMinLength') },
 		}),
 	};
-	const onSubmit: SubmitHandler<IBoardParams> = async ({ title }: IBoardParams) => {
+	const onSubmit: SubmitHandler<ICreateBoard> = ({ title }: ICreateBoard) => {
 		if (currentTitle === '') {
-			const body: IBoardParams = {
+			const body: ICreateBoard = {
 				title,
-				owner: '6387bf68b335c21a49214342', // ---------------------User ID
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				owner: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			await createBoard(body);
-			handleClose();
+			dispatch(createBoard(body)).then(() => handleClose());
 		} else if (currentTitle !== '') {
-			const body: IBoardParams = {
+			const body: ICreateBoard = {
 				title,
-				owner: '6387bf68b335c21a49214342', // ---------------------get User
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				owner: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			await updateBoardById(body, currentId);
-			handleClose();
+			dispatch(updateBoardById({ body, boardId: currentId })).then(() => handleClose());
 		}
 		reset();
 	};

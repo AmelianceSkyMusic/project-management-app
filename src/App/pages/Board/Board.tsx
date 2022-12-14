@@ -6,30 +6,33 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
-import { getBoardsByUserId } from '~api/boards';
 import { BoardCard } from '~pages/Board/BoardCard';
-import { IBoard } from '~types/api';
+import { getBoardsByUserId } from '~store/boards/actions/getBoardsByUserId';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { getAllUsers } from '~store/users/actions/getAllUsers';
 
 import { BoardModal } from './BoardModal';
 
 export function Board() {
 	const { t } = useTranslation();
-	const [boards, setBoards] = useState<IBoard[] | null>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const getBoards = async () => {
-		const userId = '6387bf68b335c21a49214342'; // --------------------------- User Id
-		await getBoardsByUserId([userId]).then((res) => setBoards(res.data));
-		setIsLoading(false);
+	const dispatch = useTypedDispatch();
+	const { isLoading, boards } = useTypedSelector((state) => state.boardsReducer);
+	const { auth } = useTypedSelector((state) => state.authReducer);
+
+	const getBoards = () => {
+		dispatch(getBoardsByUserId(auth.id));
+		dispatch(getAllUsers());
 	};
 	useEffect(() => {
 		getBoards();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const handleOpen = () => setIsOpen(true);
 	const handleClose = () => {
 		setIsOpen(false);
-		setIsLoading(true);
 		getBoards();
 	};
 	return (
@@ -41,9 +44,10 @@ export function Board() {
 					left: '50%',
 					display: 'flex',
 					background: 'transparent',
+					transform: 'translate(-50%, -50%)',
 				}}
 				>
-					<CircularProgress size={100} thickness={4} />
+					<CircularProgress size={48} thickness={4} />
 				</Box>
 			)}
 			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>{t('boards')}</Typography>
@@ -51,13 +55,12 @@ export function Board() {
 
 			<BoardModal isOpen={isOpen} handleClose={handleClose} currentTitle="" currentId="" />
 			<Grid2 container spacing={2}>
-				{!!boards && boards.map((board) => (
+				{boards.foundedBoards.map((board) => (
 					<Grid2 key={board._id}>
 						<BoardCard
 							title={board.title}
 							id={board._id}
 							key={board._id}
-							setIsLoading={setIsLoading}
 							getBoards={getBoards}
 						/>
 					</Grid2>

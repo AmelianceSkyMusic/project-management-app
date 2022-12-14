@@ -1,33 +1,29 @@
-import {
-	IColumn, IColumnOrder, IColumnParams, IQueryData,
-} from '../types/api';
-import { deleteCommon } from './common/delete';
-import { getCommon } from './common/get';
-import { patchCommon } from './common/patch';
-import { postCommon } from './common/post';
-import { putCommon } from './common/put';
+import { TCreateSetOfColumns } from '~types/api/columns/createSetOfColumns';
+import { TGetColumnsByIdsListOrUserId } from '~types/api/columns/getColumnsByIdsListOrUserId';
 
-type TAllColumns = Promise<{
-   data: IColumn[] ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+import { IColumnOrder, IColumnParams } from '../types/api';
+import { deleteCommon } from './common/deleteCommon';
+import { getCommon } from './common/getCommon';
+import { patchCommon } from './common/patchCommon';
+import { postCommon } from './common/postCommon';
+import { putCommon } from './common/putCommon';
 
-type TColumn = Promise<{
-   data: IColumn ;
-   status: number;
-} | {
-   data: null;
-   status: number | null;
-}>
+export const getColumnsInBoard = (boardId: string) => getCommon(`/boards/${boardId}/columns`);
+export const createColumn = (body: IColumnParams, boardId: string) => postCommon(body, `/boards/${boardId}/columns`);
+export const getColumnById = (boardId: string, columnId: string) => getCommon(`/boards/${boardId}/columns/${columnId}`);
+export const updateColumnById = (body: IColumnParams, boardId: string, columnId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}`);
+export const deleteColumnById = (boardId: string, columnId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}`);
+export const getColumnsByIdsListOrUserId = (queryData: TGetColumnsByIdsListOrUserId) => getCommon(`/columnsSet?${queryData.toString()}`); // !
+export const updateSetOfColumns = (body: IColumnOrder[]) => patchCommon(body, '/columnsSet');
+export const createSetOfColumns = (body: TCreateSetOfColumns) => postCommon(body, '/columnsSet'); // !
 
-export const getColumnsInBoard = (boardId: string) => getCommon(`/boards/${boardId}/columns`) as TAllColumns;
-export const createColumn = (body: IColumnParams, boardId: string) => postCommon(body, `/boards/${boardId}/columns`) as TColumn;
-export const getColumnById = (boardId: string, columnId: string) => getCommon(`/boards/${boardId}/columns/${columnId}`) as TColumn;
-export const updateColumnById = (body: IColumnParams, boardId: string, columnId: string) => putCommon(body, `/boards/${boardId}/columns/${columnId}`) as TColumn;
-export const deleteColumnById = (boardId: string, columnId: string) => deleteCommon(`/boards/${boardId}/columns/${columnId}`) as TColumn;
-export const getColumnsByIdsListOrUserId = (queryData: IQueryData) => getCommon(`/columnsSet?${new URLSearchParams(queryData).toString()}`) as TAllColumns;
-export const updateSetOfColumns = (body: IColumnOrder[]) => patchCommon(body, '/columnsSet') as TAllColumns;
-export const createSetOfColumns = (body: IColumn) => postCommon(body, '/columnsSet') as TAllColumns;
+export const columns = {
+	getColumnsInBoard,
+	createColumn,
+	getColumnById,
+	updateColumnById,
+	deleteColumnById,
+	getColumnsByIdsListOrUserId,
+	updateSetOfColumns,
+	createSetOfColumns,
+};

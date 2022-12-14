@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -5,7 +6,10 @@ import {
 	Box, Button, InputLabel, Modal, TextField,
 } from '@mui/material';
 
-import { createTask, updateTaskById } from '~api/tasks';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { createTask } from '~store/tasks/actions/createTask';
+import { updateTaskById } from '~store/tasks/actions/updateTaskById';
 import { ITaskParams, ITaskParamsUpdate } from '~types/api';
 import { ITaskModalProps } from '~types/tasks';
 
@@ -26,6 +30,10 @@ export function TasksModal({
 	isOpen, handleClose, currentTitle,
 	currentId, currentBoardId, currentOrder, currentDescription, currentColumnId,
 }: ITaskModalProps) {
+	const dispatch = useTypedDispatch();
+	const { auth } = useTypedSelector((state) => state.authReducer);
+	const { users } = useTypedSelector((state) => state.usersReducer);
+
 	const { t } = useTranslation();
 	const {
 		register,
@@ -49,33 +57,36 @@ export function TasksModal({
 			minLength: { value: 10, message: t('descriptionMinLength') },
 		}),
 	};
-	const onSubmit: SubmitHandler<ITaskParams> = async ({ title, description }: ITaskParams) => {
+	const onSubmit: SubmitHandler<ITaskParams> = ({ title, description }: ITaskParams) => {
 
 		if (currentTitle === '') {
 			const body: ITaskParams = {
 				title,
 				order: currentOrder,
 				description,
-				userId: '6387bf68b335c21a49214342', // ---------------------User ID
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				userId: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			await createTask(body, currentBoardId, currentColumnId);
-			handleClose();
+			dispatch(createTask({ body, boardId: currentBoardId, columnId: currentColumnId }))
+				.then(() => handleClose());
 		} else if (currentTitle !== '') {
 			const body: ITaskParamsUpdate = {
 				title,
 				order: currentOrder,
 				description,
 				columnId: currentColumnId,
-				userId: '6387bf68b335c21a49214342', // ---------------------User ID
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				userId: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			await updateTaskById(body, currentBoardId, currentColumnId, currentId);
-			handleClose();
+			dispatch(updateTaskById({
+				body, boardId: currentBoardId, columnId: currentColumnId, taskId: currentId,
+			})).then(() => handleClose());
 		}
 		reset();
 	};

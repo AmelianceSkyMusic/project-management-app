@@ -5,7 +5,9 @@ import {
 	Box, Button, InputLabel, Modal, TextField,
 } from '@mui/material';
 
-import { createColumn, updateColumnById } from '~api/columns';
+import { createColumn } from '~store/columns/actions/createColumn';
+import { updateColumnById } from '~store/columns/actions/updateColumnById';
+import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
 import { IColumnParams } from '~types/api';
 import { IColumnModalProps } from '~types/column';
 
@@ -25,6 +27,7 @@ const style = {
 export function ColumnsModal({
 	isOpen, handleClose, currentTitle, currentId, currentBoardId, currentOrder,
 }: IColumnModalProps) {
+	const dispatch = useTypedDispatch();
 	const { t } = useTranslation();
 	const {
 		register,
@@ -43,17 +46,16 @@ export function ColumnsModal({
 			minLength: { value: 3, message: t('titleMinLength') },
 		}),
 	};
-	const onSubmit: SubmitHandler<IColumnParams> = async ({ title }: IColumnParams) => {
+	const onSubmit: SubmitHandler<IColumnParams> = ({ title }: IColumnParams) => {
 		const body: IColumnParams = {
 			title,
 			order: currentOrder,
 		};
 		if (currentTitle === '') {
-			await createColumn(body, currentBoardId);
-			handleClose();
+			dispatch(createColumn({ body, boardId: currentBoardId })).then(() => handleClose());
 		} else if (currentTitle !== '') {
-			await updateColumnById(body, currentBoardId, currentId);
-			handleClose();
+			dispatch(updateColumnById({ body, boardId: currentBoardId, columnId: currentId }))
+				.then(() => handleClose());
 		}
 		reset();
 	};

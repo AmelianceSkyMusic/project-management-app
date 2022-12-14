@@ -29,7 +29,7 @@ export function Header() {
 					<AppLogo />
 				</Box>
 				<Box sx={{ display: { ss: 'none', md: 'flex' }, gap: 2 }}>
-					{pathname !== '/login' && (
+					{pathname !== '/signin' && (
 						<Link
 							sx={{
 								my: 2,
@@ -41,7 +41,7 @@ export function Header() {
 							}}
 							underline="hover"
 							component={NavLink}
-							to="/login"
+							to="/signin"
 						>
 							{t('login')}
 						</Link>
@@ -93,7 +93,7 @@ export function Header() {
 								<Symbol><DashboardIcon /></Symbol>
 							</IconButton>
 						)}
-					{pathname !== '/login' && pathname !== '/signup' && <HeaderMenu />}
+					{pathname !== '/signin' && pathname !== '/signup' && <HeaderMenu />}
 					<HeaderLanguage />
 				</Box>
 			</Toolbar>
