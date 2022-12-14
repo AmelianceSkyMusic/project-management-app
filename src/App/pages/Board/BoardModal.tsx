@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -7,6 +8,7 @@ import {
 import { createBoard } from '~store/boards/actions/createBoard';
 import { updateBoardById } from '~store/boards/actions/updateBoardById';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { ICreateBoard } from '~types/api/boards/createBoard';
 import { IBoardModalProps } from '~types/board';
 
@@ -27,6 +29,9 @@ export function BoardModal({
 	isOpen, handleClose, currentTitle, currentId,
 }: IBoardModalProps) {
 	const dispatch = useTypedDispatch();
+	const { auth } = useTypedSelector((state) => state.authReducer);
+	const { users } = useTypedSelector((state) => state.usersReducer);
+
 	const {
 		register,
 		handleSubmit,
@@ -48,23 +53,23 @@ export function BoardModal({
 		if (currentTitle === '') {
 			const body: ICreateBoard = {
 				title,
-				owner: '6387bf68b335c21a49214342', // ---------------------User ID
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				owner: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			dispatch(createBoard(body));
-			handleClose();
+			dispatch(createBoard(body)).then(() => handleClose());
 		} else if (currentTitle !== '') {
 			const body: ICreateBoard = {
 				title,
-				owner: '6387bf68b335c21a49214342', // ---------------------get User
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				owner: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			dispatch(updateBoardById({ body, boardId: currentId }));
-			handleClose();
+			dispatch(updateBoardById({ body, boardId: currentId })).then(() => handleClose());
 		}
 		reset();
 	};

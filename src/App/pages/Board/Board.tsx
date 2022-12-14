@@ -10,21 +10,24 @@ import { BoardCard } from '~pages/Board/BoardCard';
 import { getBoardsByUserId } from '~store/boards/actions/getBoardsByUserId';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
 import { useTypedSelector } from '~store/hooks/useTypedSelector';
+import { getAllUsers } from '~store/users/actions/getAllUsers';
 
 import { BoardModal } from './BoardModal';
 
 export function Board() {
 	const dispatch = useTypedDispatch();
-	const { isLoading, error, boards } = useTypedSelector((state) => state.boardsReducer);
+	const { isLoading, boards } = useTypedSelector((state) => state.boardsReducer);
+	const { auth } = useTypedSelector((state) => state.authReducer);
 
 	const getBoards = () => {
-		const userId = '6387bf68b335c21a49214342'; // --------------------------- User Id
-		dispatch(getBoardsByUserId(userId));
+		dispatch(getBoardsByUserId(auth.id));
+		dispatch(getAllUsers());
 	};
 	useEffect(() => {
 		getBoards();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const handleOpen = () => setIsOpen(true);
 	const handleClose = () => {

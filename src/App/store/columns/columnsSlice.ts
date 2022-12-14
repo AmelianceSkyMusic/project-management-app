@@ -66,7 +66,8 @@ export const columnsSlice = createSlice({
 				getColumnsInBoard.fulfilled,
 				(state, action: PayloadAction<IGetColumnsInBoardResponse | IError | unknown>) => {
 					if ((action?.payload as IGetColumnsInBoardResponse)?.status === 200) {
-						state.columns.all = (action?.payload as IGetColumnsInBoardResponse).data;
+						state.columns.all = (action?.payload as IGetColumnsInBoardResponse).data
+							.sort((a, b) => a.order - b.order);
 					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}

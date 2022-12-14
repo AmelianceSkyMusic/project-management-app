@@ -67,7 +67,10 @@ export const tasksSlice = createSlice({
 						const { data } = action?.payload as IGetTasksInColumnResponse;
 						if (data.length > 0) {
 							const { columnId } = data[0];
-							state.tasks.inColumns = { ...state.tasks.inColumns, [columnId]: data };
+							state.tasks.inColumns = {
+								...state.tasks.inColumns,
+								[columnId]: data.sort((a, b) => a.order - b.order),
+							};
 						}
 					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;

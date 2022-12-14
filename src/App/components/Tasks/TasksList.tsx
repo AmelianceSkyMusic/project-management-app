@@ -29,14 +29,11 @@ export function TaskList({
 	title, _id, boardId, order, columnIndex, getColumns, moveColumnsHandler,
 }: ITaskListProps) {
 	const dispatch = useTypedDispatch();
-	const { isLoading, error, tasks } = useTypedSelector((state) => state.tasksReducer);
+	const { isLoading, tasks } = useTypedSelector((state) => state.tasksReducer);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 	const getTasks = (columnId: string) => {
 		dispatch(getTasksInColumn({ boardId, columnId }));
-		// .then((resp) => {
-		// 	if (resp.data) setTasks(resp.data.sort((a, b) => a.order - b.order));
-		// });
 	};
 
 	useEffect(() => {
@@ -67,8 +64,7 @@ export function TaskList({
 	};
 
 	const handleDeleteClick = async () => {
-		dispatch(deleteColumnById({ boardId, columnId: _id }));
-		getColumns();
+		dispatch(deleteColumnById({ boardId, columnId: _id })).then(() => getColumns());
 		setAnchorEl(null);
 	};
 
@@ -91,8 +87,7 @@ export function TaskList({
 	});
 
 	const updateTasks = async (list: ITasksOrder[]) => {
-		dispatch(updateSetOfTasks(list));
-		getTasks(_id);
+		dispatch(updateSetOfTasks(list)).then(() => getColumns());
 	};
 
 	const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
@@ -224,6 +219,7 @@ export function TaskList({
 							index={index}
 							moveCardHandler={moveCardHandler}
 							getTasks={getTasks}
+							getColumns={getColumns}
 						/>
 					))}
 					<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleAddClick}>

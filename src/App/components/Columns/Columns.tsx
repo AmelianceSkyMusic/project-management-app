@@ -22,7 +22,7 @@ import { ColumnsModal } from './ColumnsModal';
 
 export function Columns() {
 	const dispatch = useTypedDispatch();
-	const { isLoading, error, columns } = useTypedSelector((state) => state.columnsReducer);
+	const { isLoading, columns } = useTypedSelector((state) => state.columnsReducer);
 	const { boards } = useTypedSelector((state) => state.boardsReducer);
 
 	const { id } = useParams<string>();
@@ -55,9 +55,8 @@ export function Columns() {
 	};
 	const handleDeleteClick = async () => {
 		if (id) {
-			dispatch(deleteBoardById(id));
+			dispatch(deleteBoardById(id)).then(() => goBack());
 		}
-		goBack();
 		setAnchorEl(null);
 	};
 	const handleMenuClose = () => {
@@ -71,8 +70,7 @@ export function Columns() {
 	});
 
 	const updateColumns = (list: IColumnOrder[]) => {
-		dispatch(updateSetOfColumns(list));
-		getColumns();
+		dispatch(updateSetOfColumns(list)).then(() => getColumns());
 	};
 
 	const moveColumnsHandler = (dragIndex: number, hoverIndex: number) => {

@@ -50,11 +50,10 @@ export function ColumnsModal({
 			order: currentOrder,
 		};
 		if (currentTitle === '') {
-			dispatch(createColumn({ body, boardId: currentBoardId }));
-			handleClose();
+			dispatch(createColumn({ body, boardId: currentBoardId })).then(() => handleClose());
 		} else if (currentTitle !== '') {
-			dispatch(updateColumnById({ body, boardId: currentBoardId, columnId: currentId }));
-			handleClose();
+			dispatch(updateColumnById({ body, boardId: currentBoardId, columnId: currentId }))
+				.then(() => handleClose());
 		}
 		reset();
 	};

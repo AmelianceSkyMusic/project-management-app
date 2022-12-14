@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
@@ -5,6 +6,7 @@ import {
 } from '@mui/material';
 
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { createTask } from '~store/tasks/actions/createTask';
 import { updateTaskById } from '~store/tasks/actions/updateTaskById';
 import { ITaskParams, ITaskParamsUpdate } from '~types/api';
@@ -28,6 +30,9 @@ export function TasksModal({
 	currentId, currentBoardId, currentOrder, currentDescription, currentColumnId,
 }: ITaskModalProps) {
 	const dispatch = useTypedDispatch();
+	const { auth } = useTypedSelector((state) => state.authReducer);
+	const { users } = useTypedSelector((state) => state.usersReducer);
+
 	const {
 		register,
 		handleSubmit,
@@ -57,28 +62,29 @@ export function TasksModal({
 				title,
 				order: currentOrder,
 				description,
-				userId: '6387bf68b335c21a49214342', // ---------------------User ID
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				userId: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
-			dispatch(createTask({ body, boardId: currentBoardId, columnId: currentColumnId }));
-			handleClose();
+			dispatch(createTask({ body, boardId: currentBoardId, columnId: currentColumnId }))
+				.then(() => handleClose());
 		} else if (currentTitle !== '') {
 			const body: ITaskParamsUpdate = {
 				title,
 				order: currentOrder,
 				description,
 				columnId: currentColumnId,
-				userId: '6387bf68b335c21a49214342', // ---------------------User ID
-				users: [
-					'63872dd4b335c21a49214323', // -------------------------FIX users
-				],
+				userId: auth.id,
+				users: users.all.map((user) => user._id),
+				// [
+				// 	auth.id,
+				// ],
 			};
 			dispatch(updateTaskById({
 				body, boardId: currentBoardId, columnId: currentColumnId, taskId: currentId,
-			}));
-			handleClose();
+			})).then(() => handleClose());
 		}
 		reset();
 	};

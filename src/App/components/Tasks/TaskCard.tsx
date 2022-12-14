@@ -9,6 +9,7 @@ import { XYCoord } from 'dnd-core';
 
 import { PopoverMenu } from '~components/PopoverMenu';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
+import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { deleteTaskById } from '~store/tasks/actions/deleteTaskById';
 import { updateTaskById } from '~store/tasks/actions/updateTaskById';
 import { ITaskParamsUpdate } from '~types/api';
@@ -21,10 +22,11 @@ import { TasksModal } from './TaskModal';
 
 export function TaskCard({
 	_id, title, description, order, boardId,
-	columnId, index, moveCardHandler, getTasks,
+	columnId, index, moveCardHandler, getTasks, getColumns,
 }: ITaskProps) {
 	const dispatch = useTypedDispatch();
-	// const { isLoading, error, tasks } = useTypedSelector((state) => state.tasksReducer);
+	const { auth } = useTypedSelector((state) => state.authReducer);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const handleClose = () => {
 		setIsOpen(false);
@@ -38,16 +40,14 @@ export function TaskCard({
 			order,
 			description,
 			columnId: resColumnId,
-			userId: '6387bf68b335c21a49214342', // ---------------------User ID
+			userId: auth.id,
 			users: [
-				'63872dd4b335c21a49214323', // -------------------------FIX users
+				auth.id,
 			],
 		};
 		dispatch(updateTaskById({
 			body, boardId, columnId: resColumnId, taskId: currentId,
-		}));
-		getTasks(columnId);
-		getTasks(resColumnId);
+		})).then(() => getColumns());
 	};
 	const [, dropTask] = useDrop<IDropTask>({
 		accept: 'task',
@@ -102,9 +102,8 @@ export function TaskCard({
 		setIsOpen(true);
 	};
 	const handleDeleteClick = () => {
-		dispatch(deleteTaskById({ boardId, columnId, taskId: _id }));
+		dispatch(deleteTaskById({ boardId, columnId, taskId: _id })).then(() => getTasks(columnId));
 		setAnchorEl(null);
-		getTasks(columnId);
 	};
 	const handleMenuClose = () => {
 		setAnchorEl(null);
