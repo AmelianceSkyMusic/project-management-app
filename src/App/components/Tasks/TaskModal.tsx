@@ -41,10 +41,11 @@ export function TasksModal({
 	} = useForm<ITaskParams>({
 		mode: 'onSubmit',
 		defaultValues: {
-			title: currentTitle === '' ? '' : currentTitle,
-			description: currentDescription === '' ? '' : currentDescription,
+			title: currentTitle ?? '',
+			description: currentDescription ?? '',
 		},
 	});
+
 	const registers = {
 		title: register('title', {
 			required: 'Поле таке пусте! Введіть більше символів!',
@@ -55,8 +56,8 @@ export function TasksModal({
 			minLength: { value: 20, message: 'Мінімальна довжина 20 символів' },
 		}),
 	};
-	const onSubmit: SubmitHandler<ITaskParams> = ({ title, description }: ITaskParams) => {
 
+	const onSubmit: SubmitHandler<ITaskParams> = ({ title, description }: ITaskParams) => {
 		if (currentTitle === '') {
 			const body: ITaskParams = {
 				title,
@@ -64,9 +65,6 @@ export function TasksModal({
 				description,
 				userId: auth.id,
 				users: users.all.map((user) => user._id),
-				// [
-				// 	auth.id,
-				// ],
 			};
 			dispatch(createTask({ body, boardId: currentBoardId, columnId: currentColumnId }))
 				.then(() => handleClose());
@@ -78,9 +76,6 @@ export function TasksModal({
 				columnId: currentColumnId,
 				userId: auth.id,
 				users: users.all.map((user) => user._id),
-				// [
-				// 	auth.id,
-				// ],
 			};
 			dispatch(updateTaskById({
 				body, boardId: currentBoardId, columnId: currentColumnId, taskId: currentId,
@@ -88,12 +83,11 @@ export function TasksModal({
 		}
 		reset();
 	};
+
 	return (
 		<Modal
 			open={isOpen}
 			onClose={handleClose}
-			aria-labelledby="modal-modal-title"
-			aria-describedby="modal-modal-description"
 		>
 			<Box sx={style}>
 				<Box
@@ -109,7 +103,7 @@ export function TasksModal({
 							helperText={errors.title?.message || ' '}
 							id="task-title"
 							placeholder={currentTitle === '' ? 'Назва таску' : currentTitle}
-							defaultValue={currentTitle === '' ? '' : currentTitle}
+							defaultValue={currentTitle ?? ''}
 						/>
 					</Box>
 					<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -120,7 +114,7 @@ export function TasksModal({
 							helperText={errors.description?.message || ' '}
 							id="board-description"
 							placeholder={currentDescription === '' ? 'Опис таску' : currentDescription}
-							defaultValue={currentDescription === '' ? '' : currentDescription}
+							defaultValue={currentDescription ?? ''}
 						/>
 					</Box>
 					<Button

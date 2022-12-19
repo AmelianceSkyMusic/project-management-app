@@ -40,24 +40,23 @@ export function BoardModal({
 	} = useForm<ICreateBoard>({
 		mode: 'onSubmit',
 		defaultValues: {
-			title: currentTitle === '' ? '' : currentTitle,
+			title: currentTitle ?? '',
 		},
 	});
+
 	const registers = {
 		title: register('title', {
 			required: 'Поле таке пусте! Введіть більше символів!',
 			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
 		}),
 	};
+
 	const onSubmit: SubmitHandler<ICreateBoard> = ({ title }: ICreateBoard) => {
 		if (currentTitle === '') {
 			const body: ICreateBoard = {
 				title,
 				owner: auth.id,
 				users: users.all.map((user) => user._id),
-				// [
-				// 	auth.id,
-				// ],
 			};
 			dispatch(createBoard(body)).then(() => handleClose());
 		} else if (currentTitle !== '') {
@@ -65,20 +64,16 @@ export function BoardModal({
 				title,
 				owner: auth.id,
 				users: users.all.map((user) => user._id),
-				// [
-				// 	auth.id,
-				// ],
 			};
 			dispatch(updateBoardById({ body, boardId: currentId })).then(() => handleClose());
 		}
 		reset();
 	};
+
 	return (
 		<Modal
 			open={isOpen}
 			onClose={handleClose}
-			aria-labelledby="modal-modal-title"
-			aria-describedby="modal-modal-description"
 		>
 			<Box sx={style}>
 				<Box
@@ -94,7 +89,7 @@ export function BoardModal({
 							helperText={errors.title?.message || ' '}
 							id="board-title"
 							placeholder={currentTitle === '' ? 'Назва дошки' : currentTitle}
-							defaultValue={currentTitle === '' ? '' : currentTitle}
+							defaultValue={currentTitle ?? ''}
 						/>
 					</Box>
 					<Button

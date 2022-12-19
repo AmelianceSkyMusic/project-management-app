@@ -2,12 +2,14 @@
 import { useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 
+import { ReactComponent as More } from '@material-symbols/svg-400/rounded/more_vert.svg';
 import {
 	Card, CardContent, CardHeader, IconButton,
 } from '@mui/material';
 import { XYCoord } from 'dnd-core';
 
 import { PopoverMenu } from '~components/PopoverMenu';
+import { Symbol } from '~components/Symbol';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
 import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { deleteTaskById } from '~store/tasks/actions/deleteTaskById';
@@ -131,8 +133,10 @@ export function TaskCard({
 					sx={{ padding: '8px', fontSize: 18 }}
 					disableTypography
 					action={(
-						<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
-							more_vert
+						<IconButton className="material-symbols-rounded" onClick={handleMenuClick}>
+							<Symbol>
+								<More />
+							</Symbol>
 						</IconButton>
 					)}
 				/>

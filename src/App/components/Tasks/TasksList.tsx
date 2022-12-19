@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 
+import { ReactComponent as Add } from '@material-symbols/svg-400/rounded/add.svg';
+import { ReactComponent as More } from '@material-symbols/svg-400/rounded/more_vert.svg';
 import { Box, CircularProgress } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -11,6 +13,7 @@ import { XYCoord } from 'dnd-core';
 
 import { ColumnsModal } from '~components/Columns/ColumnsModal';
 import { PopoverMenu } from '~components/PopoverMenu';
+import { Symbol } from '~components/Symbol';
 import { deleteColumnById } from '~store/columns/actions/deleteColumnById';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
 import { useTypedSelector } from '~store/hooks/useTypedSelector';
@@ -184,8 +187,10 @@ export function TaskList({
 			>
 				<CardHeader
 					action={(
-						<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
-							more_vert
+						<IconButton className="material-symbols-rounded" onClick={handleMenuClick}>
+							<Symbol>
+								<More />
+							</Symbol>
 						</IconButton>
 					)}
 					title={title}
@@ -223,7 +228,9 @@ export function TaskList({
 						/>
 					))}
 					<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleAddClick}>
-						add
+						<Symbol>
+							<Add />
+						</Symbol>
 					</IconButton>
 				</CardContent>
 			</Card>

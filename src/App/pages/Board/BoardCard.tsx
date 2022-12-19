@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { ReactComponent as More } from '@material-symbols/svg-400/rounded/more_vert.svg';
 import { Link } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 
 import { deleteBoardById } from '~api/boards';
 import { PopoverMenu } from '~components/PopoverMenu';
+import { Symbol } from '~components/Symbol';
 import { IBoardCardProps } from '~types/board';
 
 import { BoardModal } from './BoardModal';
@@ -60,8 +62,10 @@ export function BoardCard({
 				>
 					<CardHeader
 						action={(
-							<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
-								more_vert
+							<IconButton className="material-symbols-rounded" onClick={handleMenuClick}>
+								<Symbol>
+									<More />
+								</Symbol>
 							</IconButton>
 						)}
 						title={title}

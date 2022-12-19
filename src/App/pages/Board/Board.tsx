@@ -5,7 +5,6 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
-// import { getBoardsByUserId } from '~api/boards';
 import { BoardCard } from '~pages/Board/BoardCard';
 import { getBoardsByUserId } from '~store/boards/actions/getBoardsByUserId';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';

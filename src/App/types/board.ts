@@ -3,6 +3,7 @@ export interface IBoardCardProps {
 	id: string;
 	getBoards: () => void;
 }
+
 export interface IBoardModalProps {
 	isOpen: boolean;
 	handleClose: () => void;

@@ -21,7 +21,7 @@ export function Layout() {
 				<Container
 					maxWidth={false}
 					sx={{
-						maxWidth: '1320px', display: 'flex', flexDirection: 'column', gap: 4,
+						maxWidth: '1320px', display: 'flex', flexDirection: 'column', gap: 12,
 					}}
 				>
 					<Outlet />

@@ -27,6 +27,7 @@ export function ColumnsModal({
 	isOpen, handleClose, currentTitle, currentId, currentBoardId, currentOrder,
 }: IColumnModalProps) {
 	const dispatch = useTypedDispatch();
+
 	const {
 		register,
 		handleSubmit,
@@ -35,15 +36,17 @@ export function ColumnsModal({
 	} = useForm<IColumnParams>({
 		mode: 'onSubmit',
 		defaultValues: {
-			title: currentTitle === '' ? '' : currentTitle,
+			title: currentTitle ?? '',
 		},
 	});
+
 	const registers = {
 		title: register('title', {
 			required: 'Поле таке пусте! Введіть більше символів!',
 			minLength: { value: 3, message: 'Мінімальна довжина 3 символи' },
 		}),
 	};
+
 	const onSubmit: SubmitHandler<IColumnParams> = ({ title }: IColumnParams) => {
 		const body: IColumnParams = {
 			title,
@@ -57,12 +60,11 @@ export function ColumnsModal({
 		}
 		reset();
 	};
+
 	return (
 		<Modal
 			open={isOpen}
 			onClose={handleClose}
-			aria-labelledby="modal-modal-title"
-			aria-describedby="modal-modal-description"
 		>
 			<Box sx={style}>
 				<Box
@@ -78,7 +80,7 @@ export function ColumnsModal({
 							helperText={errors.title?.message || ' '}
 							id="column-title"
 							placeholder={currentTitle === '' ? 'Назва колонки' : currentTitle}
-							defaultValue={currentTitle === '' ? '' : currentTitle}
+							defaultValue={currentTitle ?? ''}
 						/>
 					</Box>
 					<Button

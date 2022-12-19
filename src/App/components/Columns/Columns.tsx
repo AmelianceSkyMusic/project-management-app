@@ -3,11 +3,14 @@ import { useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { ReactComponent as ArrowBack } from '@material-symbols/svg-400/rounded/arrow_back.svg';
+import { ReactComponent as More } from '@material-symbols/svg-400/rounded/more_vert.svg';
 import {
 	Box, Button, CircularProgress, IconButton, Typography,
 } from '@mui/material';
 
 import { PopoverMenu } from '~components/PopoverMenu';
+import { Symbol } from '~components/Symbol';
 import { TaskList } from '~components/Tasks/TasksList';
 import { BoardModal } from '~pages/Board/BoardModal';
 import { deleteBoardById } from '~store/boards/actions/deleteBoardById';
@@ -108,13 +111,18 @@ export function Columns() {
 			/>
 			<Typography variant="h3" component="h3" sx={{ fontSize: 24 }}>
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={goBack}>
-					arrow_back
+					<Symbol>
+						<ArrowBack />
+					</Symbol>
 				</IconButton>
 				Board
 				{' '}
 				{boards.foundedBoard.title}
 				<IconButton aria-label="settings" className="material-symbols-rounded" onClick={handleMenuClick}>
-					more_vert
+					<Symbol>
+						<More />
+					</Symbol>
+
 				</IconButton>
 			</Typography>
 			<PopoverMenu

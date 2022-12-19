@@ -6,20 +6,6 @@ export interface IUser {
 	password: string;
 }
 
-export interface IBadRequest {
-	statusCode: string;
-	message: string;
-}
-
-export interface IBoardParams {
-   title: string;
-   owner: string;
-   users: string[];
-}
-export interface IBoard extends IBoardParams {
-   _id: string;
-}
-
 export interface IColumn {
    _id: string;
    title: string;

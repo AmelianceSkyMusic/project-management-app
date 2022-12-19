@@ -3,9 +3,11 @@ export interface IDropColumn {
 	id: string;
 	type: string;
 }
+
 export interface IDropTask extends IDropColumn {
 	columnId: string;
 }
+
 export interface IDropResult {
 	_id: string;
 }
