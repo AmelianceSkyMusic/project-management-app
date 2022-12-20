@@ -9,7 +9,7 @@ export const putCommon = async<TReturnData, TBody>(body: TBody, endpoint = '') =
 			endpoint,
 			body,
 		);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		errorHandler(error as AxiosError);

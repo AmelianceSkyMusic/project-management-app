@@ -9,7 +9,7 @@ export const patchCommon = async<TReturnData, TBody>(body: TBody, endpoint: stri
 			endpoint,
 			body,
 		);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		errorHandler(error as AxiosError);

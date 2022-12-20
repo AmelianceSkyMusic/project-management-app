@@ -8,7 +8,7 @@ export const createTask = createAsyncThunk(
 	'tasksSlice/createTask',
 	async ({ boardId, columnId, body }: ICreateTask, thunkAPI) => {
 		try {
-			return await api.tasks.createTask(body, boardId, columnId);
+			return await api.tasks.createTask({ body, boardId, columnId });
 		} catch (error) {
 			return thunkAPI.rejectWithValue(rejectErrorMessage);
 		}

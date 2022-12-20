@@ -6,20 +6,8 @@ export interface IUser {
 	password: string;
 }
 
-export interface IBadRequest {
-	statusCode: string;
-	message: string;
-}
-
-export interface IBoard {
-   _id?: string;
-   title: string;
-   owner: string;
-   users: string[];
-}
-
 export interface IColumn {
-   _id?: string;
+   _id: string;
    title: string;
    order: number;
    boardId: string;
@@ -33,20 +21,31 @@ export interface IColumnParams {
 export interface IColumnOrder {
 	_id: string;
 	order: number;
-	columnId?: string;
+}
+export interface ITasksOrder extends IColumnOrder {
+	columnId: string;
 }
 
 export interface ITask {
-	_id?: string;
+	_id: string;
 	title: string;
    order: number;
-   boardId?: string;
-   columnId?: string;
+   boardId: string;
+   columnId: string;
    description: string;
-   userId: number;
+   userId: string;
    users: string[];
 }
-
+export interface ITaskParams {
+	title: string;
+   order: number;
+	description: string;
+	userId: string;
+   users: string[];
+}
+export interface ITaskParamsUpdate extends ITaskParams {
+	columnId: string;
+}
 export interface IPointsList {
 	_id?: string;
    title: string;

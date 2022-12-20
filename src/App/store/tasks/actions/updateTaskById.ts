@@ -10,7 +10,9 @@ export const updateTaskById = createAsyncThunk(
 		boardId, columnId, taskId, body,
 	}: IUpdateTaskById, thunkAPI) => {
 		try {
-			return await api.tasks.updateTaskById(body, boardId, columnId, taskId);
+			return await api.tasks.updateTaskById({
+				body, boardId, columnId, taskId,
+			});
 		} catch (error) {
 			return thunkAPI.rejectWithValue(rejectErrorMessage);
 		}

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IError, ITaskResponse } from '~types/api/commonApiTypes';
+import { IError, ITaskResponse, TColumnId } from '~types/api/commonApiTypes';
 import { ICreateTaskResponse } from '~types/api/tasks/createTask';
 import { IDeleteTaskByIdResponse } from '~types/api/tasks/deleteTaskById';
 import { IGetTaskByIdResponse } from '~types/api/tasks/getTaskById';
@@ -19,15 +19,29 @@ import { getTasksInColumn } from './actions/getTasksInColumn';
 import { updateSetOfTasks } from './actions/updateSetOfTasks';
 import { updateTaskById } from './actions/updateTaskById';
 
-const initBoardSlice = {
+interface IInitBoardSlice {
+	isLoading: boolean;
+	error: string;
+	tasks: {
+		inColumns: Record<TColumnId, ITaskResponse[]>;
+		createdTask: ITaskResponse;
+		foundedTask: ITaskResponse;
+		updatedTask: ITaskResponse;
+		deletedTask: ITaskResponse;
+		foundedTasks: ITaskResponse[];
+		updatedTasks: ITaskResponse[];
+	};
+}
+
+const initBoardSlice: IInitBoardSlice = {
 	isLoading: false,
 	error: '',
 	tasks: {
-		all: [] as ITaskResponse[],
-		createdTask: {},
-		foundedTask: {},
-		updatedTask: {},
-		deletedTask: {},
+		inColumns: {} as Record<TColumnId, ITaskResponse[]>,
+		createdTask: {} as ITaskResponse,
+		foundedTask: {} as ITaskResponse,
+		updatedTask: {} as ITaskResponse,
+		deletedTask: {} as ITaskResponse,
 		foundedTasks: [] as ITaskResponse[],
 		updatedTasks: [] as ITaskResponse[],
 	},
@@ -44,13 +58,20 @@ export const tasksSlice = createSlice({
 			.addCase(getTasksInColumn.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.tasks.all = [];
+				state.tasks.inColumns = {} as Record<TColumnId, ITaskResponse[]>;
 			})
 			.addCase(
 				getTasksInColumn.fulfilled,
 				(state, action: PayloadAction<IGetTasksInColumnResponse | IError | unknown>) => {
 					if ((action?.payload as IGetTasksInColumnResponse)?.status === 200) {
-						state.tasks.all = (action?.payload as IGetTasksInColumnResponse).data;
+						const { data } = action?.payload as IGetTasksInColumnResponse;
+						if (data.length > 0) {
+							const { columnId } = data[0];
+							state.tasks.inColumns = {
+								...state.tasks.inColumns,
+								[columnId]: data.sort((a, b) => a.order - b.order),
+							};
+						}
 					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
@@ -65,7 +86,7 @@ export const tasksSlice = createSlice({
 			.addCase(createTask.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.tasks.createdTask = {};
+				state.tasks.createdTask = {} as ITaskResponse;
 			})
 			.addCase(
 				createTask.fulfilled,
@@ -86,7 +107,7 @@ export const tasksSlice = createSlice({
 			.addCase(getTaskById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.tasks.foundedTask = {};
+				state.tasks.foundedTask = {} as ITaskResponse;
 			})
 			.addCase(
 				getTaskById.fulfilled,
@@ -107,7 +128,7 @@ export const tasksSlice = createSlice({
 			.addCase(updateTaskById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.tasks.updatedTask = {};
+				state.tasks.updatedTask = {} as ITaskResponse;
 			})
 			.addCase(
 				updateTaskById.fulfilled,
@@ -128,7 +149,7 @@ export const tasksSlice = createSlice({
 			.addCase(deleteTaskById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.tasks.deletedTask = {};
+				state.tasks.deletedTask = {} as ITaskResponse;
 			})
 			.addCase(
 				deleteTaskById.fulfilled,

@@ -17,15 +17,28 @@ import { getBoardsByIdsList } from './actions/getBoardsByIdsList';
 import { getBoardsByUserId } from './actions/getBoardsByUserId';
 import { updateBoardById } from './actions/updateBoardById';
 
-const initBoardSlice = {
+interface IInitBoardSlice {
+	isLoading: boolean;
+	error: string;
+	boards: {
+		all: IBoardResponse[];
+		lastCreated: IBoardResponse;
+		foundedBoard: IBoardResponse;
+		updatedBoard: IBoardResponse;
+		lastDeletedBoard: IBoardResponse;
+		foundedBoards: IBoardResponse[];
+	};
+}
+
+const initBoardSlice: IInitBoardSlice = {
 	isLoading: false,
 	error: '',
 	boards: {
 		all: [] as IBoardResponse[],
-		lastCreated: {},
-		foundedBoard: {},
-		updatedBoard: {},
-		lastDeletedBoard: {},
+		lastCreated: {} as IBoardResponse,
+		foundedBoard: {} as IBoardResponse,
+		updatedBoard: {} as IBoardResponse,
+		lastDeletedBoard: {} as IBoardResponse,
 		foundedBoards: [] as IBoardResponse[],
 	},
 };
@@ -64,15 +77,14 @@ export const boardsSlice = createSlice({
 			.addCase(createBoard.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.lastCreated = {};
+				state.boards.lastCreated = {} as IBoardResponse;
 			})
 			.addCase(
 				createBoard.fulfilled,
 				(state, action: PayloadAction<ICreateBoardResponse | IError | unknown>) => {
 					if ((action?.payload as ICreateBoardResponse)?.status === 200) {
 						state.boards.lastCreated = (action?.payload as ICreateBoardResponse).data;
-					} else
-					if ((action?.payload as IError).data.message) {
+					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
 					state.isLoading = false;
@@ -86,15 +98,14 @@ export const boardsSlice = createSlice({
 			.addCase(getBoardById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.foundedBoard = {};
+				state.boards.foundedBoard = {} as IBoardResponse;
 			})
 			.addCase(
 				getBoardById.fulfilled,
 				(state, action: PayloadAction<IGetBoardByIdResponse | IError | unknown>) => {
 					if ((action?.payload as IGetBoardByIdResponse)?.status === 200) {
 						state.boards.foundedBoard = (action?.payload as IGetBoardByIdResponse).data;
-					} else
-					if ((action?.payload as IError).data.message) {
+					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
 					state.isLoading = false;
@@ -108,15 +119,14 @@ export const boardsSlice = createSlice({
 			.addCase(updateBoardById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.updatedBoard = {};
+				state.boards.updatedBoard = {} as IBoardResponse;
 			})
 			.addCase(
 				updateBoardById.fulfilled,
 				(state, action: PayloadAction<IUpdateBoardByIdResponse | IError | unknown>) => {
 					if ((action?.payload as IUpdateBoardByIdResponse)?.status === 200) {
 						state.boards.updatedBoard = (action?.payload as IUpdateBoardByIdResponse).data;
-					} else
-					if ((action?.payload as IError).data.message) {
+					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
 					state.isLoading = false;
@@ -130,15 +140,14 @@ export const boardsSlice = createSlice({
 			.addCase(deleteBoardById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.boards.lastDeletedBoard = {};
+				state.boards.lastDeletedBoard = {} as IBoardResponse;
 			})
 			.addCase(
 				deleteBoardById.fulfilled,
 				(state, action: PayloadAction<IDeleteBoardByIdResponse | IError | unknown>) => {
 					if ((action?.payload as IDeleteBoardByIdResponse)?.status === 200) {
 						state.boards.lastDeletedBoard = (action?.payload as IDeleteBoardByIdResponse).data;
-					} else
-					if ((action?.payload as IError).data.message) {
+					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
 					state.isLoading = false;
@@ -159,8 +168,7 @@ export const boardsSlice = createSlice({
 				(state, action: PayloadAction<IGetBoardsByIdsListResponse | IError | unknown>) => {
 					if ((action?.payload as IGetBoardsByIdsListResponse)?.status === 200) {
 						state.boards.foundedBoards = (action?.payload as IGetBoardsByIdsListResponse).data;
-					} else
-					if ((action?.payload as IError).data.message) {
+					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
 					state.isLoading = false;
@@ -181,8 +189,7 @@ export const boardsSlice = createSlice({
 				(state, action: PayloadAction<IGetBoardsByUserIdResponse | IError | unknown>) => {
 					if ((action?.payload as IGetBoardsByUserIdResponse)?.status === 200) {
 						state.boards.foundedBoards = (action?.payload as IGetBoardsByUserIdResponse).data;
-					} else
-					if ((action?.payload as IError).data.message) {
+					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}
 					state.isLoading = false;

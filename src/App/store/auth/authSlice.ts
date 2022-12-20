@@ -1,18 +1,34 @@
+import { decodeToken } from 'react-jwt';
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ISignInUserResponse } from '~types/api/auth/signIn';
 import { ISingUpUserResponse } from '~types/api/auth/singUp';
-import { IError } from '~types/api/commonApiTypes';
+import { IError, IUser } from '~types/api/commonApiTypes';
+import { IDecodedToken } from '~types/IDecodedToken';
 
 import { signIn } from './actions/signIn';
 import { signUp } from './actions/signUp';
 
-const initAuthSlice = {
+interface IInitAuthSlice {
+	isLoading: boolean;
+	error: string;
+	auth: {
+		newCreatedUser: IUser;
+		token: string;
+		id: string;
+		login: string;
+	};
+}
+
+const initAuthSlice: IInitAuthSlice = {
 	isLoading: false,
 	error: '',
 	auth: {
-		newCreatedUser: {},
+		newCreatedUser: {} as IUser,
 		token: '',
+		id: '',
+		login: '',
 	},
 };
 
@@ -27,7 +43,7 @@ export const authSlice = createSlice({
 			.addCase(signUp.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.auth.newCreatedUser = {};
+				state.auth.newCreatedUser = {} as IUser;
 			})
 			.addCase(
 				signUp.fulfilled,
@@ -49,12 +65,20 @@ export const authSlice = createSlice({
 				state.isLoading = true;
 				state.error = '';
 				state.auth.token = '';
+				state.auth.id = '';
+				state.auth.login = '';
 			})
 			.addCase(
 				signIn.fulfilled,
 				(state, action: PayloadAction<ISignInUserResponse | IError | unknown>) => {
 					if ((action?.payload as ISignInUserResponse)?.status === 200) {
-						state.auth.token = (action?.payload as ISignInUserResponse).data.token;
+						const { token } = (action?.payload as ISignInUserResponse).data;
+						localStorage.setItem('token', token);
+						const decodedToken = decodeToken(token) as IDecodedToken;
+						state.auth.token = token;
+						state.auth.id = decodedToken.id;
+						state.auth.login = decodedToken.login;
+
 					} else if ((action?.payload as IError).data.message) {
 						state.error = (action?.payload as IError).data.message;
 					}

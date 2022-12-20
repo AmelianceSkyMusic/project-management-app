@@ -6,7 +6,7 @@ import { errorHandler } from '../helpers/errorHandler';
 export const deleteCommon = async<TReturnData>(endpoint = '') => {
 	try {
 		const { data, status } = await HTTP.delete<TReturnData>(endpoint);
-		return [data, status];
+		return { data, status };
 
 	} catch (error) {
 		errorHandler(error as AxiosError);

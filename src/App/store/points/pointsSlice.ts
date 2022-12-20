@@ -15,14 +15,25 @@ import { getPointsByTaskId } from './actions/getPointsByTaskId';
 import { updatePoint } from './actions/updatePoint';
 import { updateSetOfPoints } from './actions/updateSetOfPoints';
 
-const initBoardSlice = {
+interface IInitBoardSlice {
+	isLoading: boolean;
+	error: string;
+	points: {
+		foundedPoints: IPointResponse[];
+		createdPoint: IPointResponse;
+		updatedPoint: Omit<IPointResponse, 'done'>;
+		deletedPoint: IPointResponse;
+	};
+}
+
+const initBoardSlice: IInitBoardSlice = {
 	isLoading: false,
 	error: '',
 	points: {
 		foundedPoints: [] as IPointResponse[],
-		createdPoint: {},
-		updatedPoint: {},
-		deletedPoint: {},
+		createdPoint: {} as IPointResponse,
+		updatedPoint: {} as Omit<IPointResponse, 'done'>,
+		deletedPoint: {} as IPointResponse,
 	},
 };
 
@@ -60,7 +71,7 @@ export const pointsSlice = createSlice({
 			.addCase(createPoint.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.points.createdPoint = {};
+				state.points.createdPoint = {} as IPointResponse;
 			})
 			.addCase(
 				createPoint.fulfilled,
@@ -83,7 +94,7 @@ export const pointsSlice = createSlice({
 			.addCase(updateSetOfPoints.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.points.updatedPoint = {};
+				state.points.updatedPoint = {} as Omit<IPointResponse, 'done'>;
 			})
 			.addCase(
 				updateSetOfPoints.fulfilled,
@@ -129,7 +140,7 @@ export const pointsSlice = createSlice({
 			.addCase(updatePoint.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.points.updatedPoint = {};
+				state.points.updatedPoint = {} as IPointResponse;
 			})
 			.addCase(
 				updatePoint.fulfilled,
@@ -152,7 +163,7 @@ export const pointsSlice = createSlice({
 			.addCase(deletePointById.pending, (state) => {
 				state.isLoading = true;
 				state.error = '';
-				state.points.deletedPoint = {};
+				state.points.deletedPoint = {} as IPointResponse;
 			})
 			.addCase(
 				deletePointById.fulfilled,

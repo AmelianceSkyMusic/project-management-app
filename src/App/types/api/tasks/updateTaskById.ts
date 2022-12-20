@@ -12,7 +12,7 @@ export interface IUpdateTaskById {
 		order: number;
 		description: string;
 		columnId: string;
-		userId: number;
+		userId: string;
 		users: string[];
 	};
 }

@@ -11,12 +11,9 @@ import {
 import asm from '~/asmlib/asm-scripts';
 import { signIn } from '~store/auth/actions/signIn';
 import { useTypedDispatch } from '~store/hooks/useTypedDispatch';
-import { useTypedSelector } from '~store/hooks/useTypedSelector';
 import { ISignInUser } from '~types/api/auth/signIn';
 
 export function SignIn() {
-	const { isLoading, error, auth } = useTypedSelector((state) => state.authReducer);
-	console.log('auth:', auth);
 
 	const dispatch = useTypedDispatch();
 
